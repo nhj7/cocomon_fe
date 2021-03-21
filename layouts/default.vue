@@ -5,9 +5,40 @@
       :mini-variant="miniVariant"
       :clipped="clipped"
       fixed
-      app
+      app      
     >
+      <v-list-item @click.stop="drawer = !drawer">
+        <v-list-item-content>
+          <v-list-item-title class="title">
+            <v-icon>mdi-creative-commons</v-icon>
+            {{ title }}
+
+            <v-icon class="float-right">mdi-close</v-icon>
+          </v-list-item-title>
+          <v-list-item-subtitle>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Coin,
+            K-Premeum, ETC...</v-list-item-subtitle
+          >
+        </v-list-item-content>
+      </v-list-item>
+      <v-divider></v-divider>
       <v-list>
+        <v-list-item>
+          <v-btn icon @click.stop="miniVariant = !miniVariant">
+            <v-icon
+              >mdi-{{ `chevron-${miniVariant ? "right" : "left"}` }}</v-icon
+            >
+          </v-btn>
+          <v-btn icon @click.stop="clipped = !clipped">
+            <v-icon>mdi-application</v-icon>
+          </v-btn>
+          <v-btn icon @click.stop="fixed = !fixed">
+            <v-icon>mdi-minus</v-icon>
+          </v-btn>
+        </v-list-item>
+
+        <v-divider></v-divider>
+        <v-divider></v-divider>
         <v-list-item
           v-for="(item, i) in items"
           :key="i"
@@ -24,94 +55,136 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar
-      :clipped-left="clipped"
-      fixed
-      app
-    >
+
+    
+
+    <v-app-bar :clipped-left="clipped" fixed app dense hide-on-scroll>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-btn
-        icon
-        @click.stop="miniVariant = !miniVariant"
-      >
-        <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        @click.stop="clipped = !clipped"
-      >
-        <v-icon>mdi-application</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        @click.stop="fixed = !fixed"
-      >
-        <v-icon>mdi-minus</v-icon>
-      </v-btn>
-      <v-toolbar-title v-text="title" />
+
+      <v-icon>creative-commons</v-icon><v-toolbar-title v-text="title" />
       <v-spacer />
-      <v-btn
-        icon
-        @click.stop="rightDrawer = !rightDrawer"
-      >
-        <v-icon>mdi-menu</v-icon>
+
+      <v-btn icon @click.stop="rightDrawer = !rightDrawer">
+        <v-icon>mdi-cog</v-icon>
       </v-btn>
     </v-app-bar>
+
+
+
+    <!--v-system-bar
+      
+      abolute="true"
+      app
+      height="30px"
+      class="font-weight-light"
+    >
+      <v-spacer />
+      <span>K-프 </span>&nbsp;&nbsp;
+      <span class="red--text"> +3.58%</span>
+      
+      &nbsp;&nbsp;      
+      <span>USD</span>&nbsp;&nbsp;
+      <span class="red--text"> 1,130 </span>
+
+      &nbsp;&nbsp;      
+      <span>USDT &nbsp;</span>
+      <span>0.99</span>
+
+      &nbsp;&nbsp;      
+      <span>Domi &nbsp;</span>      
+      <span >60.11</span>
+      <v-spacer />
+    </v-system-bar-->
+
+
+
+
+
     <v-main>
       <v-container>
         <nuxt />
       </v-container>
     </v-main>
-    <v-navigation-drawer
-      v-model="rightDrawer"
-      :right="right"
-      temporary
-      fixed
-    >
+
+    <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
       <v-list>
-        <v-list-item @click.native="right = !right">
+        <v-list-item @click.stop="rightDrawer = !rightDrawer">
           <v-list-item-action>
-            <v-icon light>
-              mdi-repeat
-            </v-icon>
+            <v-icon light> mdi-close </v-icon>
           </v-list-item-action>
-          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
+          <v-list-item-title> close </v-list-item-title>
+        </v-list-item>
+
+        <v-divider></v-divider>
+
+        <v-list-item @click="$vuetify.theme.dark = !$vuetify.theme.dark">
+          <v-list-item-action>
+            <v-icon>{{
+              $vuetify.theme.dark ? "mdi-lightbulb-off" : "mdi-lightbulb-on"
+            }}</v-icon>
+          </v-list-item-action>
+          <v-list-item-title>
+            {{ $vuetify.theme.dark ? "dark" : "light" }}
+          </v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-footer
-      :absolute="!fixed"
-      app
-    >
-      <span>&copy; {{ new Date().getFullYear() }}</span>
+
+    <v-footer :absolute="!fixed" app>
+      <v-spacer />
+      <span>
+        All content &copy; {{ $config.appName }}.
+        {{ new Date().getFullYear() }} All rights reserved.</span
+      >
+      <v-spacer />
     </v-footer>
   </v-app>
 </template>
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       clipped: false,
       drawer: false,
       fixed: false,
       items: [
         {
-          icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/'
+          icon: "mdi-apps",
+          title: "Crypto Board",
+          to: "/",
         },
         {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire'
-        }
+          icon: "mdi-chart-bubble",
+          title: "Inspire",
+          to: "/inspire",
+        },
       ],
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'Vuetify.js'
-    }
-  }
-}
+      title: $nuxt.$config.appName,
+    };
+  }, // end data
+  created: () => {
+    console.log("config", $nuxt.$config);
+    //debugger;
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)")
+      .matches;
+
+    console.log("prefersDark", prefersDark);
+    $nuxt.$vuetify.theme.dark = prefersDark;
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", (e) => {
+        if (e.matches) {
+          console.log("dark mode is enabled");
+          $nuxt.$vuetify.theme.dark = true;
+        } else {
+          console.log("dark mode is disabled");
+          $nuxt.$vuetify.theme.dark = false;
+        }
+      });
+  },
+};
 </script>

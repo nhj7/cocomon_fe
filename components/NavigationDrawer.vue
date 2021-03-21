@@ -20,8 +20,6 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
-
-      <v-icon @click="$vuetify.theme.dark = !$vuetify.theme.dark;" >mdi-cog</v-icon>
 </div>
 </template>
 
