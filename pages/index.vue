@@ -43,41 +43,46 @@
               :items="desserts"
               :items-per-page="2000"
               :search="search"
+              item-key="name"
               dense
               mobile="false"
               mobile-breakpoint="0"
-              hide-default-footer=true
+              hide-default-footer
+              :single-expand="singleExpand"
+              :expanded.sync="expanded"
+              class="elevation-1"
+              @click:row="addExpand"
+              multi-sort
             >
-              
+              <template v-slot:expanded-item="{ headers, item }">
+                
+                  <td >
+                   0035000
+                  </td>
+                  <td> 65131313</td>
+                
+              </template>
             </v-data-table>
           </v-card>
 
           <v-btn color="primary" nuxt to="/inspire"> Continue </v-btn>
         </v-col>
       </v-row>
+
+      <v-divider/>
+
+      <br /><br /><br />
     </v-main>
     <v-footer app>
       <!-- -->
     </v-footer>
   </v-app>
 </template>
-<style>
 
-.col-xl,
-.col-xl-auto, .col-xl-12, .col-xl-11, .col-xl-10, .col-xl-9, .col-xl-8, .col-xl-7, .col-xl-6, .col-xl-5, .col-xl-4, .col-xl-3, .col-xl-2, .col-xl-1, .col-lg,
-.col-lg-auto, .col-lg-12, .col-lg-11, .col-lg-10, .col-lg-9, .col-lg-8, .col-lg-7, .col-lg-6, .col-lg-5, .col-lg-4, .col-lg-3, .col-lg-2, .col-lg-1, .col-md,
-.col-md-auto, .col-md-12, .col-md-11, .col-md-10, .col-md-9, .col-md-8, .col-md-7, .col-md-6, .col-md-5, .col-md-4, .col-md-3, .col-md-2, .col-md-1, .col-sm,
-.col-sm-auto, .col-sm-12, .col-sm-11, .col-sm-10, .col-sm-9, .col-sm-8, .col-sm-7, .col-sm-6, .col-sm-5, .col-sm-4, .col-sm-3, .col-sm-2, .col-sm-1, .col,
-.col-auto, .col-12, .col-11, .col-10, .col-9, .col-8, .col-7, .col-6, .col-5, .col-4, .col-3, .col-2, .col-1 {
-  width: 100%;
-  padding: 5px;
-}
-
-</style>
 <script>
 export default {
   components: {},
-
+  counter: 0,
   methods: {
     setColor: (color) => {
       console.log($nuxt, color);
@@ -89,28 +94,48 @@ export default {
       } catch (error) {
         console.error(error);
       }
+    }, // end setColor
+    addExpand(value) {
+      console.log(this, event.currentTarget.children);
+      /*
+      debugger;
+      Array.from(event.currentTarget.children).foreach(
+        (child) => { child.style.borderBottom = "" ; }
+      )
+      */
+      
+      //debugger;
+      if (this.expanded.indexOf(value) > -1) {
+        this.expanded.pop(value);
+      } else {
+        this.expanded.push(value);
+      }
     },
+  },
+  mounted : () => {
+    // for (let i = 0; i < this.desserts.length; i += 1) {
+    //     const item = this.desserts[i];
+    //     this.$set(this.$refs.dTable.expanded, item.name, true);
+    // }
   },
   data() {
     return {
       search: "",
+      expanded: [],
+      singleExpand: true,
       colors: ["system", "light", "dark", "sepia"],
       headers: [
-        {
-          text: "Coin",
-          value: "name",
-        },
-        { text: "binance($)", value: "calories" },
-        { text: "binance(￦)", value: "fat" },
-        { text: "upbit(￦)", value: "carbs" },
-        { text: "ch(%)", value: "protein" },
+        { text: "item", value: "name" },
+        { text: "업빗(￦)", value: "carbs" },
+        { text: "(%)", value: "protein" },
+        { text: "김프", value: "iron" },        
         { text: "vol(억)", value: "iron" },
-        { text: "K-프", value: "iron" },
+        
       ],
       desserts: [
         {
-          name: "비트코인",
-          calories: 63902630,
+          name: "삼성전자",
+          calories: "63,902,630",
           fat: 63902630,
           carbs: 65681000,
           protein: -2.13,
@@ -196,9 +221,184 @@ export default {
           protein: 7,
           iron: "6%",
         },
+        {
+          name: "삼성전자1",
+          calories: "63,902,630",
+          fat: 63902630,
+          carbs: 65681000,
+          protein: -2.5,
+          iron: "6683",
+        },
+        {
+          name: "Ice cream sandwich1",
+          calories: 237,
+          fat: 9.0,
+          carbs: 37,
+          protein: 4.3,
+          iron: "1%",
+        },
+        {
+          name: "Eclair1",
+          calories: 262,
+          fat: 16.0,
+          carbs: 23,
+          protein: 6.0,
+          iron: "7%",
+        },
+        {
+          name: "Cupcake1",
+          calories: 305,
+          fat: 3.7,
+          carbs: 67,
+          protein: 4.3,
+          iron: "8%",
+        },
+        {
+          name: "Gingerbread1",
+          calories: 356,
+          fat: 16.0,
+          carbs: 49,
+          protein: 3.9,
+          iron: "16%",
+        },
+        {
+          name: "Jelly bean1",
+          calories: 375,
+          fat: 0.0,
+          carbs: 94,
+          protein: 0.0,
+          iron: "0%",
+        },
+        {
+          name: "Lollipop1",
+          calories: 392,
+          fat: 0.2,
+          carbs: 98,
+          protein: 0,
+          iron: "2%",
+        },
+        {
+          name: "Honeycomb1",
+          calories: 408,
+          fat: 3.2,
+          carbs: 87,
+          protein: 6.5,
+          iron: "45%",
+        },
+        {
+          name: "Donut1",
+          calories: 452,
+          fat: 25.0,
+          carbs: 51,
+          protein: 4.9,
+          iron: "22%",
+        },
+        {
+          name: "KitKat1",
+          calories: 518,
+          fat: 26.0,
+          carbs: 65,
+          protein: 7,
+          iron: "6%",
+        },
+        {
+          name: "XRP1",
+          calories: 518,
+          fat: 26.0,
+          carbs: 65,
+          protein: 7,
+          iron: "6%",
+        },
       ],
     };
   }, // end data.
 };
 </script>
 
+<style>
+.col-xl,
+.col-xl-auto,
+.col-xl-12,
+.col-xl-11,
+.col-xl-10,
+.col-xl-9,
+.col-xl-8,
+.col-xl-7,
+.col-xl-6,
+.col-xl-5,
+.col-xl-4,
+.col-xl-3,
+.col-xl-2,
+.col-xl-1,
+.col-lg,
+.col-lg-auto,
+.col-lg-12,
+.col-lg-11,
+.col-lg-10,
+.col-lg-9,
+.col-lg-8,
+.col-lg-7,
+.col-lg-6,
+.col-lg-5,
+.col-lg-4,
+.col-lg-3,
+.col-lg-2,
+.col-lg-1,
+.col-md,
+.col-md-auto,
+.col-md-12,
+.col-md-11,
+.col-md-10,
+.col-md-9,
+.col-md-8,
+.col-md-7,
+.col-md-6,
+.col-md-5,
+.col-md-4,
+.col-md-3,
+.col-md-2,
+.col-md-1,
+.col-sm,
+.col-sm-auto,
+.col-sm-12,
+.col-sm-11,
+.col-sm-10,
+.col-sm-9,
+.col-sm-8,
+.col-sm-7,
+.col-sm-6,
+.col-sm-5,
+.col-sm-4,
+.col-sm-3,
+.col-sm-2,
+.col-sm-1,
+.col,
+.col-auto,
+.col-12,
+.col-11,
+.col-10,
+.col-9,
+.col-8,
+.col-7,
+.col-6,
+.col-5,
+.col-4,
+.col-3,
+.col-2,
+.col-1 {
+  width: 100%;
+  padding: 5px;
+}
+
+table tr td , table th{
+  font-size : 0.75em !important;
+  padding : 0px 0px 0px 5px !important;
+}
+.v-data-table > .v-data-table__wrapper tbody tr.v-data-table__expanded__content {
+  box-shadow: none;
+  font-size : .65em !important;
+  
+}
+
+
+</style>
