@@ -4,10 +4,11 @@ export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
 
+  
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - CoComon',
-    title: 'CoComon',
+    titleTemplate: `%s - ${process.env.appName}`,
+    title: `${process.env.appName}`,
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -90,13 +91,8 @@ export default {
     host: '0.0.0.0' // default: localhost
     , port : 7001
   },
-  globalData : {
-    appName : "CoComon"
-  }, env: {
-    baseUrl: process.env.BASE_URL || 'http://localhost:3000'
-    , appName : "CoComon"
-  } , publicRuntimeConfig: {
-    baseURL: 'https://nuxtjs.org'
-    , appName : "CoComon"
+  publicRuntimeConfig: {
+    baseURL: 'https://cocomon.kr'
+    , appName : process.env.appName
   },
 }

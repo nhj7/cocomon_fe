@@ -5,7 +5,7 @@
       :mini-variant="miniVariant"
       :clipped="clipped"
       fixed
-      app      
+      app
     >
       <v-list-item @click.stop="drawer = !drawer">
         <v-list-item-content>
@@ -56,20 +56,38 @@
       </v-list>
     </v-navigation-drawer>
 
-    
-
     <v-app-bar :clipped-left="clipped" fixed app dense hide-on-scroll>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
 
-      <v-icon>creative-commons</v-icon><v-toolbar-title v-text="title" />
+      <v-icon v-bind:class="{ 'd-none': !isCoinSrchHide }"
+        >mdi-creative-commons</v-icon
+      >
+
       <v-spacer />
 
+      <v-autocomplete
+        placeholder="코인명/심볼 검색"
+        v-bind:class="{ 'd-none': isCoinSrchHide }"
+        ref="inpSearch"
+        autofocus
+        @blur="
+          isCoinSrchHide = 'true';
+          log('blur');
+        "
+      />
+      <v-btn
+        icon
+        @click.stop="
+          isCoinSrchHide = !isCoinSrchHide;
+          log('click');
+        "
+      >
+        <v-icon>mdi-magnify</v-icon>
+      </v-btn>
       <v-btn icon @click.stop="rightDrawer = !rightDrawer">
         <v-icon>mdi-cog</v-icon>
       </v-btn>
     </v-app-bar>
-
-
 
     <!--v-system-bar
       
@@ -95,10 +113,6 @@
       <span >60.11</span>
       <v-spacer />
     </v-system-bar-->
-
-
-
-
 
     <v-main>
       <v-container>
@@ -148,6 +162,7 @@ export default {
       clipped: false,
       drawer: false,
       fixed: false,
+      isCoinSrchHide: true,
       items: [
         {
           icon: "mdi-apps",
@@ -164,9 +179,14 @@ export default {
       right: true,
       rightDrawer: false,
       title: $nuxt.$config.appName,
+      ticker : {
+       "upbit" : {
+         "KRW-BTC" : {"trade_price" : 66938000.0 , "change_rate" : 0.0027115614 , "change_price" : 182000.00000000 , "signed_change_price" : -182000.00000000, "signed_change_rate" : -0.0027115614}
+       }
+      }
     };
   }, // end data
-  created: () => {
+  created : function() {
     console.log("config", $nuxt.$config);
     //debugger;
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)")
@@ -185,6 +205,47 @@ export default {
           $nuxt.$vuetify.theme.dark = false;
         }
       });
+
+    // wss://api.upbit.com/websocket/v1
+    // wss://crix-ws.upbit.com/websocket
+    var socketUpbit = new WebSocket("wss://api.upbit.com/websocket/v1");
+
+    socketUpbit.onopen = (e) => {
+      console.log("upbit wss open");
+      socketUpbit.send( JSON.stringify([{"ticket":"test"},{"type":"ticker","codes":["KRW-BTC"]}]) );
+    };
+
+    socketUpbit.onclose = function (event) {
+      if (event.wasClean) {
+        alert(
+          `[close] 커넥션이 정상적으로 종료되었습니다(code=${event.code} reason=${event.reason})`
+        );
+      } else {
+        // 예시: 프로세스가 죽거나 네트워크에 장애가 있는 경우
+        // event.code가 1006이 됩니다.
+        alert("[close] 커넥션이 죽었습니다.");
+      }
+    };
+
+    socketUpbit.onerror = function (error) {
+      alert(`[error] ${error.message}`);
+    };
+
+    const self = this;
+    socketUpbit.onmessage = function(event) {      
+      event.data.text().then( function(text) { 
+        const tickerSon = JSON.parse(text)
+        console.log(tickerSon);
+        self.ticker.upbit[tickerSon.code] = tickerSon;
+      } );
+    };
+
+    //
+  }, // end created
+  methods: {
+    log: (msg) => {
+      console.log(msg);
+    },
   },
 };
 </script>

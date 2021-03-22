@@ -1,9 +1,5 @@
 <template>
   <v-app>
-    <!--v-navigation-drawer app v-mode="data.drawer">
-      <NavigationDrawer />
-    </v-navigation-drawer-->
-
     <v-main class="pa-0">
       <v-row :height="500">
         <!--iframe
@@ -49,18 +45,23 @@
               mobile-breakpoint="0"
               hide-default-footer
               :single-expand="singleExpand"
-              :expanded.sync="expanded"
+              :expanded.sync="desserts"
               class="elevation-1"
               @click:row="addExpand"
-              multi-sort
+              multi-sort              
+              fixed-header
             >
-              <template v-slot:expanded-item="{ headers, item }">
+              <template v-slot:expanded-item="{ item }" @click:row="addExpand">
                 
                   <td >
-                   0035000
+                   <span><span>{{item.name}}</span></span>
                   </td>
-                  <td> 65131313</td>
-                
+                  <td> 
+                    <span><span>65131313</span></span>
+                  </td>
+                  <td> </td>
+                  <td> </td>
+                  <td> </td>
               </template>
             </v-data-table>
           </v-card>
@@ -110,13 +111,10 @@ export default {
       } else {
         this.expanded.push(value);
       }
-    },
+    },    
   },
   mounted : () => {
-    // for (let i = 0; i < this.desserts.length; i += 1) {
-    //     const item = this.desserts[i];
-    //     this.$set(this.$refs.dTable.expanded, item.name, true);
-    // }
+    $nuxt.$data.expanded = $nuxt.$data.desserts;
   },
   data() {
     return {
@@ -125,11 +123,11 @@ export default {
       singleExpand: true,
       colors: ["system", "light", "dark", "sepia"],
       headers: [
-        { text: "item", value: "name" },
-        { text: "업빗(￦)", value: "carbs" },
-        { text: "(%)", value: "protein" },
-        { text: "김프", value: "iron" },        
-        { text: "vol(억)", value: "iron" },
+        { text: "이름", value: "name" , class: "sticky-header" },
+        { text: "업빗(￦)", value: "carbs", class: "sticky-header" },
+        { text: "(%)", value: "protein" , class: "sticky-header"},
+        { text: "김프", value: "iron" , class: "sticky-header"},        
+        { text: "거래량", value: "iron" , class: "sticky-header"},
         
       ],
       desserts: [
@@ -142,7 +140,7 @@ export default {
           iron: "6683",
         },
         {
-          name: "Ice cream sandwich",
+          name: "Ice cream",
           calories: 237,
           fat: 9.0,
           carbs: 37,
@@ -230,7 +228,7 @@ export default {
           iron: "6683",
         },
         {
-          name: "Ice cream sandwich1",
+          name: "Ice cream 1",
           calories: 237,
           fat: 9.0,
           carbs: 37,
@@ -387,18 +385,52 @@ export default {
 .col-2,
 .col-1 {
   width: 100%;
-  padding: 5px;
+  padding: 2px;
 }
 
 table tr td , table th{
   font-size : 0.75em !important;
   padding : 0px 0px 0px 5px !important;
 }
+
+
+/* expanded row */
+tr.v-data-table__expanded.v-data-table__expanded__row > td{
+  border-bottom : 0px !important;
+}
+
+/* expanded content row */
 .v-data-table > .v-data-table__wrapper tbody tr.v-data-table__expanded__content {
   box-shadow: none;
-  font-size : .65em !important;
+  font-size : .85em !important;
+  color:gray !important;
   
+}
+/* expanded content cell */
+.v-data-table > .v-data-table__wrapper tbody tr.v-data-table__expanded__content > td {
+  height:14px !important;
+  vertical-align: text-top;
 }
 
 
+.v-data-table > .v-data-table__wrapper tbody tr.v-data-table__expanded__content > td > span  {
+  position: relative;display: inline-block;width:100%;  
+}
+.v-data-table > .v-data-table__wrapper tbody tr.v-data-table__expanded__content > td > span > span {
+  position: absolute;top:-1.8em;
+}
+
+tbody > tr:hover {
+  background-color: transparent !important;
+}
+
+.v-data-table /deep/ .sticky-header {
+  position: sticky;
+  top: var(--toolbarHeight);
+}
+
+.v-data-table /deep/ .v-data-table__wrapper {
+  overflow: unset;
+}
+  
 </style>
