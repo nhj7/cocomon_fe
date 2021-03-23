@@ -178,67 +178,120 @@ export default {
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: $nuxt.$config.appName,
-      ticker : {
-       "upbit" : {
-         "KRW-BTC" : {"trade_price" : 66938000.0 , "change_rate" : 0.0027115614 , "change_price" : 182000.00000000 , "signed_change_price" : -182000.00000000, "signed_change_rate" : -0.0027115614}
-       }
-      }
+      title: this.$config.appName,
+      ticker: {
+        upbit: {
+          "KRW-BTC": {
+            trade_price: 66938000.0,
+            change_rate: 0.0027115614,
+            change_price: 182000.0,
+            signed_change_price: -182000.0,
+            signed_change_rate: -0.0027115614,
+          },
+        },
+      },
     };
   }, // end data
-  created : function() {
-    console.log("config", $nuxt.$config);
-    //debugger;
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)")
-      .matches;
+  async asyncData({ req, res }) {
+    if (process.server) {
+      const ip = Object.values(require("os").networkInterfaces()).reduce(
+        (r, list) =>
+          r.concat(
+            list.reduce(
+              (rr, i) =>
+                rr.concat(
+                  (i.family === "IPv4" && !i.internal && i.address) || []
+                ),
+              []
+            )
+          ),
+        []
+      );
 
-    console.log("prefersDark", prefersDark);
-    $nuxt.$vuetify.theme.dark = prefersDark;
-    window
-      .matchMedia("(prefers-color-scheme: dark)")
-      .addEventListener("change", (e) => {
-        if (e.matches) {
-          console.log("dark mode is enabled");
-          $nuxt.$vuetify.theme.dark = true;
-        } else {
-          console.log("dark mode is disabled");
-          $nuxt.$vuetify.theme.dark = false;
-        }
-      });
+      console.log(ip[0]);
+      return { host: ip[0] };
+    }
+  },
+  created: async function () {
+    if (!process.server) {
+      console.log("config", this.$config);
+      //debugger;
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)")
+        .matches;
 
-    // wss://api.upbit.com/websocket/v1
-    // wss://crix-ws.upbit.com/websocket
-    var socketUpbit = new WebSocket("wss://api.upbit.com/websocket/v1");
+      console.log("prefersDark", prefersDark);
+      $nuxt.$vuetify.theme.dark = prefersDark;
+      window
+        .matchMedia("(prefers-color-scheme: dark)")
+        .addEventListener("change", (e) => {
+          if (e.matches) {
+            console.log("dark mode is enabled");
+            $nuxt.$vuetify.theme.dark = true;
+          } else {
+            console.log("dark mode is disabled");
+            $nuxt.$vuetify.theme.dark = false;
+          }
+        });
 
-    socketUpbit.onopen = (e) => {
-      console.log("upbit wss open");
-      socketUpbit.send( JSON.stringify([{"ticket":"test"},{"type":"ticker","codes":["KRW-BTC"]}]) );
-    };
-
-    socketUpbit.onclose = function (event) {
-      if (event.wasClean) {
-        alert(
-          `[close] 커넥션이 정상적으로 종료되었습니다(code=${event.code} reason=${event.reason})`
+      if (process.server) {
+        const ip = Object.values(require("os").networkInterfaces()).reduce(
+          (r, list) =>
+            r.concat(
+              list.reduce(
+                (rr, i) =>
+                  rr.concat(
+                    (i.family === "IPv4" && !i.internal && i.address) || []
+                  ),
+                []
+              )
+            ),
+          []
         );
-      } else {
-        // 예시: 프로세스가 죽거나 네트워크에 장애가 있는 경우
-        // event.code가 1006이 됩니다.
-        alert("[close] 커넥션이 죽었습니다.");
+        console.log("server!!!", this.$config, ip[0]);
+
+        if( ip[0].indexOf("10.99") > -1 ){
+          
+        }
       }
-    };
+      // wss://api.upbit.com/websocket/v1
+      // wss://crix-ws.upbit.com/websocket
+      var socketUpbit = new WebSocket("wss://api.upbit.com/websocket/v1");
 
-    socketUpbit.onerror = function (error) {
-      alert(`[error] ${error.message}`);
-    };
+      socketUpbit.onopen = (e) => {
+        console.log("upbit wss open");
+        socketUpbit.send(
+          JSON.stringify([
+            { ticket: "test" },
+            { type: "ticker", codes: ["KRW-BTC"] },
+          ])
+        );
+      };
 
-    const self = this;
-    socketUpbit.onmessage = function(event) {      
-      event.data.text().then( function(text) { 
-        const tickerSon = JSON.parse(text)
-        console.log(tickerSon);
-        self.ticker.upbit[tickerSon.code] = tickerSon;
-      } );
-    };
+      socketUpbit.onclose = function (event) {
+        if (event.wasClean) {
+          alert(
+            `[close] 커넥션이 정상적으로 종료되었습니다(code=${event.code} reason=${event.reason})`
+          );
+        } else {
+          // 예시: 프로세스가 죽거나 네트워크에 장애가 있는 경우
+          // event.code가 1006이 됩니다.
+          alert("[close] 커넥션이 죽었습니다.");
+        }
+      };
+
+      socketUpbit.onerror = function (error) {
+        alert(`[error] ${error.message}`);
+      };
+
+      const self = this;
+      socketUpbit.onmessage = function (event) {
+        event.data.text().then(function (text) {
+          const tickerSon = JSON.parse(text);
+          console.log(tickerSon);
+          self.ticker.upbit[tickerSon.code] = tickerSon;
+        });
+      };
+    }
 
     //
   }, // end created

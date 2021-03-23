@@ -115,6 +115,8 @@ export default {
   },
   mounted : () => {
     $nuxt.$data.expanded = $nuxt.$data.desserts;
+    
+    console.log($nuxt.$content.options);
   },
   data() {
     return {
