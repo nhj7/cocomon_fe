@@ -181,13 +181,8 @@ export default {
       title: this.$config.appName,
       ticker: {
         upbit: {
-          "KRW-BTC": {
-            trade_price: 66938000.0,
-            change_rate: 0.0027115614,
-            change_price: 182000.0,
-            signed_change_price: -182000.0,
-            signed_change_rate: -0.0027115614,
-          },
+          mapTicker: {},
+          arrTicker: [],
         },
       },
     };
@@ -213,6 +208,30 @@ export default {
     }
   },
   created: async function () {
+    if (process.server) {
+      const ip = Object.values(require("os").networkInterfaces()).reduce(
+        (r, list) =>
+          r.concat(
+            list.reduce(
+              (rr, i) =>
+                rr.concat(
+                  (i.family === "IPv4" && !i.internal && i.address) || []
+                ),
+              []
+            )
+          ),
+        []
+      );
+      console.log("server!!!", this.$config, ip[0]);
+
+      if (ip[0].indexOf("10.99") > -1) {
+      }
+
+      if (!process.server) {
+        console.log("not server!!!");
+      }
+    }
+
     if (!process.server) {
       console.log("config", this.$config);
       //debugger;
@@ -233,26 +252,6 @@ export default {
           }
         });
 
-      if (process.server) {
-        const ip = Object.values(require("os").networkInterfaces()).reduce(
-          (r, list) =>
-            r.concat(
-              list.reduce(
-                (rr, i) =>
-                  rr.concat(
-                    (i.family === "IPv4" && !i.internal && i.address) || []
-                  ),
-                []
-              )
-            ),
-          []
-        );
-        console.log("server!!!", this.$config, ip[0]);
-
-        if( ip[0].indexOf("10.99") > -1 ){
-          
-        }
-      }
       // wss://api.upbit.com/websocket/v1
       // wss://crix-ws.upbit.com/websocket
       var socketUpbit = new WebSocket("wss://api.upbit.com/websocket/v1");
@@ -262,7 +261,7 @@ export default {
         socketUpbit.send(
           JSON.stringify([
             { ticket: "test" },
-            { type: "ticker", codes: ["KRW-BTC"] },
+            { type: "ticker", codes: ["KRW-BTC", "KRW-ETH", "KRW-XRP", "KRW-LTC", "KRW-BCH"] },
           ])
         );
       };
@@ -283,12 +282,14 @@ export default {
         alert(`[error] ${error.message}`);
       };
 
+      
       const self = this;
+      
       socketUpbit.onmessage = function (event) {
         event.data.text().then(function (text) {
           const tickerSon = JSON.parse(text);
-          console.log(tickerSon);
-          self.ticker.upbit[tickerSon.code] = tickerSon;
+          //console.log(tickerSon);           
+          self.$store.commit("setTicker", tickerSon);
         });
       };
     }
@@ -299,6 +300,13 @@ export default {
     log: (msg) => {
       console.log(msg);
     },
+  },
+  mounted: async () => {
+    console.log("default.vue mounted");
+
+    if (process.server) {
+      console.log("default.vue server mounted");
+    }
   },
 };
 </script>

@@ -103,5 +103,5 @@ export default {
   ,loading: {
     color: "blue",
     height: "5px"
-  }
+  }, serverMiddleware: ['~/middleware-server/logger', {path : '/api', handler : '~/middleware-server/index.js'}]
 }

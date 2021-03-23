@@ -39,17 +39,16 @@
               :items="desserts"
               :items-per-page="2000"
               :search="search"
-              item-key="name"
+              item-key="code"
               dense
               mobile="false"
               mobile-breakpoint="0"
               hide-default-footer
               :single-expand="singleExpand"
               :expanded.sync="desserts"
-              class="elevation-1"
-              @click:row="addExpand"
+              class="elevation-1"              
               multi-sort              
-              fixed-header
+              
             >
               <template v-slot:expanded-item="{ item }" @click:row="addExpand">
                 
@@ -113,202 +112,31 @@ export default {
       }
     },    
   },
-  mounted : () => {
-    $nuxt.$data.expanded = $nuxt.$data.desserts;
-    
-    console.log($nuxt.$content.options);
+  created : () => {
+    console.log("crated",this);
+
+    //debugger;
+  }
+  , mounted : () => {
+    //$nuxt.$data.expanded = $nuxt.$data.desserts;    
+    //$nuxt.$data.desserts = $nuxt.$store.state.ticker.upbit.arrTicker;
+
+    //console.log($nuxt.$data.desserts);
   },
   data() {
     return {
       search: "",
       expanded: [],
+      desserts : this.$store.state.ticker.upbit.arrTicker,
       singleExpand: true,
       colors: ["system", "light", "dark", "sepia"],
       headers: [
-        { text: "이름", value: "name" , class: "sticky-header" },
-        { text: "업빗(￦)", value: "carbs", class: "sticky-header" },
-        { text: "(%)", value: "protein" , class: "sticky-header"},
-        { text: "김프", value: "iron" , class: "sticky-header"},        
-        { text: "거래량", value: "iron" , class: "sticky-header"},
+        { text: "이름", value: "code" , class: "sticky-header" },
+        { text: "업빗(￦)", value: "trade_price", class: "sticky-header" },
+        { text: "(%)", value: "signed_change_rate" , class: "sticky-header"},
+        { text: "김프", value: "code" , class: "sticky-header"},        
+        { text: "거래량", value: "code" , class: "sticky-header"},
         
-      ],
-      desserts: [
-        {
-          name: "삼성전자",
-          calories: "63,902,630",
-          fat: 63902630,
-          carbs: 65681000,
-          protein: -2.13,
-          iron: "6683",
-        },
-        {
-          name: "Ice cream",
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3,
-          iron: "1%",
-        },
-        {
-          name: "Eclair",
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0,
-          iron: "7%",
-        },
-        {
-          name: "Cupcake",
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-          protein: 4.3,
-          iron: "8%",
-        },
-        {
-          name: "Gingerbread",
-          calories: 356,
-          fat: 16.0,
-          carbs: 49,
-          protein: 3.9,
-          iron: "16%",
-        },
-        {
-          name: "Jelly bean",
-          calories: 375,
-          fat: 0.0,
-          carbs: 94,
-          protein: 0.0,
-          iron: "0%",
-        },
-        {
-          name: "Lollipop",
-          calories: 392,
-          fat: 0.2,
-          carbs: 98,
-          protein: 0,
-          iron: "2%",
-        },
-        {
-          name: "Honeycomb",
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-          protein: 6.5,
-          iron: "45%",
-        },
-        {
-          name: "Donut",
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          protein: 4.9,
-          iron: "22%",
-        },
-        {
-          name: "KitKat",
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7,
-          iron: "6%",
-        },
-        {
-          name: "XRP",
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7,
-          iron: "6%",
-        },
-        {
-          name: "삼성전자1",
-          calories: "63,902,630",
-          fat: 63902630,
-          carbs: 65681000,
-          protein: -2.5,
-          iron: "6683",
-        },
-        {
-          name: "Ice cream 1",
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3,
-          iron: "1%",
-        },
-        {
-          name: "Eclair1",
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0,
-          iron: "7%",
-        },
-        {
-          name: "Cupcake1",
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-          protein: 4.3,
-          iron: "8%",
-        },
-        {
-          name: "Gingerbread1",
-          calories: 356,
-          fat: 16.0,
-          carbs: 49,
-          protein: 3.9,
-          iron: "16%",
-        },
-        {
-          name: "Jelly bean1",
-          calories: 375,
-          fat: 0.0,
-          carbs: 94,
-          protein: 0.0,
-          iron: "0%",
-        },
-        {
-          name: "Lollipop1",
-          calories: 392,
-          fat: 0.2,
-          carbs: 98,
-          protein: 0,
-          iron: "2%",
-        },
-        {
-          name: "Honeycomb1",
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-          protein: 6.5,
-          iron: "45%",
-        },
-        {
-          name: "Donut1",
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          protein: 4.9,
-          iron: "22%",
-        },
-        {
-          name: "KitKat1",
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7,
-          iron: "6%",
-        },
-        {
-          name: "XRP1",
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7,
-          iron: "6%",
-        },
       ],
     };
   }, // end data.
