@@ -4,7 +4,7 @@ export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: true,
 
-  
+
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     titleTemplate: `%s - ${process.env.appName}`,
@@ -12,7 +12,7 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' }
+      { hid: 'description', name: 'description', content: '' },
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
@@ -26,7 +26,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    
+
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -46,8 +46,15 @@ export default {
     '@nuxtjs/pwa',
     // https://go.nuxtjs.dev/content
     '@nuxt/content',
+    'nuxt-socket-io',
   ],
-
+  io: {
+    // module options
+    sockets: [{
+      name: 'main',
+      url: 'https://api.upbit.com/websocket/v1'
+    }]
+  },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
 
@@ -77,7 +84,7 @@ export default {
           success: colors.green.accent3
         }
       }
-    } ,
+    },
     icons: {
       iconfont: 'mdi', // default - only for display purposes
     },
@@ -90,18 +97,19 @@ export default {
     hardSource: true,
   }, server: {
     host: '0.0.0.0' // default: localhost
-    , port : 7001
+    , port: 7001
   },
   publicRuntimeConfig: {
     baseURL: 'https://cocomon.kr'
-    , appName : process.env.appName
+    , appName: process.env.appName
     //, ip : Object.values(require('os').networkInterfaces()).reduce((r, list) => r.concat(list.reduce((rr, i) => rr.concat(i.family === 'IPv4' && !i.internal && i.address || []), [])), [])[0]
   }
-  , privateRunTimeConfig : {
-    ip : Object.values(require('os').networkInterfaces()).reduce((r, list) => r.concat(list.reduce((rr, i) => rr.concat(i.family === 'IPv4' && !i.internal && i.address || []), [])), [])[0]
+  , privateRunTimeConfig: {
+    ip: Object.values(require('os').networkInterfaces()).reduce((r, list) => r.concat(list.reduce((rr, i) => rr.concat(i.family === 'IPv4' && !i.internal && i.address || []), [])), [])[0]
   }
-  ,loading: {
+  , loading: {
     color: "blue",
     height: "5px"
-  }, serverMiddleware: ['~/middleware-server/logger', {path : '/api', handler : '~/middleware-server/index.js'}]
+  }, serverMiddleware: ['~/middleware-server/logger', { path: '/api', handler: '~/middleware-server/index.js' }]
+
 }

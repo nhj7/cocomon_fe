@@ -36,7 +36,7 @@
             </v-card-title>
             <v-data-table
               :headers="headers"
-              :items="desserts"
+              :items="$store.state.ticker.upbit.arrTicker"
               :items-per-page="2000"
               :search="search"
               item-key="code"
@@ -45,22 +45,29 @@
               mobile-breakpoint="0"
               hide-default-footer
               :single-expand="singleExpand"
-              :expanded.sync="desserts"
-              class="elevation-1"              
-              multi-sort              
-              
+              :expanded.sync="$store.state.ticker.upbit.arrTicker"
+              class="elevation-1"
+              multi-sort
             >
+              <template v-slot:item="{ item, index }">
+                <tr >
+                  <td>
+                    {{item.code}}
+                  </td>
+                </tr></template
+              >
               <template v-slot:expanded-item="{ item }" @click:row="addExpand">
-                
-                  <td >
-                   <span><span>{{item.name}}</span></span>
-                  </td>
-                  <td> 
-                    <span><span>65131313</span></span>
-                  </td>
-                  <td> </td>
-                  <td> </td>
-                  <td> </td>
+                <td>
+                  <span
+                    ><span>{{ item.name }}</span></span
+                  >
+                </td>
+                <td>
+                  <span><span>65131313</span></span>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
               </template>
             </v-data-table>
           </v-card>
@@ -69,7 +76,7 @@
         </v-col>
       </v-row>
 
-      <v-divider/>
+      <v-divider />
 
       <br /><br /><br />
     </v-main>
@@ -103,40 +110,42 @@ export default {
         (child) => { child.style.borderBottom = "" ; }
       )
       */
-      
+
       //debugger;
       if (this.expanded.indexOf(value) > -1) {
         this.expanded.pop(value);
       } else {
         this.expanded.push(value);
       }
-    },    
+    },
   },
-  created : () => {
-    console.log("crated",this);
+  created: () => {
+    console.log("crated", this);
 
     //debugger;
-  }
-  , mounted : () => {
-    //$nuxt.$data.expanded = $nuxt.$data.desserts;    
+  },
+  mounted: () => {
+    //$nuxt.$data.expanded = $nuxt.$data.desserts;
     //$nuxt.$data.desserts = $nuxt.$store.state.ticker.upbit.arrTicker;
-
     //console.log($nuxt.$data.desserts);
   },
+  watch: {},
   data() {
     return {
       search: "",
       expanded: [],
-      desserts : this.$store.state.ticker.upbit.arrTicker,
       singleExpand: true,
       colors: ["system", "light", "dark", "sepia"],
       headers: [
-        { text: "이름", value: "code" , class: "sticky-header" },
+        { text: "이름", value: "code", class: "sticky-header" },
         { text: "업빗(￦)", value: "trade_price", class: "sticky-header" },
-        { text: "(%)", value: "signed_change_rate" , class: "sticky-header"},
-        { text: "김프", value: "code" , class: "sticky-header"},        
-        { text: "거래량", value: "code" , class: "sticky-header"},
-        
+        { text: "(%)", value: "signed_change_rate", class: "sticky-header" },
+        { text: "김프", value: "0.00%", class: "sticky-header" },
+        {
+          text: "거래량",
+          value: "acc_trade_volume_24h",
+          class: "sticky-header",
+        },
       ],
     };
   }, // end data.
@@ -218,36 +227,55 @@ export default {
   padding: 2px;
 }
 
-table tr td , table th{
-  font-size : 0.75em !important;
-  padding : 0px 0px 0px 5px !important;
+table tr td,
+table th {
+  font-size: 0.75em !important;
+  padding: 0px 0px 0px 5px !important;
 }
 
-
 /* expanded row */
-tr.v-data-table__expanded.v-data-table__expanded__row > td{
-  border-bottom : 0px !important;
+tr.v-data-table__expanded.v-data-table__expanded__row > td {
+  border-bottom: 0px !important;
 }
 
 /* expanded content row */
-.v-data-table > .v-data-table__wrapper tbody tr.v-data-table__expanded__content {
-  box-shadow: none;
-  font-size : .85em !important;
-  color:gray !important;
-  
+.v-data-table
+  > .v-data-table__wrapper
+  tbody
+  tr.v-data-table__expanded__content {
+  box-shadow: none !important;
+  font-size: 0.85em !important;
+  color: gray !important;
 }
 /* expanded content cell */
-.v-data-table > .v-data-table__wrapper tbody tr.v-data-table__expanded__content > td {
-  height:14px !important;
+.v-data-table
+  > .v-data-table__wrapper
+  tbody
+  tr.v-data-table__expanded__content
+  > td {
+  height: 14px !important;
   vertical-align: text-top;
 }
 
-
-.v-data-table > .v-data-table__wrapper tbody tr.v-data-table__expanded__content > td > span  {
-  position: relative;display: inline-block;width:100%;  
+.v-data-table
+  > .v-data-table__wrapper
+  tbody
+  tr.v-data-table__expanded__content
+  > td
+  > span {
+  position: relative;
+  display: inline-block;
+  width: 100%;
 }
-.v-data-table > .v-data-table__wrapper tbody tr.v-data-table__expanded__content > td > span > span {
-  position: absolute;top:-1.8em;
+.v-data-table
+  > .v-data-table__wrapper
+  tbody
+  tr.v-data-table__expanded__content
+  > td
+  > span
+  > span {
+  position: absolute;
+  top: -1.8em;
 }
 
 tbody > tr:hover {
@@ -262,5 +290,4 @@ tbody > tr:hover {
 .v-data-table /deep/ .v-data-table__wrapper {
   overflow: unset;
 }
-  
 </style>

@@ -254,14 +254,18 @@ export default {
 
       // wss://api.upbit.com/websocket/v1
       // wss://crix-ws.upbit.com/websocket
-      var socketUpbit = new WebSocket("wss://api.upbit.com/websocket/v1");
+      //return;
+      let socketUpbit = new WebSocket("wss://api.upbit.com/websocket/v1");
 
       socketUpbit.onopen = (e) => {
         console.log("upbit wss open");
         socketUpbit.send(
           JSON.stringify([
             { ticket: "test" },
-            { type: "ticker", codes: ["KRW-BTC", "KRW-ETH", "KRW-XRP", "KRW-LTC", "KRW-BCH"] },
+            {
+              type: "ticker",
+              codes: ["KRW-BTC", "KRW-ETH", "KRW-XRP", "KRW-LTC", "KRW-BCH"],
+            },
           ])
         );
       };
@@ -275,6 +279,7 @@ export default {
           // 예시: 프로세스가 죽거나 네트워크에 장애가 있는 경우
           // event.code가 1006이 됩니다.
           alert("[close] 커넥션이 죽었습니다.");
+          socketUpbit = new WebSocket("wss://api.upbit.com/websocket/v1");
         }
       };
 
@@ -282,13 +287,12 @@ export default {
         alert(`[error] ${error.message}`);
       };
 
-      
       const self = this;
-      
+
       socketUpbit.onmessage = function (event) {
         event.data.text().then(function (text) {
           const tickerSon = JSON.parse(text);
-          //console.log(tickerSon);           
+          //console.log(tickerSon);
           self.$store.commit("setTicker", tickerSon);
         });
       };
@@ -301,12 +305,78 @@ export default {
       console.log(msg);
     },
   },
-  mounted: async () => {
+  mounted: function() {
     console.log("default.vue mounted");
+    return;
+    this.socket = this.$nuxtSocket({
+      name: "upbit",
+      reconnection: true,
+       channel: '/websocket/v1' ,
+       path : '/websocket/v1',
+       upgrade: false,
+       transports: ['websocket'],
+       origin: '*',
+       cors:true,
+      // vuex: {
+      //   // overrides the vuex opts in the nuxt.config above.
+      //   mutations: ["examples/SET_PROGRESS"],
+      //   actions: ["FORMAT_MESSAGE"],
+      //   emitBacks: ["examples/sample"],
+      // },
+    });
+    this.socket.on("ticker"
+      , (e) => { console.log("connection!!!!!!");}
+    )
+    
+    this.socket.onopen = (e) => {
+        console.log("upbit wss open");
+        this.socket.send(
+          JSON.stringify([
+            { ticket: "cocomon.kr" },
+            {
+              type: "ticker",
+              codes: ["KRW-BTC", "KRW-ETH", "KRW-XRP", "KRW-LTC", "KRW-BCH"],
+            },
+          ])
+        );
+      };
 
-    if (process.server) {
-      console.log("default.vue server mounted");
-    }
+      this.socket.onclose = function (event) {
+        if (event.wasClean) {
+          alert(
+            `[close] 커넥션이 정상적으로 종료되었습니다(code=${event.code} reason=${event.reason})`
+          );
+        } else {
+          // 예시: 프로세스가 죽거나 네트워크에 장애가 있는 경우
+          // event.code가 1006이 됩니다.
+          alert("[close] 커넥션이 죽었습니다.");
+          //socketUpbit = new WebSocket("wss://api.upbit.com/websocket/v1");
+        }
+      };
+
+      this.socket.onerror = function (error) {
+        alert(`[error] ${error.message}`);
+      };
+
+      
+      const self = this;
+      this.socket.onmessage = function (event) {
+        event.data.text().then(function (text) {
+          const tickerSon = JSON.parse(text);
+          //console.log(tickerSon);
+          self.$store.commit("setTicker", tickerSon);
+        });
+      };
+
+    
+    // $nuxt.socket.emit('ticker',JSON.stringify([
+    //         { ticket: "cocomon.kr" },
+    //         { type: "ticker", codes: ["KRW-BTC", "KRW-ETH", "KRW-XRP", "KRW-LTC", "KRW-BCH"] },
+    //       ]), (resp) => {      
+    //   const tickerSon = JSON.parse(resp);
+    //   //console.log(tickerSon);           
+    //   self.$store.commit("setTicker", tickerSon);
+    // })
   },
 };
 </script>
