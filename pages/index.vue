@@ -49,10 +49,12 @@
               :expanded.sync="expanded"
               class="elevation-1"
               single-sort
+              fixed-header
+
             >
               <template v-slot:item="{ item }">
                 <tr @click="addExpand(item)" class="row1">
-                  <td class="text-left">{{ $store.state.market.upbit[item.code].korean_name }}</td>
+                  <td class="text-left">{{ item.korean_name }}</td>
                   <td
                     class="text-center" :class="[ $store.state.config.isTickerColor ? ( 0 > item.signed_change_rate ? 'blue--text' : 'red--text') : '' ]"
                   >{{ item.trade_price ? item.trade_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "" }}</td>
@@ -61,6 +63,7 @@
                   >{{ ( 0 > item.signed_change_rate ? "" : "+" )+ Math.floor(item.signed_change_rate * 10000)/100 }}</td>
                   <td class="text-center">-</td>
                   <td class="text-center">{{ Math.floor(item.acc_trade_price_24h / 100000000).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</td>
+
                 </tr>
                 <tr @click="addExpand(item)" class="row2">
                   <td>
@@ -205,6 +208,13 @@ export default {
           class: "sticky-header",
           width: "15%",
           class: "text-right"
+        },
+        {
+          text: "한글명",
+          value: "korean_name",
+          class: "sticky-header",
+          width: "0%",
+          class: "d-none"
         }
       ]
     };

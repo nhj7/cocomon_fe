@@ -16,15 +16,11 @@ export const state = () => ({
     }
 })
 
-const pushData = (map, arr, obj, key) => {
+const pushData = (map, arr, obj, key, state) => {
     if (!map[obj[key]]) {
-        map[obj[key]] = obj;
-        //arr.$set(arr.length, obj);
-        //arr.push(obj);
-        //Object.assign(arr, obj);
-        Vue.set(arr, arr.length, obj);
-        //Vue.set(arr, arr.length, obj);
-        //debugger;
+        obj.korean_name = state.market.upbit[obj.code].korean_name;
+        map[obj[key]] = obj;        
+        Vue.set(arr, arr.length, obj);        
         console.log("push!!!", obj[key]);
     } else {
         Object.assign(map[obj[key]], obj);
@@ -34,7 +30,7 @@ const pushData = (map, arr, obj, key) => {
 export const mutations = {
     setTicker(state, ticker) {
         //state.ticker = ticker
-        pushData( state.ticker.upbit.mapTicker, state.ticker.upbit.arrTicker, ticker, 'code');
+        pushData( state.ticker.upbit.mapTicker, state.ticker.upbit.arrTicker, ticker, 'code', state);
     }, setConfig(state, obj){
         console.log("setConfig", obj);
         Object.assign(state.config, obj);
@@ -44,8 +40,6 @@ export const mutations = {
             obj[list[i].market] = list[i];
         }
         Object.assign(state.market.upbit, obj);
-        
-        //state.market.upbit
     }
 }
 
