@@ -48,7 +48,7 @@
               :single-expand="singleExpand"
               :expanded.sync="expanded"
               class="elevation-1"
-              multi-sort
+              single-sort
             >
               <template v-slot:item="{ item }">
                 <tr @click="addExpand(item)" class="row1">
