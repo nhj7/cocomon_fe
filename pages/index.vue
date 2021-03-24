@@ -35,6 +35,7 @@
               ></v-text-field>
             </v-card-title>
             <v-data-table
+              id="dtTicker"
               :headers="headers"
               :items="$store.state.ticker.upbit.arrTicker"
               :items-per-page="2000"
@@ -45,40 +46,73 @@
               mobile-breakpoint="0"
               hide-default-footer
               :single-expand="singleExpand"
-              :expanded.sync="$store.state.ticker.upbit.arrTicker"
+              :expanded.sync="expanded"
               class="elevation-1"
               multi-sort
             >
-              <template v-slot:item="{ item, index }">
-                <tr >
+              <template v-slot:item="{ item }">
+                <tr @click="addExpand(item)" class="row1">
+                  <td class="text-left">{{ $store.state.market.upbit[item.code].korean_name }}</td>
+                  <td
+                    class="text-center" :class="[ $store.state.config.isTickerColor ? ( 0 > item.signed_change_rate ? 'blue--text' : 'red--text') : '' ]"
+                  >{{ item.trade_price ? item.trade_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "" }}</td>
+                  <td
+                    class="text-center" :class="[ $store.state.config.isTickerColor ? ( 0 > item.signed_change_rate ? 'blue--text' : 'red--text') : '' ]"
+                  >{{ ( 0 > item.signed_change_rate ? "" : "+" )+ Math.floor(item.signed_change_rate * 10000)/100 }}</td>
+                  <td class="text-center">-</td>
+                  <td class="text-center">{{ Math.floor(item.acc_trade_price_24h / 100000000).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</td>
+                </tr>
+                <tr @click="addExpand(item)" class="row2">
                   <td>
-                    {{item.code}}
+                    <span>
+                      <span>{{ item.code }}</span>
+                    </span>
                   </td>
-                </tr></template
-              >
-              <template v-slot:expanded-item="{ item }" @click:row="addExpand">
-                <td>
-                  <span
-                    ><span>{{ item.name }}</span></span
-                  >
-                </td>
-                <td>
-                  <span><span>65131313</span></span>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
+                  <td class="text-center">
+                    <span>
+                      <span>65131313</span>
+                    </span>
+                  </td>
+                  <td class="text-center">
+                    <span>
+                      <span>65131313</span>
+                    </span>
+                  </td>
+                  <td class="text-center"></td>
+                  <td class="text-center"></td>
+                </tr>
+              </template>
+              <template v-slot:expanded-item="{ item }">
+                <tr class="row3">
+                  <td>
+                    <span>
+                      <span>{{ item.code }}</span>
+                    </span>
+                  </td>
+                  <td>
+                    <span>
+                      <span>65131313</span>
+                    </span>
+                  </td>
+                  <td>
+                    <span>
+                      <span>65131313</span>
+                    </span>
+                  </td>
+                  <td></td>
+                  <td></td>
+                </tr>
               </template>
             </v-data-table>
           </v-card>
-
-          <v-btn color="primary" nuxt to="/inspire"> Continue </v-btn>
         </v-col>
       </v-row>
 
       <v-divider />
 
-      <br /><br /><br />
+      <br />
+      <br />
+      <br />
     </v-main>
     <v-footer app>
       <!-- -->
@@ -91,7 +125,7 @@ export default {
   components: {},
   counter: 0,
   methods: {
-    setColor: (color) => {
+    setColor: color => {
       console.log($nuxt, color);
 
       try {
@@ -103,8 +137,8 @@ export default {
       }
     }, // end setColor
     addExpand(value) {
-      console.log(this, event.currentTarget.children);
-      /*
+      //console.log(this, event.currentTarget.children);
+      /* 
       debugger;
       Array.from(event.currentTarget.children).foreach(
         (child) => { child.style.borderBottom = "" ; }
@@ -117,10 +151,10 @@ export default {
       } else {
         this.expanded.push(value);
       }
-    },
+    }
   },
   created: () => {
-    console.log("crated", this);
+    console.log("created!!!", this);
 
     //debugger;
   },
@@ -137,18 +171,44 @@ export default {
       singleExpand: true,
       colors: ["system", "light", "dark", "sepia"],
       headers: [
-        { text: "이름", value: "code", class: "sticky-header" },
-        { text: "업빗(￦)", value: "trade_price", class: "sticky-header" },
-        { text: "(%)", value: "signed_change_rate", class: "sticky-header" },
-        { text: "김프", value: "0.00%", class: "sticky-header" },
+        {
+          text: "이름",
+          value: "code",
+          class: "sticky-header",
+          width: "20%",
+          class: "text-left"
+        },
+        {
+          text: "현재가",
+          value: "trade_price",
+          class: "sticky-header",
+          width: "18%",
+          class: "text-center"
+        },
+        {
+          text: "전일대비",
+          value: "signed_change_rate",
+          class: "sticky-header",
+          width: "18%",
+          class: "text-center"
+        },
+        {
+          text: "김프",
+          value: "0.00%",
+          class: "sticky-header",
+          width: "15%",
+          class: "text-center"
+        },
         {
           text: "거래량",
-          value: "acc_trade_volume_24h",
+          value: "acc_trade_price_24h",
           class: "sticky-header",
-        },
-      ],
+          width: "15%",
+          class: "text-right"
+        }
+      ]
     };
-  }, // end data.
+  } // end data.
 };
 </script>
 
@@ -233,50 +293,29 @@ table th {
   padding: 0px 0px 0px 5px !important;
 }
 
-/* expanded row */
-tr.v-data-table__expanded.v-data-table__expanded__row > td {
+.row1 > td {
   border-bottom: 0px !important;
+  height: 22px !important;
 }
 
-/* expanded content row */
-.v-data-table
-  > .v-data-table__wrapper
-  tbody
-  tr.v-data-table__expanded__content {
-  box-shadow: none !important;
-  font-size: 0.85em !important;
+.row2 > td {
+  height: 22px !important;
+  vertical-align: text-top;
+  font-size: 0.725em !important;
   color: gray !important;
 }
-/* expanded content cell */
-.v-data-table
-  > .v-data-table__wrapper
-  tbody
-  tr.v-data-table__expanded__content
-  > td {
-  height: 14px !important;
-  vertical-align: text-top;
-}
-
-.v-data-table
-  > .v-data-table__wrapper
-  tbody
-  tr.v-data-table__expanded__content
-  > td
-  > span {
+/*
+.row2 > td > span {
   position: relative;
-  display: inline-block;
+  display: inline-flex;
   width: 100%;
 }
-.v-data-table
-  > .v-data-table__wrapper
-  tbody
-  tr.v-data-table__expanded__content
-  > td
-  > span
-  > span {
+
+.row2 > td > span > span {
   position: absolute;
-  top: -1.8em;
+  top: -1.5em;
 }
+*/
 
 tbody > tr:hover {
   background-color: transparent !important;

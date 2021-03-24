@@ -131,7 +131,7 @@
 
         <v-divider></v-divider>
 
-        <v-list-item @click="$vuetify.theme.dark = !$vuetify.theme.dark">
+        <v-list-item @click="$vuetify.theme.dark = !$vuetify.theme.dark; rightDrawer = !rightDrawer">
           <v-list-item-action>
             <v-icon>{{
               $vuetify.theme.dark ? "mdi-lightbulb-off" : "mdi-lightbulb-on"
@@ -141,6 +141,18 @@
             {{ $vuetify.theme.dark ? "dark" : "light" }}
           </v-list-item-title>
         </v-list-item>
+
+        <v-list-item @click="setTickerColor">
+          <v-list-item-action>
+            <v-icon>{{
+              $store.state.config.isTickerColor ? "mdi-invert-colors" : "mdi-invert-colors-off"
+            }}</v-icon>
+          </v-list-item-action>
+          <v-list-item-title>
+            {{ $store.state.config.isTickerColor ? "color on" : "color off" }}
+          </v-list-item-title>
+        </v-list-item>
+
       </v-list>
     </v-navigation-drawer>
 
@@ -156,6 +168,9 @@
 </template>
 
 <script>
+
+import Vue from 'vue'
+
 export default {
   data() {
     return {
@@ -163,6 +178,7 @@ export default {
       drawer: false,
       fixed: false,
       isCoinSrchHide: true,
+      
       items: [
         {
           icon: "mdi-apps",
@@ -179,12 +195,7 @@ export default {
       right: true,
       rightDrawer: false,
       title: this.$config.appName,
-      ticker: {
-        upbit: {
-          mapTicker: {},
-          arrTicker: [],
-        },
-      },
+      
     };
   }, // end data
   async asyncData({ req, res }) {
@@ -203,37 +214,18 @@ export default {
         []
       );
 
-      console.log(ip[0]);
+      console.log(ip[0])
       return { host: ip[0] };
     }
   },
   created: async function () {
-    if (process.server) {
-      const ip = Object.values(require("os").networkInterfaces()).reduce(
-        (r, list) =>
-          r.concat(
-            list.reduce(
-              (rr, i) =>
-                rr.concat(
-                  (i.family === "IPv4" && !i.internal && i.address) || []
-                ),
-              []
-            )
-          ),
-        []
-      );
-      console.log("server!!!", this.$config, ip[0]);
-
-      if (ip[0].indexOf("10.99") > -1) {
-      }
-
-      if (!process.server) {
-        console.log("not server!!!");
-      }
-    }
-
     if (!process.server) {
-      console.log("config", this.$config);
+
+      // ticker color config
+      const stc = {isTickerColor : localStorage.getItem("isTickerColor") ? localStorage.getItem("isTickerColor") == "true" : true };
+      console.log('created', stc)
+      $nuxt.$store.commit("setConfig", stc);
+      
       //debugger;
       const prefersDark = window.matchMedia("(prefers-color-scheme: dark)")
         .matches;
@@ -252,6 +244,14 @@ export default {
           }
         });
 
+      const upbitMarketData = await $nuxt.$axios.$get('https://api.upbit.com/v1/market/all')
+
+      console.log("upbitMarketData",upbitMarketData);
+      $nuxt.$store.commit("setMarket", upbitMarketData);
+      
+
+      const arrMarket = upbitMarketData.map( market => market.market ).filter( market => market.indexOf("KRW") > -1)
+      console.log(arrMarket);
       // wss://api.upbit.com/websocket/v1
       // wss://crix-ws.upbit.com/websocket
       //return;
@@ -264,7 +264,7 @@ export default {
             { ticket: "test" },
             {
               type: "ticker",
-              codes: ["KRW-BTC", "KRW-ETH", "KRW-XRP", "KRW-LTC", "KRW-BCH"],
+              codes:  arrMarket ,
             },
           ])
         );
@@ -303,71 +303,18 @@ export default {
   methods: {
     log: (msg) => {
       console.log(msg);
-    },
+    },setTickerColor : function()  {
+      localStorage.setItem("isTickerColor", !$nuxt.$store.state.config.isTickerColor);
+      $nuxt.$store.commit("setConfig", {isTickerColor : !$nuxt.$store.state.config.isTickerColor});
+      
+      console.log("setTickerColor", $nuxt.$store.state.config.isTickerColor , localStorage.getItem("isTickerColor"), typeof $nuxt.$store.state.config.isTickerColor)
+      this.rightDrawer = !this.rightDrawer;
+    }
   },
   mounted: function() {
     console.log("default.vue mounted");
     return;
-    this.socket = this.$nuxtSocket({
-      name: "upbit",
-      reconnection: true,
-       channel: '/websocket/v1' ,
-       path : '/websocket/v1',
-       upgrade: false,
-       transports: ['websocket'],
-       origin: '*',
-       cors:true,
-      // vuex: {
-      //   // overrides the vuex opts in the nuxt.config above.
-      //   mutations: ["examples/SET_PROGRESS"],
-      //   actions: ["FORMAT_MESSAGE"],
-      //   emitBacks: ["examples/sample"],
-      // },
-    });
-    this.socket.on("ticker"
-      , (e) => { console.log("connection!!!!!!");}
-    )
     
-    this.socket.onopen = (e) => {
-        console.log("upbit wss open");
-        this.socket.send(
-          JSON.stringify([
-            { ticket: "cocomon.kr" },
-            {
-              type: "ticker",
-              codes: ["KRW-BTC", "KRW-ETH", "KRW-XRP", "KRW-LTC", "KRW-BCH"],
-            },
-          ])
-        );
-      };
-
-      this.socket.onclose = function (event) {
-        if (event.wasClean) {
-          alert(
-            `[close] 커넥션이 정상적으로 종료되었습니다(code=${event.code} reason=${event.reason})`
-          );
-        } else {
-          // 예시: 프로세스가 죽거나 네트워크에 장애가 있는 경우
-          // event.code가 1006이 됩니다.
-          alert("[close] 커넥션이 죽었습니다.");
-          //socketUpbit = new WebSocket("wss://api.upbit.com/websocket/v1");
-        }
-      };
-
-      this.socket.onerror = function (error) {
-        alert(`[error] ${error.message}`);
-      };
-
-      
-      const self = this;
-      this.socket.onmessage = function (event) {
-        event.data.text().then(function (text) {
-          const tickerSon = JSON.parse(text);
-          //console.log(tickerSon);
-          self.$store.commit("setTicker", tickerSon);
-        });
-      };
-
     
     // $nuxt.socket.emit('ticker',JSON.stringify([
     //         { ticket: "cocomon.kr" },
