@@ -49,12 +49,13 @@
               :expanded.sync="expanded"
               class="elevation-1"
               single-sort
+              :loading="$store.state.ticker.upbit.arrTicker.length == 0 "
+              loading-text="Loading... Please wait"
               fixed-header
-
             >
               <template v-slot:item="{ item }">
                 <tr @click="addExpand(item)" class="row1">
-                  <td class="text-left">{{ item.korean_name }}</td>
+                  <td class="text-left">{{ $store.state.market.upbit[item.code].korean_name }}</td>
                   <td
                     class="text-center" :class="[ $store.state.config.isTickerColor ? ( 0 > item.signed_change_rate ? 'blue--text' : 'red--text') : '' ]"
                   >{{ item.trade_price ? item.trade_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "" }}</td>
@@ -162,13 +163,14 @@ export default {
     //debugger;
   },
   mounted: () => {
-    //$nuxt.$data.expanded = $nuxt.$data.desserts;
-    //$nuxt.$data.desserts = $nuxt.$store.state.ticker.upbit.arrTicker;
-    //console.log($nuxt.$data.desserts);
+    console.log("mounted", $nuxt.$refs);
+    //debugger;
+
   },
   watch: {},
   data() {
     return {
+      title : "Crypto Price",
       search: "",
       expanded: [],
       singleExpand: true,
@@ -331,12 +333,12 @@ tbody > tr:hover {
   background-color: transparent !important;
 }
 
-.v-data-table /deep/ .sticky-header {
+.v-data-table .sticky-header {
   position: sticky;
   top: var(--toolbarHeight);
 }
 
-.v-data-table /deep/ .v-data-table__wrapper {
+.v-data-table .v-data-table__wrapper {
   overflow: unset;
 }
 </style>

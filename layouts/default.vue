@@ -170,11 +170,13 @@
 <script>
 
 import Vue from 'vue'
+import { debug } from 'console';
 
 export default {
   data() {
     return {
       clipped: false,
+      shareData : { flag : true },
       drawer: false,
       fixed: false,
       isCoinSrchHide: true,
@@ -220,6 +222,15 @@ export default {
   },
   created: async function () {
     if (!process.server) {
+
+      $nuxt.$store.commit("setShareData", this.shareData);
+
+      // setInterval( function() { 
+        
+      //   console.log("setInterval",$nuxt.$data.shareData); 
+      //   debugger;
+      //   this.shareData.flag = !this.shareData.flag; 
+      // }, 500 );
 
       // ticker color config
       const stc = {isTickerColor : localStorage.getItem("isTickerColor") ? localStorage.getItem("isTickerColor") == "true" : true };
