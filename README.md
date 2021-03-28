@@ -48,3 +48,9 @@ icons: {
       values : {sort: 'mdi-arrow-down'}
 },
 </pre>
+
+## PM2 npm start
+
+<pre>
+pm2 start npm --name "cocomon" -- start
+</pre>

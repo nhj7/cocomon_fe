@@ -1,9 +1,7 @@
 <template>
   <v-app>
     <v-main class="pa-0">
-      
-      
-          <!--iframe
+      <!--iframe
           id="tradingview_12801"
           src="https://s.tradingview.com/widgetembed/?frameElementId=tradingview_12801&amp;symbol=BINANCE%3ABTCUSDT&amp;interval=15&amp;symboledit=1&amp;saveimage=0&amp;toolbarbg=f1f3f6&amp;studies=%5B%5D&amp;theme=Light&amp;style=1&amp;timezone=Asia%2FSeoul&amp;studies_overrides=%7B%7D&amp;overrides=%7B%7D&amp;enabled_features=%5B%5D&amp;disabled_features=%5B%5D&amp;locale=kr&amp;utm_source=kimp.ga&amp;utm_medium=widget&amp;utm_campaign=chart&amp;utm_term=BINANCE%3ABTCUSDT"
           style="
@@ -18,98 +16,102 @@
           allowfullscreen=""
           onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.scrollHeight+"px";}(this));'
           ></iframe-->
-          
-       
 
-      <v-row fluid fill-height >
-        <v-col cols="12" sm="8" md="5" >
+      <v-row>
+        <v-col cols="12" sm="8" md="5">
+          <v-card class="d-flex pa-2" outlined tile>
+            <v-layout justify-center mb-1>
+              <v-flex xs4>
+                <v-select
+                  v-model="curruntExchange"
+                  :items="exchangeList"
+                  label="upbit"
+                  solo
+                  single-line
+                  hide-details="auto"
+                  height="2.2em"
+                  min-height="auto"
+                ></v-select>
+              </v-flex>
+              <v-flex xs7 pl-1>
+                <v-text-field
+                  v-model="search"
+                  append-icon="mdi-magnify"
+                  label="Search"
+                  solo
+                  hide-details="auto"
+                  clearable
+                  height="2.2em"
+                  dense
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs2 justify-center text-center>
+                <v-btn
+                  @click="
+                    Object.assign($store.state.message, {
+                      isSnackbar: true,
+                      text: '서비스 준비중입니다.',
+                    })
+                  "
+                  icon
+                  ><v-icon>mdi-dots-vertical</v-icon></v-btn
+                >
+              </v-flex>
+            </v-layout>
+            </v-card>
 
-          <v-layout justify-center mb-1>
-            <v-flex xs4 >
-              <v-select
-                v-model="curruntExchange"
-                :items="exchangeList"
-                label="upbit"
-                solo
-                single-line
-                hide-details="auto"
-                height="2.2em"
-                min-height="auto"
-              ></v-select>
-            </v-flex>
-            <v-flex xs7 pl-1>
-              <v-text-field
-                v-model="search"
-                append-icon="mdi-magnify"
-                label="Search"
-                solo
-                hide-details="auto"
-                clearable
-                height="2.2em"
-                dense
-              ></v-text-field>
-            </v-flex>
-            <v-flex xs2 justify-center text-center>
-              <v-btn
-                @click="
-                  Object.assign($store.state.message, {
-                    isSnackbar: true,
-                    text: '서비스 준비중입니다.',
-                  })
-                "
-                icon
-                ><v-icon>mdi-dots-vertical</v-icon></v-btn
-              >
-            </v-flex>
-          </v-layout>          
-          <v-tabs 
-            class="mb-1"
-            v-model="tab"
-            height="2em"
-            centered
-            grow
-            @change="onTabChange"
-          >
-            <v-tab 
-              v-for="item in assetTabs"
-              :key="item.tab"
-              @click="clickTab"
-              >{{ item.tab }}</v-tab
+            <v-card class="d-flex pa-1" outlined tile>
+            <v-tabs
+              class="mb-1"
+              v-model="tab"
+              height="2em"
+              centered
+              grow
+              @change="onTabChange"
             >
-          </v-tabs>
-
-          <v-divider></v-divider>
-          <!--v-autocomplete v-model="search" :items="items" dense filled label="Filled"></v-autocomplete-->
-
-          <v-data-table 
-            id="dtTicker"
-            :headers="headers"
-            :items="$store.state.ticker.upbit.arrTicker"
-            :items-per-page="2000"
-            :search="search"
-            item-key="cd"
-            dense
-            mobile="false"
-            mobile-breakpoint="0"
-            hide-default-footer
-            :expanded.sync="expanded"
-            :single-expand="singleExpand"
-            class="elevation-1"
-            :loading="$store.state.ticker.upbit.arrTicker.length == 0"
-            loading-text="Loading... Please wait"
-            fixed-header
-            single-sort
-            :sort-by="'atp24h'"
-            :sort-desc="false"
-            :custom-sort="customSort"
-          >
-            <!-- 
+              <v-tab
+                v-for="item in assetTabs"
+                :key="item.tab"
+                @click="clickTab"
+                >{{ item.tab }}</v-tab
+              >
+            </v-tabs>
+          </v-card>
+            
+            <!--v-autocomplete v-model="search" :items="items" dense filled label="Filled"></v-autocomplete-->
+          
+            <v-data-table
+              id="dtTicker"
+              :headers="headers"
+              :items="$store.state.ticker.upbit.arrTicker"
+              :items-per-page="2000"
+              :search="search"
+              item-key="cd"
+              dense
+              mobile="false"
+              mobile-breakpoint="0"
+              hide-default-footer
+              :expanded.sync="expanded"
+              :single-expand="singleExpand"
+              class="elevation-1"
+              :loading="$store.state.ticker.upbit.arrTicker.length == 0"
+              loading-text="Loading... Please wait"
+              fixed-header
+              single-sort
+              :sort-by="'atp24h'"
+              :sort-desc="false"
+              :custom-sort="customSort"
+              height="40vh"
+              style="overflow-y:auto;overflow-x:hidden;"
+              
+            >
+              <!-- 
             single-sort
             :sort-by="'atp24h'"
             :sort-desc="false"
             :custom-sort="customSort" -->
 
-            <!--template #header="{ props: { headers } }">
+              <!--template #header="{ props: { headers } }">
               <thead class="v-data-table-header">
                 <tr>
                   <th
@@ -126,104 +128,107 @@
               </thead>
             </template-->
 
-            <template v-slot:item="{ item }">
-              <tr @click="addExpand(item)" class="row1">
-                <td class="text-left">
-                  {{ $store.state.market.upbit[item.cd].korean_name }}
-                </td>
-                <td
-                  class="text-center"
-                  :class="[
-                    $store.state.config.isTickerColor
-                      ? 0 > item.scr
-                        ? 'blue--text'
-                        : 'red--text'
-                      : '',
-                  ]"
-                >
-                  {{ item.tp ? comma(item.tp) : "" }}
-                </td>
-                <td
-                  class="text-center"
-                  :class="[
-                    $store.state.config.isTickerColor
-                      ? 0 > item.scr
-                        ? 'blue--text'
-                        : 'red--text'
-                      : '',
-                  ]"
-                >
-                  {{
-                    pad(
-                      (0 > item.scr ? "-" : "+") +
-                        Math.round(item.cr * 10000) / 100
-                    )
-                  }}
-                </td>
-                <td class="text-center red--text">5.84</td>
-                <td class="text-center">
-                  {{
-                    Math.floor(item.atp24h / 100000000)
-                      .toString()
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                  }}
-                </td>
-              </tr>
-              <tr @click="addExpand(item)" class="row2">
-                <td>
-                  <span>
-                    <span>{{ item.cd }}</span>
-                  </span>
-                </td>
-                <td class="text-center">
-                  <span>
-                    <span>65131313</span>
-                  </span>
-                </td>
-                <td class="text-center">
-                  <span>
-                    <span>65131313</span>
-                  </span>
-                </td>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
-              </tr>
-            </template>
-            <template v-slot:expanded-item="{ item }">
-              <tr class="row3">
-                <td>
-                  <span>
-                    <span>{{ item.cd }}</span>
-                  </span>
-                </td>
-                <td>
-                  <span>
-                    <span>65131313</span>
-                  </span>
-                </td>
-                <td>
-                  <span>
-                    <span>65131313</span>
-                  </span>
-                </td>
-                <td></td>
-                <td></td>
-              </tr>
-            </template>
-          </v-data-table>
+              <template v-slot:item="{ item }">
+                <tr @click="addExpand(item)" class="row1">
+                  <td class="text-left">
+                    {{ $store.state.market.upbit[item.cd].korean_name }}
+                  </td>
+                  <td
+                    class="text-center"
+                    :class="[
+                      $store.state.config.isTickerColor
+                        ? 0 > item.scr
+                          ? 'blue--text'
+                          : 'red--text'
+                        : '',
+                    ]"
+                  >
+                    {{ item.tp ? comma(item.tp) : "" }}
+                  </td>
+                  <td
+                    class="text-center"
+                    :class="[
+                      $store.state.config.isTickerColor
+                        ? 0 > item.scr
+                          ? 'blue--text'
+                          : 'red--text'
+                        : '',
+                    ]"
+                  >
+                    {{
+                      pad(
+                        (0 > item.scr ? "-" : "+") +
+                          Math.round(item.cr * 10000) / 100
+                      )
+                    }}
+                  </td>
+                  <td class="text-center red--text">5.84</td>
+                  <td class="text-center">
+                    {{
+                      Math.floor(item.atp24h / 100000000)
+                        .toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    }}
+                  </td>
+                </tr>
+                <tr @click="addExpand(item)" class="row2">
+                  <td>
+                    <span>
+                      <span>{{ item.cd }}</span>
+                    </span>
+                  </td>
+                  <td class="text-center">
+                    <span>
+                      <span>65131313</span>
+                    </span>
+                  </td>
+                  <td class="text-center">
+                    <span>
+                      <span>65131313</span>
+                    </span>
+                  </td>
+                  <td class="text-center"></td>
+                  <td class="text-center"></td>
+                </tr>
+              </template>
+              <template v-slot:expanded-item="{ item }">
+                <tr class="row3">
+                  <td>
+                    <span>
+                      <span>{{ item.cd }}</span>
+                    </span>
+                  </td>
+                  <td>
+                    <span>
+                      <span>65131313</span>
+                    </span>
+                  </td>
+                  <td>
+                    <span>
+                      <span>65131313</span>
+                    </span>
+                  </td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </template>
+            </v-data-table>            
         </v-col>
 
         <v-col cols="12" sm="4" md="4" class=".rounded-lg"> 
-          채팅 11 
+          <v-card class="d-flex pa-2" outlined tile>
+            채팅 영역
+          </v-card>
         </v-col>
-        <v-col cols="12" sm="4" md="3"> 뉴스 22 </v-col>
+        <v-col cols="12" sm="4" md="3"> 
+          <v-card class="d-flex pa-2" outlined tile>
+            뉴스 영역
+          </v-card>
+        </v-col>
       </v-row>
       <!-- end ticker -->
 
-      <v-row>
-        
-
-      </v-row>
+      <v-row> </v-row>
 
       <br />
       USD/KRW {{ $store.state.exchangeRate.basePrice }} (
@@ -517,5 +522,8 @@ tbody > tr:hover {
   min-height: 1.8em !important;
 }
 
-.row{ margin-top : 20px; }
+.row {
+  margin-top: 0.01em;
+}
+
 </style>
