@@ -1,34 +1,49 @@
 import Vue from 'vue'
+import { uuid } from 'vue-uuid'
 
 //store/index.js
 export const state = () => ({
-    ticker: {
+    id : {
+        cid : ''    // client id
+        , sid : '' // session id
+    }
+    ,ticker: {
         upbit: {
             mapTicker: {}
             , arrTicker: []
-        }
+        }, titleTicker : 'KRW-BTC'
     }, config: {
         isTickerColor: true
     }, market: {
         upbit: {
+            krw : {
 
+            }, btc : {
+
+            }, usdt : {
+
+            }
         }
     }, data : {
 
+    }, exchangeRate : {
+        KRWUSD : {
+
+        }
+    }, message : {
+        isSnackbar : false,
+        text : 'snacbar message',
+        timeout : 1250,
     }
 })
 
 const pushData = (map, arr, obj, key, state) => {
     if (!map[obj[key]]) {
-        obj.korean_name = state.market.upbit[obj.code].korean_name;
+        obj.korean_name = state.market.upbit[obj.cd].korean_name;
         //obj = { name : obj.korean_name, data : obj }
         map[obj[key]] = obj;
         Vue.set(arr, arr.length, obj);
-        console.log("push!!!", obj[key]);
     } else {
-        //map[obj[key]] = obj;
-        // performance issue
-        //Object.assign(map[obj[key]], obj);
         
         // const cpObj = { trade_price : obj.trade_price, 
         // signed_change_rate : obj.signed_change_rate,
@@ -36,47 +51,37 @@ const pushData = (map, arr, obj, key, state) => {
         // map[obj[key]] = { ...map[obj[key]] , ...cpObj };
         
         Object.assign(map[obj[key]], { 
-            trade_price : obj.trade_price, 
-            signed_change_rate : obj.signed_change_rate,
-            acc_trade_price_24h : obj.acc_trade_price_24h
+            tp : obj.tp, 
+            scr : obj.scr,
+            cr : obj.cr,
+            atp24h : obj.atp24h
         });
-        
-        /*
-        map[obj[key]].trade_price = obj.trade_price;
-        map[obj[key]].signed_change_rate = obj.signed_change_rate;
-        map[obj[key]].acc_trade_price_24h = obj.acc_trade_price_24h;
-        */
-        /*
-        <td
-                    class="text-center" :class="[ $store.state.config.isTickerColor ? ( 0 > item.signed_change_rate ? 'blue--text' : 'red--text') : '' ]"
-                  >{{ item.trade_price ? item.trade_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "" }}</td>
-                  <td
-                    class="text-center" :class="[ $store.state.config.isTickerColor ? ( 0 > item.signed_change_rate ? 'blue--text' : 'red--text') : '' ]"
-                  >{{ ( 0 > item.signed_change_rate ? "" : "+" )+ Math.floor(item.signed_change_rate * 10000)/100 }}</td>
-                  <td class="text-center">-</td>
-                  <td class="text-center">{{ Math.floor(item.acc_trade_price_24h / 100000000).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</td>
-
-                  */
     }
 };
 
 export const mutations = {
     setTicker(state, ticker) {
         //state.ticker = ticker
-        pushData(state.ticker.upbit.mapTicker, state.ticker.upbit.arrTicker, ticker, 'code', state);
+        pushData(state.ticker.upbit.mapTicker, state.ticker.upbit.arrTicker, ticker, 'cd', state);
     }, setConfig(state, obj) {
         console.log("setConfig", obj);
         Object.assign(state.config, obj);
-    }, setMarket(state, list) {
-        const obj = {};
+    }, setMarket(state, {exchangeName, list}) {
+        console.log("setMarket", {exchangeName, list});
         for (let i = 0; i < list.length; i++) {
-            obj[list[i].market] = list[i];
+            state.market[exchangeName][list[i].market] = list[i];
         }
-        Object.assign(state.market.upbit, obj);
+        state.market['list_'+exchangeName] = list;
     }, setShareData(state, data){
         Object.assign(state.data, data);
+    }, setExchangeRate(state, obj) {
+        console.log("setExchangeRate", obj);
+        Object.assign(state.exchangeRate, obj);
+    }, setId (state, obj){
+        Object.assign(state.id, obj);
     }
 }
+
 
 export const getters = {
     getUpbitList(state) {
@@ -86,12 +91,25 @@ export const getters = {
 };
 
 export const actions = {
-    async nuxtServerInit({ commit }) {
-        console.log("nuxtServerInit");
-        const { body } = await fetch('https://api.upbit.com/v1/market/all')
-            .then(response => response.json())
-        //commit('SET_ANNOUNCEMENT', body)
+    async nuxtServerInit({ commit }, { req }) {
+        const v4 = uuid.v4();
+        console.log("nuxtServerInit", 'sid', v4);
+        commit('setId', { sid : v4 });
+        this.$cookies.set("sid", v4);
+
+        const cookiesRes = this.$cookies.getAll()
+        console.log("cookiesRes", cookiesRes);
+        if( cookiesRes.cid == undefined ){
+            const cid = uuid.v4()
+            console.log("create cid", cid );
+            this.$cookies.set("cid", cid);
+            commit('setId', { cid : cid });
+        }
     }
+}
+
+Vue.util.comma = (value) => {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 export const strict = false;

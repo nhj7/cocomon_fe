@@ -26,7 +26,9 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-
+    { src: '~/plugins/util.js' },
+    /*{ src: '~/plugins/client-only.js', mode: 'client' },
+    { src: '~/plugins/server-only.js', mode: 'server' }*/
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -46,7 +48,10 @@ export default {
     '@nuxtjs/pwa',
     // https://go.nuxtjs.dev/content
     '@nuxt/content',
-    'nuxt-socket-io',
+    'nuxt-socket-io', 
+    ['cookie-universal-nuxt', { alias: 'cookies' }],
+    
+    
   ],
   io: {
     // module options
@@ -82,11 +87,20 @@ export default {
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
           success: colors.green.accent3
+        }, sepia : {
+          primary: colors.blue.darken2,
+          accent: colors.grey.darken3,
+          secondary: colors.amber.darken3,
+          info: colors.teal.lighten1,
+          warning: colors.amber.base,
+          error: colors.deepOrange.accent4,
+          success: colors.green.accent3
         }
       }
     },
     icons: {
       iconfont: 'mdi', // default - only for display purposes
+      values : {sort: 'mdi-arrow-down'}
     },
   },
 

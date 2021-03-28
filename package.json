@@ -14,10 +14,12 @@
     "@nuxtjs/axios": "^5.13.1",
     "@nuxtjs/pwa": "^3.3.5",
     "console": "^0.7.2",
+    "cookie-universal-nuxt": "^2.1.4",
     "core-js": "^3.9.1",
     "express": "^4.17.1",
     "nuxt": "^2.15.3",
-    "nuxt-socket-io": "^1.1.14"
+    "nuxt-socket-io": "^1.1.14",
+    "vue-uuid": "^2.0.2"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.11.3",
