@@ -1,6 +1,12 @@
 <template>
   <v-app dark>
-    <v-navigation-drawer v-model="drawer" :mini-variant="miniVariant" :clipped="clipped" fixed app>
+    <v-navigation-drawer
+      v-model="drawer"
+      :mini-variant="miniVariant"
+      :clipped="clipped"
+      fixed
+      app
+    >
       <v-list-item @click.stop="drawer = !drawer">
         <v-list-item-content>
           <v-list-item-title class="title">
@@ -18,7 +24,9 @@
       <v-list>
         <v-list-item>
           <v-btn icon @click.stop="miniVariant = !miniVariant">
-            <v-icon>mdi-{{ `chevron-${miniVariant ? "right" : "left"}` }}</v-icon>
+            <v-icon
+              >mdi-{{ `chevron-${miniVariant ? "right" : "left"}` }}</v-icon
+            >
           </v-btn>
           <v-btn icon @click.stop="clipped = !clipped">
             <v-icon>mdi-application</v-icon>
@@ -30,7 +38,13 @@
 
         <v-divider></v-divider>
         <v-divider></v-divider>
-        <v-list-item v-for="(item, i) in items" :key="i" :to="item.to" router exact>
+        <v-list-item
+          v-for="(item, i) in items"
+          :key="i"
+          :to="item.to"
+          router
+          exact
+        >
           <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-action>
@@ -45,7 +59,9 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
 
       <v-btn @click.stop="drawer = !drawer" icon>
-        <v-icon v-bind:class="{ 'd-none': !isCoinSrchHide }">mdi-creative-commons</v-icon>
+        <v-icon v-bind:class="{ 'd-none': !isCoinSrchHide }"
+          >mdi-creative-commons</v-icon
+        >
       </v-btn>
 
       <v-spacer />
@@ -95,22 +111,28 @@
           <v-list-item-action>
             <v-icon>
               {{
-              $vuetify.theme.dark ? "mdi-lightbulb-off" : "mdi-lightbulb-on"
+                $vuetify.theme.dark ? "mdi-lightbulb-off" : "mdi-lightbulb-on"
               }}
             </v-icon>
           </v-list-item-action>
-          <v-list-item-title>{{ $vuetify.theme.dark ? "dark" : "light" }}</v-list-item-title>
+          <v-list-item-title>{{
+            $vuetify.theme.dark ? "dark" : "light"
+          }}</v-list-item-title>
         </v-list-item>
 
         <v-list-item @click="setTickerColor">
           <v-list-item-action>
             <v-icon>
               {{
-              $store.state.config.isTickerColor ? "mdi-invert-colors" : "mdi-invert-colors-off"
+                $store.state.config.isTickerColor
+                  ? "mdi-invert-colors"
+                  : "mdi-invert-colors-off"
               }}
             </v-icon>
           </v-list-item-action>
-          <v-list-item-title>{{ $store.state.config.isTickerColor ? "color on" : "color off" }}</v-list-item-title>
+          <v-list-item-title>{{
+            $store.state.config.isTickerColor ? "color on" : "color off"
+          }}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -124,10 +146,19 @@
       <v-spacer />
     </v-footer>
 
-    <v-snackbar v-model="$store.state.message.isSnackbar" :timeout="$store.state.message.timeout">
+    <v-snackbar
+      v-model="$store.state.message.isSnackbar"
+      :timeout="$store.state.message.timeout"
+    >
       {{ $store.state.message.text }}
       <template v-slot:action="{ attrs }">
-        <v-btn color="red" text v-bind="attrs" @click="$store.state.message.isSnackbar = false">Close</v-btn>
+        <v-btn
+          color="red"
+          text
+          v-bind="attrs"
+          @click="$store.state.message.isSnackbar = false"
+          >Close</v-btn
+        >
       </template>
     </v-snackbar>
   </v-app>
@@ -146,19 +177,19 @@ export default {
         {
           icon: "mdi-apps",
           title: "Crypto Board",
-          to: "/"
+          to: "/",
         },
         {
           icon: "mdi-chart-bubble",
           title: "Inspire",
-          to: "/inspire"
-        }
+          to: "/inspire",
+        },
       ],
       miniVariant: false,
       right: true,
       rightDrawer: false,
       title: this.$config.appName,
-      wsMap: {}
+      wsMap: {},
     };
   }, // end data
   async asyncData({ req, res }) {
@@ -181,7 +212,7 @@ export default {
       return { host: ip[0] };
     }
   },
-  created: async function() {
+  created: async function () {
     console.log("default.vue created", this.$store.state.id.cid);
 
     const cookiesRes = this.$cookies.getAll();
@@ -194,7 +225,7 @@ export default {
       const stc = {
         isTickerColor: localStorage.getItem("isTickerColor")
           ? localStorage.getItem("isTickerColor") == "true"
-          : true
+          : true,
       };
       console.log("created", stc);
       $nuxt.$store.commit("setConfig", stc);
@@ -214,7 +245,7 @@ export default {
       }
       window
         .matchMedia("(prefers-color-scheme: dark)")
-        .addEventListener("change", e => {
+        .addEventListener("change", (e) => {
           if (e.matches) {
             console.log("dark mode is enabled");
             $nuxt.$vuetify.theme.dark = true;
@@ -232,8 +263,8 @@ export default {
           "https://quotation-api-cdn.dunamu.com/v1/forex/recent?codes=FRX.KRWUSD"
         ),
         $nuxt.$axios.$get("https://api.upbit.com/v1/market/all"),
-        $nuxt.$axios.$get("https://api.binance.com/api/v3/exchangeInfo")
-        //$nuxt.$axios.$get("https://api.github.com/users/phantomjs")
+        $nuxt.$axios.$get("https://api.binance.com/api/v3/exchangeInfo"),
+        $nuxt.$axios.$get("https://api.binance.com/api/v3/ticker/price")
       ]);
       console.log("responseArr", responseArr);
       console.log("setExchangeRate", responseArr[0][0]);
@@ -250,18 +281,20 @@ export default {
       //debugger;
       $nuxt.$store.commit("setMarket", {
         exchangeName: "upbit",
-        list: responseArr[1]
+        list: responseArr[1],
       });
 
       const arrKrwMarket = upbitMarketData
-        .map(market => market.market)
-        .filter(market => market.indexOf("KRW") > -1);
+        .map((market) => market.market)
+        .filter((market) => market.indexOf("KRW") > -1);
       //console.log(arrKrwMarket);
       // wss://api.upbit.com/websocket/v1
       // wss://crix-ws.upbit.com/websocket
       //return;
       const self = this;
-      const connect = () => {
+
+      // upbit websocket start
+      const connectUpbit = () => {
         const ws = new WebSocket("wss://api.upbit.com/websocket/v1");
         ws.onopen = () => {
           // subscribe to some channels
@@ -270,49 +303,50 @@ export default {
               { ticket: $nuxt.$store.state.id.cid },
               {
                 type: "ticker",
-                codes: arrKrwMarket
+                codes: arrKrwMarket,
                 //codes: ["KRW-BTC"]
               },
-              { format: "SIMPLE" }
+              { format: "SIMPLE" },
             ])
           );
           self.wsMap["upbit"] = ws;
           //debugger;
         };
 
-        ws.onmessage = event => {
-          event.data.text().then(text => {
+        ws.onmessage = (event) => {
+          event.data.text().then((text) => {
             const tickerSon = JSON.parse(text);
-            //if(tickerSon.cd == "KRW-BTC" ){
-            if (tickerSon.cd == self.$store.state.ticker.titleTicker) {
-              //self.$root.context.$hello("hello");
-              //console.log(tickerSon.tp, tickerSon.cr, (Math.round(tickerSon.cr * 10000)/ 100.), Math.floor(tickerSon.cr * 10000))
-              document.title =
-                self.$comma(tickerSon.tp) +
-                "(" +
-                (tickerSon.scr < 0 ? "-" : "+") +
-                Math.round(tickerSon.cr * 10000) / 100 +
-                "%) " +
-                tickerSon.cd.split("-")[1];
-              //document.title = self.$hello(tickerSon.tp);
-              //self.$hello(tickerSon.tp);
+            if (
+              !self.$store.state.ticker.upbit.mapTicker[tickerSon.cd] ||
+              self.$store.state.ticker.upbit.mapTicker[tickerSon.cd]["tp"] !=
+                tickerSon.tp
+            ) {
+              if (tickerSon.cd == self.$store.state.ticker.titleTicker) {
+                document.title =
+                  self.$comma(tickerSon.tp) +
+                  "(" +
+                  (tickerSon.scr < 0 ? "-" : "+") +
+                  Math.round(tickerSon.cr * 10000) / 100 +
+                  "%) " +
+                  tickerSon.cd.split("-")[1];
+              }
+
+              self.$store.commit("setTicker", tickerSon);
             }
-            //console.log(tickerSon);
-            self.$store.commit("setTicker", tickerSon);
           });
         };
 
-        ws.onclose = e => {
+        ws.onclose = (e) => {
           console.log(
             "Socket is closed. Reconnect will be attempted in 1 second.",
             e.reason
           );
           setTimeout(() => {
-            connect();
+            connectUpbit();
           }, 1000);
         };
 
-        ws.onerror = err => {
+        ws.onerror = (err) => {
           console.error(
             "Socket encountered error: ",
             err.message,
@@ -321,13 +355,61 @@ export default {
           ws.close();
         };
       };
-      connect();
-    }
+      connectUpbit();
+      // upbit websocket end
 
-    //
+
+      // binance websocket start
+      const connectBinance = () => {
+        const ws = new WebSocket("wss://stream.binance.com:9443/ws/btcusdt@miniTicker/ethusdt@miniTicker");
+        ws.onopen = () => {
+          // subscribe to some channels
+          // ws.send(
+          //   JSON.stringify([
+          //     { ticket: $nuxt.$store.state.id.cid },
+          //     {
+          //       type: "ticker",
+          //       codes: arrKrwMarket,
+          //       //codes: ["KRW-BTC"]
+          //     },
+          //     { format: "SIMPLE" },
+          //   ])
+          // );
+          self.wsMap["binance"] = ws;
+          //debugger;
+        };
+
+        ws.onmessage = (event) => {
+          console.log("binance ws 1",JSON.parse(event.data));
+          
+        };
+
+        ws.onclose = (e) => {
+          console.log(
+            "Socket is closed. Reconnect will be attempted in 1 second.",
+            e.reason
+          );
+          setTimeout(() => {
+            connectBinance();
+          }, 1000);
+        };
+
+        ws.onerror = (err) => {
+          console.error(
+            "Socket encountered error: ",
+            err.message,
+            "Closing socket"
+          );
+          ws.close();
+        };
+      };
+      //connectBinance();
+      // binance websocket end
+
+    } // !process.server
   }, // end created
   methods: {
-    log: msg => {
+    log: (msg) => {
       console.log(msg);
     },
     setTickerColor() {
@@ -336,7 +418,7 @@ export default {
         !$nuxt.$store.state.config.isTickerColor
       );
       $nuxt.$store.commit("setConfig", {
-        isTickerColor: !$nuxt.$store.state.config.isTickerColor
+        isTickerColor: !$nuxt.$store.state.config.isTickerColor,
       });
 
       console.log(
@@ -356,9 +438,9 @@ export default {
       }
       this.rightDrawer = !this.rightDrawer;
       $nuxt.$cookies.set("dark", $nuxt.$vuetify.theme.dark);
-    }
+    },
   },
-  mounted: function() {
+  mounted: function () {
     console.log("default.vue mounted");
     return;
 
@@ -370,6 +452,6 @@ export default {
     //   //console.log(tickerSon);
     //   self.$store.commit("setTicker", tickerSon);
     // })
-  }
+  },
 };
 </script>

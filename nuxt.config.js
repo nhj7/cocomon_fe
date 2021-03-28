@@ -111,7 +111,7 @@ export default {
     hardSource: true,
   }, server: {
     host: '0.0.0.0' // default: localhost
-    , port: 7001
+    , port: process.env.port || 7001
   },
   publicRuntimeConfig: {
     baseURL: 'https://cocomon.kr'

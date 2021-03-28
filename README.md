@@ -31,6 +31,11 @@ coin info : /api/v1/exchangeInfo
 
 ticker stream : wss://stream.binance.com:9443/ws/[btcusdt@miniTicker/ethusdt@miniTicker]
 
+ticekr rest api : https://api.binance.com/api/v3/ticker/24hr/[symbol]
+
+all ticker price : https://api.binance.com/api/v3/ticker/price
+
+
 ### vuetify sort first descending.
 
 https://stackoverflow.com/questions/63680088/make-vuetify-v-data-table-column-sort-first-in-descending-order-second-in-ascen

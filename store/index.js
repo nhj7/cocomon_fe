@@ -33,7 +33,7 @@ export const state = () => ({
     }, message : {
         isSnackbar : false,
         text : 'snacbar message',
-        timeout : 1250,
+        timeout : 1000,
     }
 })
 
@@ -71,7 +71,11 @@ export const mutations = {
         for (let i = 0; i < list.length; i++) {
             state.market[exchangeName][list[i].market] = list[i];
         }
-        state.market['list_'+exchangeName] = list;
+        state.market[exchangeName]['krw'] = list.map((market) => market.market).filter((market) => market.indexOf("KRW") > -1);
+        state.market[exchangeName]['btc'] = list.map((market) => market.market).filter((market) => market.indexOf("BTC") > -1);
+        state.market[exchangeName]['usdt'] = list.map((market) => market.market).filter((market) => market.indexOf("USDT") > -1);
+        
+        
     }, setShareData(state, data){
         Object.assign(state.data, data);
     }, setExchangeRate(state, obj) {

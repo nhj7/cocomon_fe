@@ -1,11 +1,8 @@
 <template>
   <v-app>
     <v-main class="pa-0">
-      <v-row fluid fill-height>
-        <v-col cols="12" sm="8" md="6"></v-col>
-      </v-row>
-      <v-row fluid fill-height>
-        <v-col cols="12" sm="8" md="6">
+      
+      
           <!--iframe
           id="tradingview_12801"
           src="https://s.tradingview.com/widgetembed/?frameElementId=tradingview_12801&amp;symbol=BINANCE%3ABTCUSDT&amp;interval=15&amp;symboledit=1&amp;saveimage=0&amp;toolbarbg=f1f3f6&amp;studies=%5B%5D&amp;theme=Light&amp;style=1&amp;timezone=Asia%2FSeoul&amp;studies_overrides=%7B%7D&amp;overrides=%7B%7D&amp;enabled_features=%5B%5D&amp;disabled_features=%5B%5D&amp;locale=kr&amp;utm_source=kimp.ga&amp;utm_medium=widget&amp;utm_campaign=chart&amp;utm_term=BINANCE%3ABTCUSDT"
@@ -21,7 +18,13 @@
           allowfullscreen=""
           onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.scrollHeight+"px";}(this));'
           ></iframe-->
-          <v-layout justify-center>
+          
+       
+
+      <v-row fluid fill-height >
+        <v-col cols="12" sm="8" md="5" >
+
+          <v-layout justify-center mb-1>
             <v-flex xs4 >
               <v-select
                 v-model="curruntExchange"
@@ -34,7 +37,7 @@
                 min-height="auto"
               ></v-select>
             </v-flex>
-            <v-flex xs7 pl-1> 
+            <v-flex xs7 pl-1>
               <v-text-field
                 v-model="search"
                 append-icon="mdi-magnify"
@@ -47,25 +50,38 @@
               ></v-text-field>
             </v-flex>
             <v-flex xs2 justify-center text-center>
-              <v-btn @click="Object.assign($store.state.message, { isSnackbar : true, text : '서비스 준비중입니다.' } ) " icon><v-icon>mdi-dots-vertical</v-icon></v-btn>
+              <v-btn
+                @click="
+                  Object.assign($store.state.message, {
+                    isSnackbar: true,
+                    text: '서비스 준비중입니다.',
+                  })
+                "
+                icon
+                ><v-icon>mdi-dots-vertical</v-icon></v-btn
+              >
             </v-flex>
-          </v-layout>
-        </v-col>
-      </v-row>
-
-      <v-row fluid fill-height>
-        <v-col cols="12" sm="8" md="6">
-          <v-tabs v-model="tab" height="2em" centered grow @change="onTabChange">
-            <v-tab v-for="item in assetTabs" :key="item.tab" @click="clickTab">{{ item.tab }}</v-tab>
+          </v-layout>          
+          <v-tabs 
+            class="mb-1"
+            v-model="tab"
+            height="2em"
+            centered
+            grow
+            @change="onTabChange"
+          >
+            <v-tab 
+              v-for="item in assetTabs"
+              :key="item.tab"
+              @click="clickTab"
+              >{{ item.tab }}</v-tab
+            >
           </v-tabs>
-        </v-col>
-      </v-row>
 
-      <v-row fluid fill-height>
-        <v-col cols="12" sm="8" md="6">
+          <v-divider></v-divider>
           <!--v-autocomplete v-model="search" :items="items" dense filled label="Filled"></v-autocomplete-->
 
-          <v-data-table
+          <v-data-table 
             id="dtTicker"
             :headers="headers"
             :items="$store.state.ticker.upbit.arrTicker"
@@ -79,29 +95,79 @@
             :expanded.sync="expanded"
             :single-expand="singleExpand"
             class="elevation-1"
-            single-sort
-            :loading="$store.state.ticker.upbit.arrTicker.length == 0 "
+            :loading="$store.state.ticker.upbit.arrTicker.length == 0"
             loading-text="Loading... Please wait"
             fixed-header
+            single-sort
             :sort-by="'atp24h'"
             :sort-desc="false"
             :custom-sort="customSort"
           >
+            <!-- 
+            single-sort
+            :sort-by="'atp24h'"
+            :sort-desc="false"
+            :custom-sort="customSort" -->
+
+            <!--template #header="{ props: { headers } }">
+              <thead class="v-data-table-header">
+                <tr>
+                  <th
+                    v-for="header in headers"
+                    :key="header.value"
+                    class="text-uppercase"
+                    scope="col"
+                    :class="header.class"
+                    :style="header.width"
+                  >
+                    {{ header.text }}
+                  </th>
+                </tr>
+              </thead>
+            </template-->
+
             <template v-slot:item="{ item }">
               <tr @click="addExpand(item)" class="row1">
-                <td class="text-left">{{ $store.state.market.upbit[item.cd].korean_name }}</td>
+                <td class="text-left">
+                  {{ $store.state.market.upbit[item.cd].korean_name }}
+                </td>
                 <td
                   class="text-center"
-                  :class="[ $store.state.config.isTickerColor ? ( 0 > item.scr ? 'blue--text' : 'red--text') : '' ]"
-                >{{ item.tp ? comma(item.tp) : "" }}</td>
+                  :class="[
+                    $store.state.config.isTickerColor
+                      ? 0 > item.scr
+                        ? 'blue--text'
+                        : 'red--text'
+                      : '',
+                  ]"
+                >
+                  {{ item.tp ? comma(item.tp) : "" }}
+                </td>
                 <td
                   class="text-center"
-                  :class="[ $store.state.config.isTickerColor ? ( 0 > item.scr ? 'blue--text' : 'red--text') : '' ]"
-                >{{ pad( (0 > item.scr ? "-" : "+" )+ Math.round(item.cr * 10000)/ 100.) }}</td>
+                  :class="[
+                    $store.state.config.isTickerColor
+                      ? 0 > item.scr
+                        ? 'blue--text'
+                        : 'red--text'
+                      : '',
+                  ]"
+                >
+                  {{
+                    pad(
+                      (0 > item.scr ? "-" : "+") +
+                        Math.round(item.cr * 10000) / 100
+                    )
+                  }}
+                </td>
                 <td class="text-center red--text">5.84</td>
-                <td
-                  class="text-center"
-                >{{ Math.floor(item.atp24h / 100000000).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</td>
+                <td class="text-center">
+                  {{
+                    Math.floor(item.atp24h / 100000000)
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  }}
+                </td>
               </tr>
               <tr @click="addExpand(item)" class="row2">
                 <td>
@@ -146,14 +212,25 @@
             </template>
           </v-data-table>
         </v-col>
+
+        <v-col cols="12" sm="4" md="4" class=".rounded-lg"> 
+          채팅 11 
+        </v-col>
+        <v-col cols="12" sm="4" md="3"> 뉴스 22 </v-col>
       </v-row>
       <!-- end ticker -->
 
-      <v-divider />
+      <v-row>
+        
+
+      </v-row>
 
       <br />
-      USD/KRW {{ $store.state.exchangeRate.basePrice }}
-      ( {{( 0 > $store.state.exchangeRate.signedChangeRate ? "" : "+" )+ Math.floor($store.state.exchangeRate.signedChangeRate * 10000)/100 }}%)
+      USD/KRW {{ $store.state.exchangeRate.basePrice }} (
+      {{
+        (0 > $store.state.exchangeRate.signedChangeRate ? "" : "+") +
+        Math.floor($store.state.exchangeRate.signedChangeRate * 10000) / 100
+      }}%)
       <br />
 
       <br />
@@ -176,7 +253,10 @@ export default {
       expanded: [],
       singleExpand: false,
       curruntExchange: "upbit",
-      exchangeList: ["upbit", "bithumb", "coinone"],
+      exchangeList: [
+        "upbit",
+        //, "bithumb", "coinone"
+      ],
       assetList: ["krw", "btc", "usdt"],
       more: ["upbit", "bithumb", "coinone"],
       colors: ["system", "light", "dark", "sepia"],
@@ -186,51 +266,52 @@ export default {
           value: "cd",
           class: "sticky-header",
           width: "20%",
-          class: "text-left"
+          class: "text-left",
+          click: "customSort",
         },
         {
           text: "현재가",
           value: "tp",
           class: "sticky-header",
           width: "18%",
-          class: "text-center"
+          class: "text-center",
         },
         {
           text: "전일대비",
           value: "scr",
           class: "sticky-header",
           width: "18%",
-          class: "text-center"
+          class: "text-center",
         },
         {
           text: "김프",
           value: "0.00%",
           class: "sticky-header",
           width: "15%",
-          class: "text-center"
+          class: "text-center",
         },
         {
           text: "거래량",
           value: "atp24h",
           class: "sticky-header",
           width: "15%",
-          class: "text-right"
+          class: "text-right",
         },
         {
           text: "한글명",
           value: "korean_name",
           class: "sticky-header",
           width: "0%",
-          class: "d-none"
-        }
+          class: "d-none",
+        },
       ],
       tab: 1,
       assetTabs: [
         { tab: "관심", content: "Tab 1 Content" },
         { tab: "KRW", content: "Tab 2 Content" },
         { tab: "BTC", content: "Tab 3 Content" },
-        { tab: "USDT", content: "Tab 4 Content" }
-      ]
+        { tab: "USDT", content: "Tab 4 Content" },
+      ],
     };
   }, // end data.
   components: {},
@@ -252,6 +333,11 @@ export default {
       this.$store.state.ticker.titleTicker = slotData.cd;
     },
     customSort(items, index, isDesc) {
+      // console.log("customSort", index, isDesc, this.$store.state.ticker.upbit.arrTicker.length, this.$store.state.market.upbit.krw.length);
+
+      // if(  this.$store.state.ticker.upbit.arrTicker.length == this.$store.state.market.upbit.krw.length ){
+      //   return items;
+      // }
       items.sort((a, b) => {
         if (isDesc != "false") {
           return a[index] < b[index] ? -1 : 1;
@@ -283,7 +369,7 @@ export default {
     },
     comma(value) {
       return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
+    },
   },
   created() {
     console.log("index.vue", "created!!!");
@@ -295,8 +381,8 @@ export default {
   watch: {
     expanded(val) {
       console.log("index.vue", "watch", "expanded watch", val);
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -430,4 +516,6 @@ tbody > tr:hover {
 .v-input__control {
   min-height: 1.8em !important;
 }
+
+.row{ margin-top : 20px; }
 </style>
