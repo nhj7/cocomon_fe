@@ -15,7 +15,7 @@
           scrolling="no"
           allowfullscreen=""
           onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.scrollHeight+"px";}(this));'
-          ></iframe-->
+      ></iframe-->
 
       <v-row>
         <v-col cols="12" sm="8" md="5">
@@ -54,64 +54,52 @@
                     })
                   "
                   icon
-                  ><v-icon>mdi-dots-vertical</v-icon></v-btn
                 >
+                  <v-icon>mdi-dots-vertical</v-icon>
+                </v-btn>
               </v-flex>
             </v-layout>
-            </v-card>
+          </v-card>
 
-            <v-card class="d-flex pa-1" outlined tile>
-            <v-tabs
-              class="mb-1"
-              v-model="tab"
-              height="2em"
-              centered
-              grow
-              @change="onTabChange"
-            >
-              <v-tab
-                v-for="item in assetTabs"
-                :key="item.tab"
-                @click="clickTab"
-                >{{ item.tab }}</v-tab
-              >
+          <v-card class="d-flex pa-1" outlined tile>
+            <v-tabs class="mb-1" v-model="tab" height="2em" centered grow @change="onTabChange">
+              <v-tab v-for="item in assetTabs" :key="item.tab" @click="clickTab">{{ item.tab }}</v-tab>
             </v-tabs>
           </v-card>
-            
-            <!--v-autocomplete v-model="search" :items="items" dense filled label="Filled"></v-autocomplete-->
-          
-            <v-data-table
-              id="dtTicker"
-              :headers="headers"
-              :items="$store.state.ticker.upbit.arrTicker"
-              :items-per-page="2000"
-              :search="search"
-              item-key="cd"
-              dense
-              mobile="false"
-              mobile-breakpoint="0"
-              hide-default-footer
-              :expanded.sync="expanded"
-              :single-expand="singleExpand"
-              class="elevation-1"
-              :loading="$store.state.ticker.upbit.arrTicker.length == 0"
-              loading-text="Loading... Please wait"
-              fixed-header
-              single-sort
-              :sort-by="'atp24h'"
-              :sort-desc="false"
-              :custom-sort="customSort"
-              height="40vh"
-              style="overflow-y:auto;overflow-x:hidden;"
-              
-            >
-              <!-- 
+
+          <!--v-autocomplete v-model="search" :items="items" dense filled label="Filled"></v-autocomplete-->
+
+          <v-data-table
+            id="dtTicker"
+            :headers="headers"
+            :items="$store.state.ticker.upbit.arrTicker"
+            :items-per-page="2000"
+            :search="search"
+            item-key="cd"
+            dense
+            mobile="false"
+            mobile-breakpoint="0"
+            hide-default-footer
+            :expanded.sync="expanded"
+            :single-expand="singleExpand"
+            class="elevation-1"
+            :loading="$store.state.ticker.upbit.arrTicker.length == 0"
+            loading-text="Loading... Please wait"
+            fixed-header
             single-sort
             :sort-by="'atp24h'"
             :sort-desc="false"
-            :custom-sort="customSort" -->
+            :custom-sort="customSort"
+            height="40vh"
+            style="overflow-y:auto;overflow-x:hidden;"
+          >
+            <!-- 
+            single-sort
+            :sort-by="'atp24h'"
+            :sort-desc="false"
+            :custom-sort="customSort"-->
 
-              <!--template #header="{ props: { headers } }">
+            <!--template #header="{ props: { headers } }">
               <thead class="v-data-table-header">
                 <tr>
                   <th
@@ -128,113 +116,111 @@
               </thead>
             </template-->
 
-              <template v-slot:item="{ item }">
-                <tr @click="addExpand(item)" class="row1">
-                  <td class="text-left">
-                    {{ $store.state.market.upbit[item.cd].korean_name }}
-                  </td>
-                  <td
-                    class="text-center"
-                    :class="[
+            <template v-slot:item="{ item }">
+              <tr @click="addExpand(item)" class="row1">
+                <td class="text-left">{{ item.korean_name }}</td>
+                <td
+                  class="text-center"
+                  :class="[
                       $store.state.config.isTickerColor
                         ? 0 > item.scr
                           ? 'blue--text'
                           : 'red--text'
                         : '',
                     ]"
-                  >
-                    {{ item.tp ? comma(item.tp) : "" }}
-                  </td>
-                  <td
-                    class="text-center"
-                    :class="[
+                >{{ item.tp ? comma(item.tp) : "" }}</td>
+                <td
+                  class="text-center"
+                  :class="[
                       $store.state.config.isTickerColor
                         ? 0 > item.scr
                           ? 'blue--text'
                           : 'red--text'
                         : '',
                     ]"
-                  >
-                    {{
-                      pad(
-                        (0 > item.scr ? "-" : "+") +
-                          Math.round(item.cr * 10000) / 100
-                      )
-                    }}
-                  </td>
-                  <td class="text-center red--text">5.84</td>
-                  <td class="text-center">
-                    {{
-                      Math.floor(item.atp24h / 100000000)
-                        .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                    }}
-                  </td>
-                </tr>
-                <tr @click="addExpand(item)" class="row2">
-                  <td>
+                >
+                  {{
+                  pad(
+                  (0 > item.scr ? "-" : "+") +
+                  Math.round(item.cr * 10000) / 100
+                  )
+                  }}
+                </td>
+                <td
+                  class="text-center"
+                  :class="[ item.kp == 0 ? 'grey--text' : (item.kp > 0 ? 'red--text' : 'blue--text') ]"
+                >{{ item.kp }}</td>
+                <td class="text-center">
+                  {{
+                  Math.floor(item.atp24h / 100000000)
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  }}
+                </td>
+              </tr>
+              <tr @click="addExpand(item)" class="row2">
+                <td>
+                  <span>
+                    <span>{{ item.cd }}</span>
+                  </span>
+                </td>
+                <td class="text-center">
+                  <span>
                     <span>
-                      <span>{{ item.cd }}</span>
+                      {{ $store.state.ticker.binance.mapTicker[ item.cd.split('-')[1] + 'USDT' ]
+                      ? comma($store.state.ticker.binance.mapTicker[ item.cd.split('-')[1] + 'USDT' ].krwPrice) : "-" }}
                     </span>
-                  </td>
-                  <td class="text-center">
-                    <span>
-                      <span>65131313</span>
-                    </span>
-                  </td>
-                  <td class="text-center">
-                    <span>
-                      <span>65131313</span>
-                    </span>
-                  </td>
-                  <td class="text-center"></td>
-                  <td class="text-center"></td>
-                </tr>
-              </template>
-              <template v-slot:expanded-item="{ item }">
-                <tr class="row3">
-                  <td>
-                    <span>
-                      <span>{{ item.cd }}</span>
-                    </span>
-                  </td>
-                  <td>
-                    <span>
-                      <span>65131313</span>
-                    </span>
-                  </td>
-                  <td>
-                    <span>
-                      <span>65131313</span>
-                    </span>
-                  </td>
-                  <td></td>
-                  <td></td>
-                </tr>
-              </template>
-            </v-data-table>            
+                  </span>
+                </td>
+                <td class="text-center">
+                  <span>
+                    <span>65131313</span>
+                  </span>
+                </td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+              </tr>
+            </template>
+            <template v-slot:expanded-item="{ item }">
+              <tr class="row3">
+                <td>
+                  <span>
+                    <span>{{ item.cd }}</span>
+                  </span>
+                </td>
+                <td>
+                  <span>
+                    <span>65131313</span>
+                  </span>
+                </td>
+                <td>
+                  <span>
+                    <span>65131313</span>
+                  </span>
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+            </template>
+          </v-data-table>
         </v-col>
 
-        <v-col cols="12" sm="4" md="4" class=".rounded-lg"> 
-          <v-card class="d-flex pa-2" outlined tile>
-            채팅 영역
-          </v-card>
+        <v-col cols="12" sm="4" md="4" class=".rounded-lg">
+          <v-card class="d-flex pa-2" outlined tile>채팅 영역</v-card>
         </v-col>
-        <v-col cols="12" sm="4" md="3"> 
-          <v-card class="d-flex pa-2" outlined tile>
-            뉴스 영역
-          </v-card>
+        <v-col cols="12" sm="4" md="3">
+          <v-card class="d-flex pa-2" outlined tile>뉴스 영역</v-card>
         </v-col>
       </v-row>
       <!-- end ticker -->
 
-      <v-row> </v-row>
+      <v-row></v-row>
 
       <br />
       USD/KRW {{ $store.state.exchangeRate.basePrice }} (
       {{
-        (0 > $store.state.exchangeRate.signedChangeRate ? "" : "+") +
-        Math.floor($store.state.exchangeRate.signedChangeRate * 10000) / 100
+      (0 > $store.state.exchangeRate.signedChangeRate ? "" : "+") +
+      Math.floor($store.state.exchangeRate.signedChangeRate * 10000) / 100
       }}%)
       <br />
 
@@ -253,13 +239,13 @@
 export default {
   data() {
     return {
-      title: "Crypto Price",
+      title: "Crypto Table",
       search: "",
       expanded: [],
       singleExpand: false,
       curruntExchange: "upbit",
       exchangeList: [
-        "upbit",
+        "upbit"
         //, "bithumb", "coinone"
       ],
       assetList: ["krw", "btc", "usdt"],
@@ -272,51 +258,51 @@ export default {
           class: "sticky-header",
           width: "20%",
           class: "text-left",
-          click: "customSort",
+          click: "customSort"
         },
         {
           text: "현재가",
           value: "tp",
           class: "sticky-header",
           width: "18%",
-          class: "text-center",
+          class: "text-center"
         },
         {
           text: "전일대비",
           value: "scr",
           class: "sticky-header",
           width: "18%",
-          class: "text-center",
+          class: "text-center"
         },
         {
           text: "김프",
-          value: "0.00%",
+          value: "kp",
           class: "sticky-header",
           width: "15%",
-          class: "text-center",
+          class: "text-center"
         },
         {
           text: "거래량",
           value: "atp24h",
           class: "sticky-header",
           width: "15%",
-          class: "text-right",
+          class: "text-right"
         },
         {
           text: "한글명",
           value: "korean_name",
           class: "sticky-header",
           width: "0%",
-          class: "d-none",
-        },
+          class: "d-none"
+        }
       ],
       tab: 1,
       assetTabs: [
         { tab: "관심", content: "Tab 1 Content" },
         { tab: "KRW", content: "Tab 2 Content" },
         { tab: "BTC", content: "Tab 3 Content" },
-        { tab: "USDT", content: "Tab 4 Content" },
-      ],
+        { tab: "USDT", content: "Tab 4 Content" }
+      ]
     };
   }, // end data.
   components: {},
@@ -345,9 +331,9 @@ export default {
       // }
       items.sort((a, b) => {
         if (isDesc != "false") {
-          return a[index] < b[index] ? -1 : 1;
+          return a[index] - b[index];
         } else {
-          return b[index] < a[index] ? -1 : 1;
+          return b[index] - a[index];
         }
       });
       return items;
@@ -375,9 +361,80 @@ export default {
     comma(value) {
       return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
+    kp(kp, op) {
+      return ((kp / op - 1) * 100).toFixed(2);
+    }
   },
   created() {
     console.log("index.vue", "created!!!");
+
+    if (!process.server) {
+      const self = this;
+      const td = new TextDecoder("utf-8");
+      // upbit websocket start
+      const connectUpbit = () => {
+        const ws = new WebSocket("wss://api.upbit.com/websocket/v1");
+        ws.binaryType = "arraybuffer";
+        ws.onopen = () => {
+          // subscribe to some channels
+          ws.send(
+            JSON.stringify([
+              { ticket: $nuxt.$store.state.id.cid },
+              {
+                type: "ticker",
+                //codes: arrKrwMarket
+                codes: ["KRW-BTC"]
+              },
+              { format: "SIMPLE" }
+            ])
+          );
+          self.wsMap["upbit"] = ws;
+          //debugger;
+        };
+
+        ws.onmessage = event => {
+          var arr = new Uint8Array(event.data);
+          const tickerSon = JSON.parse(td.decode(arr));
+          if (
+            !self.$store.state.ticker.upbit.mapTicker[tickerSon.cd] ||
+            self.$store.state.ticker.upbit.mapTicker[tickerSon.cd]["tp"] !=
+              tickerSon.tp
+          ) {
+            if (tickerSon.cd == self.$store.state.ticker.titleTicker) {
+              document.title =
+                self.$comma(tickerSon.tp) +
+                "(" +
+                (tickerSon.scr < 0 ? "-" : "+") +
+                Math.round(tickerSon.cr * 10000) / 100 +
+                "%) " +
+                tickerSon.cd.split("-")[1];
+            }
+
+            self.$store.commit("setTicker", tickerSon);
+          }
+        };
+
+        ws.onclose = e => {
+          console.log(
+            "Socket is closed. Reconnect will be attempted in 1 second.",
+            e.reason
+          );
+          setTimeout(() => {
+            connectUpbit();
+          }, 1000);
+        };
+
+        ws.onerror = err => {
+          console.error(
+            "Socket encountered error: ",
+            err.message,
+            "Closing socket"
+          );
+          ws.close();
+        };
+      };
+      connectUpbit();
+    }
   },
   mounted() {
     console.log("index.vue", "mounted", $nuxt.$refs);
@@ -386,8 +443,8 @@ export default {
   watch: {
     expanded(val) {
       console.log("index.vue", "watch", "expanded watch", val);
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -525,5 +582,4 @@ tbody > tr:hover {
 .row {
   margin-top: 0.01em;
 }
-
 </style>

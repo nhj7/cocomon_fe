@@ -8,10 +8,14 @@ export const state = () => ({
         , sid : '' // session id
     }
     ,ticker: {
-        upbit: {
+        titleTicker : 'KRW-BTC'
+        , upbit: {
             mapTicker: {}
             , arrTicker: []
-        }, titleTicker : 'KRW-BTC'
+        }, binance : {
+            mapTicker : {}
+            , arrTicker : []
+        } 
     }, config: {
         isTickerColor: true
     }, market: {
@@ -21,6 +25,10 @@ export const state = () => ({
             }, btc : {
 
             }, usdt : {
+
+            }
+        }, binance : {
+            usdt : {
 
             }
         }
@@ -38,24 +46,26 @@ export const state = () => ({
 })
 
 const pushData = (map, arr, obj, key, state) => {
+    //console.log("pushData");
+    obj.kp = state.ticker.binance.mapTicker[obj.cd.split("-")[1]+"USDT" ] ?
+        (((obj.tp / state.ticker.binance.mapTicker[obj.cd.split("-")[1]+"USDT" ].krwPrice ) - 1) * 100) .toFixed(2)
+        : 0;
+    
     if (!map[obj[key]]) {
         obj.korean_name = state.market.upbit[obj.cd].korean_name;
         //obj = { name : obj.korean_name, data : obj }
         map[obj[key]] = obj;
-        Vue.set(arr, arr.length, obj);
+        //Vue.set(arr, arr.length, obj);
+        //Object.freeze(obj);
+        arr.push(obj);
     } else {
-        
-        // const cpObj = { trade_price : obj.trade_price, 
-        // signed_change_rate : obj.signed_change_rate,
-        // acc_trade_price_24h : obj.acc_trade_price_24h }
-        // map[obj[key]] = { ...map[obj[key]] , ...cpObj };
-        
         Object.assign(map[obj[key]], { 
             tp : obj.tp, 
             scr : obj.scr,
             cr : obj.cr,
-            atp24h : obj.atp24h
-        });
+            atp24h : obj.atp24h,
+            kp : obj.kp
+        }); 
     }
 };
 
@@ -71,9 +81,10 @@ export const mutations = {
         for (let i = 0; i < list.length; i++) {
             state.market[exchangeName][list[i].market] = list[i];
         }
-        state.market[exchangeName]['krw'] = list.map((market) => market.market).filter((market) => market.indexOf("KRW") > -1);
-        state.market[exchangeName]['btc'] = list.map((market) => market.market).filter((market) => market.indexOf("BTC") > -1);
-        state.market[exchangeName]['usdt'] = list.map((market) => market.market).filter((market) => market.indexOf("USDT") > -1);
+        state.market[exchangeName]['list'] = list;
+        //state.market[exchangeName]['KRW'] = list.map((market) => market.market).filter((market) => market.indexOf("KRW") > -1);
+        //state.market[exchangeName]['BTC'] = list.map((market) => market.market).filter((market) => market.indexOf("BTC") > -1);
+        //state.market[exchangeName]['USDT'] = list.map((market) => market.market).filter((market) => market.indexOf("USDT") > -1);
         
         
     }, setShareData(state, data){
