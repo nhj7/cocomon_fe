@@ -26,7 +26,7 @@ For detailed explanation on how things work, check out [Nuxt.js docs](https://nu
 ## upbit api 
 
 https://api.upbit.com/v1/market/all
-
+https://api.upbit.com/v1/ticker?markets=KRW-BTC
 
 ## binance api
 

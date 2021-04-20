@@ -44,11 +44,12 @@
     <v-app-bar :clipped-left="clipped" fixed app dense hide-on-scroll>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-spacer />
-      <v-card>
+      <span class="caption">
         <span>{{ $store.state.ticker.titleTicker.market }}</span> |
-        <span>{{ $store.state.ticker.titleTicker.trade_price }}</span> |
-        <span>({{ $store.state.ticker.titleTicker.signed_change_rate }})</span>         
-      </v-card>
+        <span>{{ $comma($store.state.ticker.titleTicker.trade_price) }}</span> |
+        <span>({{ $toTickerRate($store.state.ticker.titleTicker.signed_change_rate) }}%)</span>
+        <span>({{ $store.state.ticker.titleTicker.change }})</span>
+      </span>
       <!--v-btn @click.stop="drawer = !drawer" icon>
         <v-icon v-bind:class="{ 'd-none': !isCoinSrchHide }">mdi-creative-commons</v-icon>
       </v-btn-->
@@ -181,6 +182,7 @@ export default {
       title: this.$config.appName,
       wsMap: {},      
       titleTicker : { market : '', trade_price : 0, signed_change_rate : 0 },
+      
     };
   }, // end data
   async asyncData({ req, res }) {
@@ -330,9 +332,6 @@ export default {
       const arrKrwMarket = arrUpbitMarkets
         .map(market => market.market)
         .filter(market => market.indexOf("KRW") > -1);
-
-
-      
       //console.log(arrKrwMarket);
       // wss://api.upbit.com/websocket/v1
       // wss://crix-ws.upbit.com/websocket
@@ -345,7 +344,7 @@ export default {
       const getUpbitTicker = async () => {
         console.log("getUpbitTicker");
         const binanceTicker = this.$store.state.ticker.binance.mapTicker;
-        const arrUpbitTicker = await this.$axios.$get("https://api.upbit.com/v1/ticker?markets="+strKrwMarkets);
+        const arrUpbitTicker = await this.$axios.$get("https://api.upbit.com/v1/ticker?markets="+strKrwMarkets);        
         const mapUpbitTicker = {};
         for(let idxUt = 0; idxUt < arrUpbitTicker.length;idxUt++){
           const marketName = arrUpbitTicker[idxUt].market.split("-")[1];
@@ -374,10 +373,10 @@ export default {
 
         //debugger;
         document.title = strTitleTicker;
-        
-        this.$store.state.ticker.titleTicker.market = "KRW-BTC";
-        this.$store.state.ticker.titleTicker.trade_price = this.$comma(mapUpbitTicker["KRW-BTC"].trade_price);
-        this.$store.state.ticker.titleTicker.signed_change_rate = mapUpbitTicker["KRW-BTC"].signed_change_rate;
+        this.$store.state.ticker.titleTicker = mapUpbitTicker["KRW-BTC"];
+        // this.$store.state.ticker.titleTicker.market = "KRW-BTC";
+        // this.$store.state.ticker.titleTicker.trade_price = this.$comma(mapUpbitTicker["KRW-BTC"].trade_price);
+        // this.$store.state.ticker.titleTicker.signed_change_rate = mapUpbitTicker["KRW-BTC"].signed_change_rate;
       }
       
       await getUpbitTicker();
