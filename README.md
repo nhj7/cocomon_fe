@@ -23,6 +23,11 @@ $ npm run generate
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
 
+## upbit api 
+
+https://api.upbit.com/v1/market/all
+
+
 ## binance api
 
 base url : https://api.binance.com/
@@ -54,3 +59,8 @@ icons: {
 <pre>
 pm2 start npm --name "cocomon" -- start
 </pre>
+
+## vuetify color theme. 
+
+https://vuetifyjs.com/en/styles/colors/#material-colors
+

@@ -62,36 +62,48 @@
           </v-card>
 
           <v-card class="d-flex pa-1" outlined tile>
-            <v-tabs class="mb-1" v-model="tab" height="2em" centered grow @change="onTabChange">
-              <v-tab v-for="item in assetTabs" :key="item.tab" @click="clickTab">{{ item.tab }}</v-tab>
+            <v-tabs
+              class="mb-1"
+              v-model="tab"
+              height="2em"
+              centered
+              grow
+              @change="onTabChange"
+            >
+              <v-tab
+                v-for="item in assetTabs"
+                :key="item.tab"
+                @click="clickTab"
+                >{{ item.tab }}</v-tab
+              >
             </v-tabs>
           </v-card>
 
           <!--v-autocomplete v-model="search" :items="items" dense filled label="Filled"></v-autocomplete-->
-
+          <!-- $store.state.ticker.upbit.arrTicker -->
           <v-data-table
             id="dtTicker"
             :headers="headers"
-            :items="$store.state.ticker.upbit.arrTicker"
+            :items="$store.state.ticker.curTicker.arrTicker"
             :items-per-page="2000"
             :search="search"
-            item-key="cd"
+            item-key="market"
             dense
             mobile="false"
             mobile-breakpoint="0"
             hide-default-footer
-            :expanded.sync="expanded"
+            :expanded.sync="$store.state.ticker.curTicker.expanded"
             :single-expand="singleExpand"
             class="elevation-1"
-            :loading="$store.state.ticker.upbit.arrTicker.length == 0"
+            :loading="$store.state.ticker.curTicker.arrTicker.length == 0"
             loading-text="Loading... Please wait"
             fixed-header
             single-sort
-            :sort-by="'atp24h'"
+            :sort-by="'acc_trade_price_24h'"
             :sort-desc="false"
             :custom-sort="customSort"
             height="40vh"
-            style="overflow-y:auto;overflow-x:hidden;"
+            style="overflow-y: auto; overflow-x: hidden"
           >
             <!-- 
             single-sort
@@ -122,59 +134,78 @@
                 <td
                   class="text-center"
                   :class="[
-                      $store.state.config.isTickerColor
-                        ? 0 > item.scr
-                          ? 'blue--text'
-                          : 'red--text'
-                        : '',
-                    ]"
-                >{{ item.tp ? comma(item.tp) : "" }}</td>
+                    $store.state.config.isTickerColor
+                      ? 0 > item.signed_change_price
+                        ? 'fall--text'
+                        : 'rise--text'
+                      : '',
+                  ]"
+                >
+                  {{ item.trade_price ? comma(item.trade_price) : "" }}
+                </td>
                 <td
                   class="text-center"
                   :class="[
-                      $store.state.config.isTickerColor
-                        ? 0 > item.scr
-                          ? 'blue--text'
-                          : 'red--text'
-                        : '',
-                    ]"
+                    $store.state.config.isTickerColor
+                      ? 0 > item.signed_change_price
+                        ? 'fall--text'
+                        : 'rise--text'
+                      : '',
+                  ]"
                 >
                   {{
-                  pad(
-                  (0 > item.scr ? "-" : "+") +
-                  Math.round(item.cr * 10000) / 100
-                  )
+                    padRate(
+                      (0 > item.signed_change_price ? "-" : "+") +
+                        item.change_rate
+                    )
                   }}
                 </td>
                 <td
                   class="text-center"
-                  :class="[ item.kp == 0 ? 'grey--text' : (item.kp > 0 ? 'red--text' : 'blue--text') ]"
-                >{{ item.kp }}</td>
+                  :class="[
+                    !$store.state.config.isTickerColor || item.kp == 0
+                      ? 'grey--text'
+                      : item.kp > 0
+                      ? 'rise--text'
+                      : 'fall--text',
+                  ]"
+                >
+                  {{ item.kp }}
+                </td>
                 <td class="text-center">
                   {{
-                  Math.floor(item.atp24h / 100000000)
-                  .toString()
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    Math.floor(item.acc_trade_price_24h / 100000000)
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   }}
                 </td>
               </tr>
               <tr @click="addExpand(item)" class="row2">
                 <td>
                   <span>
-                    <span>{{ item.cd }}</span>
+                    <span>{{ item.market }}</span>
                   </span>
                 </td>
                 <td class="text-center">
                   <span>
                     <span>
-                      {{ $store.state.ticker.binance.mapTicker[ item.cd.split('-')[1] + 'USDT' ]
-                      ? comma($store.state.ticker.binance.mapTicker[ item.cd.split('-')[1] + 'USDT' ].krwPrice) : "-" }}
+                      {{
+                        $store.state.ticker.binance.mapTicker[
+                          item["market"].split("-")[1] + "USDT"
+                        ]
+                          ? comma(
+                              $store.state.ticker.binance.mapTicker[
+                                item["market"].split("-")[1] + "USDT"
+                              ].krwPrice
+                            )
+                          : "-"
+                      }}
                     </span>
                   </span>
                 </td>
                 <td class="text-center">
                   <span>
-                    <span>65131313</span>
+                    <span>{{ comma(item.signed_change_price) }}</span>
                   </span>
                 </td>
                 <td class="text-center"></td>
@@ -185,17 +216,17 @@
               <tr class="row3">
                 <td>
                   <span>
-                    <span>{{ item.cd }}</span>
+                    <span>{{ item.market }}</span>
                   </span>
                 </td>
                 <td>
                   <span>
-                    <span>65131313</span>
+                    <span>-</span>
                   </span>
                 </td>
                 <td>
                   <span>
-                    <span>65131313</span>
+                    <span>-</span>
                   </span>
                 </td>
                 <td></td>
@@ -214,14 +245,26 @@
       </v-row>
       <!-- end ticker -->
 
-      <v-row></v-row>
+      <v-row>
+        <v-col>
+          <br />
+          <v-card class="d-flex pa-2" outlined tile>
+            USD/KRW {{ $comma($store.state.exchangeRate.basePrice) }}원 (
+            {{
+              (0 > $store.state.exchangeRate.signedChangeRate ? "" : "+") +
+              Math.floor($store.state.exchangeRate.signedChangeRate * 10000) /
+                100
+            }}%) &nbsp;
+            <v-tooltip top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-icon v-bind="attrs" v-on="on">mdi-chat-question-outline</v-icon>
+              </template>
+              <span>현찰 살 때 {{ $comma($store.state.exchangeRate.cashBuyingPrice) }}원, 매매기준율 : {{ $comma($store.state.exchangeRate.basePrice) }}원</span>
+            </v-tooltip>
+          </v-card>
+        </v-col>
+      </v-row>
 
-      <br />
-      USD/KRW {{ $store.state.exchangeRate.basePrice }} (
-      {{
-      (0 > $store.state.exchangeRate.signedChangeRate ? "" : "+") +
-      Math.floor($store.state.exchangeRate.signedChangeRate * 10000) / 100
-      }}%)
       <br />
 
       <br />
@@ -241,11 +284,12 @@ export default {
     return {
       title: "Crypto Table",
       search: "",
+      curTicker: { mapTicker: {}, arrTicker: [] },
       expanded: [],
       singleExpand: false,
       curruntExchange: "upbit",
       exchangeList: [
-        "upbit"
+        "upbit",
         //, "bithumb", "coinone"
       ],
       assetList: ["krw", "btc", "usdt"],
@@ -254,73 +298,69 @@ export default {
       headers: [
         {
           text: "이름",
-          value: "cd",
+          value: "korean_name",
           class: "sticky-header",
           width: "20%",
           class: "text-left",
-          click: "customSort"
+          click: "customSort",
         },
         {
           text: "현재가",
-          value: "tp",
+          value: "trade_price",
           class: "sticky-header",
           width: "18%",
-          class: "text-center"
+          class: "text-center",
         },
         {
           text: "전일대비",
-          value: "scr",
+          value: "signed_change_rate",
           class: "sticky-header",
           width: "18%",
-          class: "text-center"
+          class: "text-center",
         },
         {
           text: "김프",
           value: "kp",
           class: "sticky-header",
           width: "15%",
-          class: "text-center"
+          class: "text-center",
         },
         {
           text: "거래량",
-          value: "atp24h",
+          value: "acc_trade_price_24h",
           class: "sticky-header",
           width: "15%",
-          class: "text-right"
+          class: "text-right",
         },
         {
-          text: "한글명",
-          value: "korean_name",
+          text: "코드명",
+          value: "market",
           class: "sticky-header",
           width: "0%",
-          class: "d-none"
-        }
+          class: "d-none",
+        },
       ],
       tab: 1,
       assetTabs: [
         { tab: "관심", content: "Tab 1 Content" },
         { tab: "KRW", content: "Tab 2 Content" },
         { tab: "BTC", content: "Tab 3 Content" },
-        { tab: "USDT", content: "Tab 4 Content" }
-      ]
+        { tab: "USDT", content: "Tab 4 Content" },
+      ],
     };
   }, // end data.
   components: {},
   counter: 0,
   methods: {
     addExpand(slotData) {
-      console.log(
-        "addExpand",
-        slotData,
-        this.expanded,
-        this.expanded.indexOf(slotData)
-      );
-      if (this.$data.expanded.indexOf(slotData) == -1) {
-        this.$data.expanded.push(slotData);
+      //debugger;
+      const expanded = this.$store.state.ticker.curTicker.expanded;
+      console.log("addExpand", slotData, expanded, expanded.indexOf(slotData));
+      if (expanded.indexOf(slotData) == -1) {
+        expanded.push(slotData);
       } else {
-        this.$data.expanded.pop(slotData);
+        expanded.pop(slotData);
       }
-
       this.$store.state.ticker.titleTicker = slotData.cd;
     },
     customSort(items, index, isDesc) {
@@ -347,7 +387,7 @@ export default {
       }
       console.log("onTabChange", this.assetTabs[idx].tab);
     },
-    pad(value) {
+    padRate(value) {
       if (value.length == 2) {
         return value + ".00";
       }
@@ -363,12 +403,37 @@ export default {
     },
     kp(kp, op) {
       return ((kp / op - 1) * 100).toFixed(2);
-    }
+    },
+    pushData(map, arr, obj, key, state) {
+      //console.log("pushData");
+      // obj.kp = state.ticker.binance.mapTicker[obj.cd.split("-")[1]+"USDT" ] ?
+      //     (((obj.tp / state.ticker.binance.mapTicker[obj.cd.split("-")[1]+"USDT" ].krwPrice ) - 1) * 100) .toFixed(2)
+      //     : 0;
+
+      if (!map[obj[key]]) {
+        //obj.korean_name = state.market.upbit[obj.cd].korean_name;
+        //obj = { name : obj.korean_name, data : obj }
+        map[obj[key]] = obj;
+        //Vue.set(arr, arr.length, obj);
+        //Object.freeze(obj);
+        arr.push(obj);
+      } else {
+        Object.assign(map[obj[key]], {
+          tp: obj.tp,
+          scr: obj.scr,
+          cr: obj.cr,
+          atp24h: obj.atp24h,
+          kp: obj.kp,
+        });
+      }
+    },
   },
-  created() {
+  created: async function () {
     console.log("index.vue", "created!!!");
 
     if (!process.server) {
+      console.log(this);
+
       const self = this;
       const td = new TextDecoder("utf-8");
       // upbit websocket start
@@ -382,19 +447,20 @@ export default {
               { ticket: $nuxt.$store.state.id.cid },
               {
                 type: "ticker",
-                //codes: arrKrwMarket
-                codes: ["KRW-BTC"]
+                codes: arrKrwMarket,
+                //codes: ["KRW-BTC"]
               },
-              { format: "SIMPLE" }
+              { format: "SIMPLE" },
             ])
           );
           self.wsMap["upbit"] = ws;
           //debugger;
         };
 
-        ws.onmessage = event => {
+        ws.onmessage = (event) => {
           var arr = new Uint8Array(event.data);
           const tickerSon = JSON.parse(td.decode(arr));
+          /*
           if (
             !self.$store.state.ticker.upbit.mapTicker[tickerSon.cd] ||
             self.$store.state.ticker.upbit.mapTicker[tickerSon.cd]["tp"] !=
@@ -410,11 +476,19 @@ export default {
                 tickerSon.cd.split("-")[1];
             }
 
-            self.$store.commit("setTicker", tickerSon);
+            //self.$store.commit("setTicker", tickerSon);
           }
+          */
+          //console.log(self);
+          self.pushData(
+            self.curTicker.mapTicker,
+            self.curTicker.arrTicker,
+            tickerSon,
+            "cd"
+          );
         };
 
-        ws.onclose = e => {
+        ws.onclose = (e) => {
           console.log(
             "Socket is closed. Reconnect will be attempted in 1 second.",
             e.reason
@@ -424,7 +498,7 @@ export default {
           }, 1000);
         };
 
-        ws.onerror = err => {
+        ws.onerror = (err) => {
           console.error(
             "Socket encountered error: ",
             err.message,
@@ -433,8 +507,8 @@ export default {
           ws.close();
         };
       };
-      connectUpbit();
-    }
+      //connectUpbit();
+    } // end created function
   },
   mounted() {
     console.log("index.vue", "mounted", $nuxt.$refs);
@@ -443,8 +517,8 @@ export default {
   watch: {
     expanded(val) {
       console.log("index.vue", "watch", "expanded watch", val);
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -581,5 +655,11 @@ tbody > tr:hover {
 
 .row {
   margin-top: 0.01em;
+}
+.rise--text {
+  color: #009688;
+}
+.fall--text {
+  color: #E91E63;
 }
 </style>

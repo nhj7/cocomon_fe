@@ -17,7 +17,7 @@
       <v-divider></v-divider>
       <v-list>
         <v-list-item>
-          <v-btn icon @click.stop="miniVariant = !miniVariant">
+          <v-btn icon @click.stop="x = !miniVariant">
             <v-icon>mdi-{{ `chevron-${miniVariant ? "right" : "left"}` }}</v-icon>
           </v-btn>
           <v-btn icon @click.stop="clipped = !clipped">
@@ -43,10 +43,16 @@
 
     <v-app-bar :clipped-left="clipped" fixed app dense hide-on-scroll>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-
-      <v-btn @click.stop="drawer = !drawer" icon>
+      <v-spacer />
+      <v-card>
+        <span>{{ $store.state.ticker.titleTicker.market }}</span> |
+        <span>{{ $store.state.ticker.titleTicker.trade_price }}</span> |
+        <span>({{ $store.state.ticker.titleTicker.signed_change_rate }})</span>         
+      </v-card>
+      <!--v-btn @click.stop="drawer = !drawer" icon>
         <v-icon v-bind:class="{ 'd-none': !isCoinSrchHide }">mdi-creative-commons</v-icon>
-      </v-btn>
+      </v-btn-->
+
 
       <v-spacer />
 
@@ -159,8 +165,8 @@ export default {
       isCoinSrchHide: true,
       items: [
         {
-          icon: "mdi-apps",
-          title: "Crypto Board",
+          icon: "mdi-chart-areaspline",
+          title: "Ticker",
           to: "/"
         },
         {
@@ -169,11 +175,12 @@ export default {
           to: "/inspire"
         }
       ],
-      miniVariant: false,
+      miniVariant: true,
       right: true,
       rightDrawer: false,
       title: this.$config.appName,
-      wsMap: {}
+      wsMap: {},      
+      titleTicker : { market : '', trade_price : 0, signed_change_rate : 0 },
     };
   }, // end data
   async asyncData({ req, res }) {
@@ -248,11 +255,19 @@ export default {
         ),
         $nuxt.$axios.$get("https://api.upbit.com/v1/market/all"),
         $nuxt.$axios.$get("https://api.binance.com/api/v3/exchangeInfo"),
-        $nuxt.$axios.$get("https://api.binance.com/api/v3/ticker/price")
+        $nuxt.$axios.$get("https://api.binance.com/api/v3/ticker/price"), 
+        //$nuxt.$axios.$get("https://m.stock.naver.com/marketindex/item.nhn?marketindexCd=FX_USDKRW&menu=exchange") 
+        
       ]);
       console.log("responseArr", responseArr);
       console.log("setExchangeRate", responseArr[0][0]);
       $nuxt.$store.commit("setExchangeRate", responseArr[0][0]);
+
+      //let parser = new DOMParser();
+      
+
+      //console.log("usdkrw", usdkrw);
+      // #header > div.major_info_wrp.no_chart.no_code > div.major_info > div.stock_wrp > div > strong
 
       // const KRWUSD = await $nuxt.$axios.$get(
       //   "https://quotation-api-cdn.dunamu.com/v1/forex/recent?codes=FRX.KRWUSD"
@@ -261,8 +276,8 @@ export default {
       // $nuxt.$store.commit("setExchangeRate", KRWUSD[0]);
 
       // upbit all market get
-      const upbitMarketData = responseArr[1];
       //debugger;
+      
       $nuxt.$store.commit("setMarket", {
         exchangeName: "upbit",
         list: responseArr[1]
@@ -278,7 +293,10 @@ export default {
             ...binanceArrTicker.map(obj => {
               let krwPrice =
                 Math.round(
+                  // cashBuyingPrice
                   obj.price * $nuxt.$store.state.exchangeRate.basePrice * 100
+                  //obj.price * $nuxt.$store.state.exchangeRate.cashBuyingPrice * 100
+
                 ) / 100;
               if (krwPrice >= 100) {
                 krwPrice = Math.floor(krwPrice);
@@ -303,14 +321,72 @@ export default {
       };
       setInterval(getBinanceTicker, 7000);
 
-      const arrKrwMarket = upbitMarketData
+
+      const arrUpbitMarkets = responseArr[1];
+      const mapUpbitMarkets = {};
+      for(let idxUm = 0; idxUm < arrUpbitMarkets.length;idxUm++){
+        mapUpbitMarkets[arrUpbitMarkets[idxUm].market] = arrUpbitMarkets[idxUm];
+      }
+      const arrKrwMarket = arrUpbitMarkets
         .map(market => market.market)
         .filter(market => market.indexOf("KRW") > -1);
+
+
+      
       //console.log(arrKrwMarket);
       // wss://api.upbit.com/websocket/v1
       // wss://crix-ws.upbit.com/websocket
       //return;
-      const self = this;
+      //const self = this;
+      const strKrwMarkets = arrKrwMarket.join(",")
+      // https://api.upbit.com/v1/ticker?markets=
+      console.log("strKrwMarkets", strKrwMarkets);
+      
+      const getUpbitTicker = async () => {
+        console.log("getUpbitTicker");
+        const binanceTicker = this.$store.state.ticker.binance.mapTicker;
+        const arrUpbitTicker = await this.$axios.$get("https://api.upbit.com/v1/ticker?markets="+strKrwMarkets);
+        const mapUpbitTicker = {};
+        for(let idxUt = 0; idxUt < arrUpbitTicker.length;idxUt++){
+          const marketName = arrUpbitTicker[idxUt].market.split("-")[1];
+          arrUpbitTicker[idxUt].korean_name = mapUpbitMarkets[arrUpbitTicker[idxUt].market].korean_name;
+          arrUpbitTicker[idxUt].kp = binanceTicker[marketName+"USDT" ] ?
+            (((arrUpbitTicker[idxUt].trade_price / binanceTicker[marketName+"USDT" ].krwPrice ) - 1) * 100) .toFixed(2)
+            : 0;
+          arrUpbitTicker[idxUt].change_rate = Math.round(arrUpbitTicker[idxUt].change_rate * 10000) / 100
+
+          mapUpbitTicker[arrUpbitTicker[idxUt].market] = arrUpbitTicker[idxUt];
+        }
+
+
+        const expanded = this.$store.state.ticker.curTicker.expanded;
+        const newExpanded = [];
+
+        for( let idxE = 0; idxE < expanded.length; idxE++){
+          newExpanded.push(mapUpbitTicker[expanded[idxE].market]);
+        }
+
+        this.$store.state.ticker.curTicker.arrTicker = arrUpbitTicker;
+        this.$store.state.ticker.curTicker.expanded = newExpanded;
+        //debugger;
+
+        const strTitleTicker = this.$comma(mapUpbitTicker["KRW-BTC"].trade_price) + " | "+ "KRW-BTC" + " | " + this.$config.appName;
+
+        //debugger;
+        document.title = strTitleTicker;
+        
+        this.$store.state.ticker.titleTicker.market = "KRW-BTC";
+        this.$store.state.ticker.titleTicker.trade_price = this.$comma(mapUpbitTicker["KRW-BTC"].trade_price);
+        this.$store.state.ticker.titleTicker.signed_change_rate = mapUpbitTicker["KRW-BTC"].signed_change_rate;
+      }
+      
+      await getUpbitTicker();
+
+      setInterval(getUpbitTicker, 2000 );
+
+      
+
+      
 
       const td = new TextDecoder("utf-8");
       // upbit websocket start

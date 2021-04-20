@@ -8,14 +8,18 @@ export const state = () => ({
         , sid : '' // session id
     }
     ,ticker: {
-        titleTicker : 'KRW-BTC'
+        titleTicker : { market : '', trade_price : 0, signed_change_rate : 0 }
         , upbit: {
             mapTicker: {}
             , arrTicker: []
         }, binance : {
             mapTicker : {}
             , arrTicker : []
-        } 
+        } , curTicker : {
+            mapTicker : {}
+            , arrTicker : []
+            , expanded : []
+        }
     }, config: {
         isTickerColor: true
     }, market: {
