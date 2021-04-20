@@ -48,7 +48,7 @@
         <span>{{ $store.state.ticker.titleTicker.market }}</span> |
         <span>{{ $comma($store.state.ticker.titleTicker.trade_price) }}</span> |
         <span>({{ $toTickerRate($store.state.ticker.titleTicker.signed_change_rate) }}%)</span>
-        <span>({{ $store.state.ticker.titleTicker.change }})</span>
+        <!--span>({{ $store.state.ticker.titleTicker.change }})</span-->
       </span>
       <!--v-btn @click.stop="drawer = !drawer" icon>
         <v-icon v-bind:class="{ 'd-none': !isCoinSrchHide }">mdi-creative-commons</v-icon>
