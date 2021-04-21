@@ -46,8 +46,8 @@
       <v-spacer />
       <span class="caption">
         <span>{{ $store.state.ticker.titleTicker.market }}</span> |
-        <span id="titleTp" :class=" parseInt($store.state.ticker.titleTicker.ch) > 0 ? 'rise--text' : ( $store.state.ticker.titleTicker.ch < 0 ? 'fall--text' : '' ) ">{{ $comma($store.state.ticker.titleTicker.trade_price) }}</span>
-        (<span :class=" $store.state.ticker.titleTicker.signed_change_rate > 0 ? 'rise--text':( $store.state.ticker.titleTicker.signed_change_rate < 0 ? 'fall--text':'') ">{{ $toTickerRate($store.state.ticker.titleTicker.signed_change_rate) }}%</span>)
+        <span id="titleTp" :class=" !$store.state.config.isTickerColor ? '' : ($store.state.ticker.titleTicker.ch) > 0 ? 'rise--text' : ( $store.state.ticker.titleTicker.ch < 0 ? 'fall--text' : '' ) ">{{ $comma($store.state.ticker.titleTicker.trade_price) }}</span>
+        (<span :class=" !$store.state.config.isTickerColor ? '' : $store.state.ticker.titleTicker.signed_change_rate > 0 ? 'rise--text':( $store.state.ticker.titleTicker.signed_change_rate < 0 ? 'fall--text':'') ">{{ $toTickerRate($store.state.ticker.titleTicker.signed_change_rate) }}%</span>)
         <!--span>({{ $store.state.ticker.titleTicker.ch }})</span-->
       </span>
       <!--v-btn @click.stop="drawer = !drawer" icon>
@@ -67,7 +67,7 @@
           log('blur');
         "
       />
-      <v-btn
+      <!--v-btn
         icon
         @click.stop="
           isCoinSrchHide = !isCoinSrchHide;
@@ -75,7 +75,7 @@
         "
       >
         <v-icon>mdi-magnify</v-icon>
-      </v-btn>
+      </v-btn-->
       <v-btn icon @click.stop="rightDrawer = !rightDrawer">
         <v-icon>mdi-cog</v-icon>
       </v-btn>

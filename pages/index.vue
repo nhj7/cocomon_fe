@@ -216,12 +216,13 @@
               <tr class="row3">
                 <td>
                   <span>
-                    <span>{{ item.market }}</span>
+                    <span>{{ }}-</span>
                   </span>
                 </td>
                 <td>
                   <span>
-                    <span>-</span>
+                    <span>{{ !$store.state.ticker.binance.mapTicker[ item["market"].split("-")[1] + "USDT" ] ? '' : 
+                      $store.state.ticker.binance.mapTicker[ item["market"].split("-")[1] + "USDT" ].price }}</span>
                   </span>
                 </td>
                 <td>
@@ -361,7 +362,7 @@ export default {
       } else {
         expanded.pop(slotData);
       }
-      this.$store.state.ticker.titleTicker = slotData.cd;
+      //this.$store.state.ticker.titleTicker = slotData.cd;
     },
     customSort(items, index, isDesc) {
       // console.log("customSort", index, isDesc, this.$store.state.ticker.upbit.arrTicker.length, this.$store.state.market.upbit.krw.length);
