@@ -46,9 +46,9 @@
       <v-spacer />
       <span class="caption">
         <span>{{ $store.state.ticker.titleTicker.market }}</span> |
-        <span>{{ $comma($store.state.ticker.titleTicker.trade_price) }}</span> |
-        <span>({{ $toTickerRate($store.state.ticker.titleTicker.signed_change_rate) }}%)</span>
-        <!--span>({{ $store.state.ticker.titleTicker.change }})</span-->
+        <span id="titleTp" :class=" parseInt($store.state.ticker.titleTicker.ch) > 0 ? 'rise--text' : ( $store.state.ticker.titleTicker.ch < 0 ? 'fall--text' : '' ) ">{{ $comma($store.state.ticker.titleTicker.trade_price) }}</span>
+        (<span :class=" $store.state.ticker.titleTicker.signed_change_rate > 0 ? 'rise--text':( $store.state.ticker.titleTicker.signed_change_rate < 0 ? 'fall--text':'') ">{{ $toTickerRate($store.state.ticker.titleTicker.signed_change_rate) }}%</span>)
+        <!--span>({{ $store.state.ticker.titleTicker.ch }})</span-->
       </span>
       <!--v-btn @click.stop="drawer = !drawer" icon>
         <v-icon v-bind:class="{ 'd-none': !isCoinSrchHide }">mdi-creative-commons</v-icon>
@@ -182,7 +182,7 @@ export default {
       title: this.$config.appName,
       wsMap: {},      
       titleTicker : { market : '', trade_price : 0, signed_change_rate : 0 },
-      
+      ticker : { mapUpbitTicker : {} }
     };
   }, // end data
   async asyncData({ req, res }) {
@@ -373,6 +373,9 @@ export default {
 
         //debugger;
         document.title = strTitleTicker;
+
+        
+        mapUpbitTicker["KRW-BTC"].ch = mapUpbitTicker["KRW-BTC"].trade_price - this.$store.state.ticker.titleTicker.trade_price;
         this.$store.state.ticker.titleTicker = mapUpbitTicker["KRW-BTC"];
         // this.$store.state.ticker.titleTicker.market = "KRW-BTC";
         // this.$store.state.ticker.titleTicker.trade_price = this.$comma(mapUpbitTicker["KRW-BTC"].trade_price);
