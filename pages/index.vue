@@ -103,7 +103,7 @@
             :sort-desc="false"
             :custom-sort="customSort"
             height="40vh"
-            style=";overflow-y: auto; overflow-x: hidden"
+            style=" overflow-x: hidden;overflow-y: auto;;"
           >
             <!-- 
             single-sort
