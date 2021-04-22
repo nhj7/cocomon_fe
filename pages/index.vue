@@ -102,8 +102,8 @@
             :sort-by="'acc_trade_price_24h'"
             :sort-desc="false"
             :custom-sort="customSort"
-            height="40vh"
-            style=" overflow-x: hidden;overflow-y: auto;;"
+            
+            style="overflow-x:hidden;overflow-y:auto;height:40vh"
           >
             <!-- 
             single-sort
