@@ -6916,15 +6916,16 @@ num2fraction@^1.2.2:
   version "1.2.2"
   resolved "https://registry.npmjs.org/num2fraction/-/num2fraction-1.2.2.tgz"
 
-nuxt-socket-io@^1.1.16:
-  version "1.1.16"
-  resolved "https://registry.yarnpkg.com/nuxt-socket-io/-/nuxt-socket-io-1.1.16.tgz#8a2aae78dc360c95106b1877d11b82808dc39bd7"
+nuxt-socket-io@^1.1.17:
+  version "1.1.17"
+  resolved "https://registry.yarnpkg.com/nuxt-socket-io/-/nuxt-socket-io-1.1.17.tgz#b823a60df64fdcfd8afd1b9aadd25002bed0a537"
   dependencies:
     "@nuxt/types" "^2.14.7"
     "@types/socket.io-client" "^1.4.34"
     glob "^7.1.6"
     socket.io "^3.1.0"
     socket.io-client "^3.1.0"
+    tiny-emitter "^2.1.0"
     vue-template-compiler "^2.6.12"
 
 nuxt@^2.15.4:
@@ -9374,7 +9375,7 @@ timsort@^0.3.0:
   version "0.3.0"
   resolved "https://registry.npmjs.org/timsort/-/timsort-0.3.0.tgz"
 
-tiny-emitter@^2.0.0:
+tiny-emitter@^2.0.0, tiny-emitter@^2.1.0:
   version "2.1.0"
   resolved "https://registry.npmjs.org/tiny-emitter/-/tiny-emitter-2.1.0.tgz"
 
