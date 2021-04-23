@@ -9,6 +9,7 @@ export const state = () => ({
     }
     ,ticker: {
         titleTicker : { market : '', trade_price : 0, signed_change_rate : 0 }
+        , mode : 'KRW'
         , upbit: {
             mapTicker: {}
             , arrTicker: []
@@ -23,16 +24,16 @@ export const state = () => ({
     }, config: {
         isTickerColor: true
     }, market: {
-        upbit: {
-            krw : {
+        UBT: {
+            KRW : {
 
-            }, btc : {
+            }, BTC : {
 
-            }, usdt : {
+            }, USDT : {
 
-            }
-        }, binance : {
-            usdt : {
+            }, markets : []
+        }, BNB : {
+            USDT : {
 
             }
         }
@@ -46,6 +47,10 @@ export const state = () => ({
         isSnackbar : false,
         text : 'snacbar message',
         timeout : 1000,
+    }, localStorage : { 
+        favorCoinList : ["UBT-KRW-BTC"]
+        , expandList : []
+        , expandMap : {}
     }
 })
 

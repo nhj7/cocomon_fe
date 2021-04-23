@@ -50,7 +50,9 @@ export default {
     '@nuxt/content',
     'nuxt-socket-io', 
     ['cookie-universal-nuxt', { alias: 'cookies' }],
-    
+    ['nuxt-vuex-localstorage', {
+      mode: 'debug'
+    }],
     
   ],
   io: {

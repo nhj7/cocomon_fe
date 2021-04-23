@@ -1,7 +1,12 @@
 export default ( context, inject ) => {
     inject('comma', value => {
         if(!value) return "";
-        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        if( value.toString().indexOf(".") > -1){
+            value = parseFloat(value).toFixed(2);
+        }
+        value = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        
+        return value;
     } );
     inject('toTickerRate', value => {
         if(!value) return "";

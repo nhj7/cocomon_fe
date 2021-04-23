@@ -280,10 +280,7 @@ export default {
       // upbit all market get
       //debugger;
       
-      $nuxt.$store.commit("setMarket", {
-        exchangeName: "upbit",
-        list: responseArr[1]
-      });
+      
 
       const setBinanceTicker = tickerList => {
         const binanceArrTicker = tickerList.filter(market =>
@@ -315,7 +312,7 @@ export default {
       };
       setBinanceTicker(responseArr[3]);
       const getBinanceTicker = async callback => {
-        console.log("getBinanceTicker");
+        //console.log("getBinanceTicker");
         const responseList = await $nuxt.$axios.$get(
           "https://api.binance.com/api/v3/ticker/price"
         );
@@ -329,6 +326,9 @@ export default {
       for(let idxUm = 0; idxUm < arrUpbitMarkets.length;idxUm++){
         mapUpbitMarkets[arrUpbitMarkets[idxUm].market] = arrUpbitMarkets[idxUm];
       }
+
+      //debugger;
+      this.$store.state.market.UBT.markets = arrUpbitMarkets;
       const arrKrwMarket = arrUpbitMarkets
         .map(market => market.market)
         .filter(market => market.indexOf("KRW") > -1);
@@ -337,17 +337,34 @@ export default {
       // wss://crix-ws.upbit.com/websocket
       //return;
       //const self = this;
-      const strKrwMarkets = arrKrwMarket.join(",")
+      let strKrwMarkets = arrKrwMarket.join(",")
       // https://api.upbit.com/v1/ticker?markets=
       console.log("strKrwMarkets", strKrwMarkets);
+
+      
       
       const getUpbitTicker = async () => {
-        console.log("getUpbitTicker");
+        //console.log("getUpbitTicker");
         const binanceTicker = this.$store.state.ticker.binance.mapTicker;
-        const arrUpbitTicker = await this.$axios.$get("https://api.upbit.com/v1/ticker?markets="+strKrwMarkets);        
+        
+        let ubtMarkets = "";
+        if( this.$store.state.ticker.mode == "관심"){
+          ubtMarkets = this.$store.state.localStorage.favorCoinList.map((item) => {return item.replace("UBT-","")}).join(",")
+        }else{
+          ubtMarkets = this.$store.state.market.UBT.markets.map(market => market.market).filter(market => market.indexOf(this.$store.state.ticker.mode) > -1).join(",");
+        }
+        const arrUpbitTicker = await this.$axios.$get("https://api.upbit.com/v1/ticker?markets="+ubtMarkets);        
         const mapUpbitTicker = {};
+
+        //const expandList = this.$store.state.localStorage.expandList;
+
         for(let idxUt = 0; idxUt < arrUpbitTicker.length;idxUt++){
           const marketName = arrUpbitTicker[idxUt].market.split("-")[1];
+
+          //arrUpbitTicker[idxUt].expand = expandList.indexOf( "UBT-"+arrUpbitTicker[idxUt].market) > -1 ? true : false;
+          arrUpbitTicker[idxUt].gcd = "UBT-" + arrUpbitTicker[idxUt].market;
+
+
           arrUpbitTicker[idxUt].korean_name = mapUpbitMarkets[arrUpbitTicker[idxUt].market].korean_name;
           arrUpbitTicker[idxUt].kp = binanceTicker[marketName+"USDT" ] ?
             (((arrUpbitTicker[idxUt].trade_price / binanceTicker[marketName+"USDT" ].krwPrice ) - 1) * 100) .toFixed(2)
@@ -356,24 +373,11 @@ export default {
 
           mapUpbitTicker[arrUpbitTicker[idxUt].market] = arrUpbitTicker[idxUt];
         }
-
-
-        const expanded = this.$store.state.ticker.curTicker.expanded;
-        const newExpanded = [];
-
-        for( let idxE = 0; idxE < expanded.length; idxE++){
-          newExpanded.push(mapUpbitTicker[expanded[idxE].market]);
-        }
-
         this.$store.state.ticker.curTicker.arrTicker = arrUpbitTicker;
-        this.$store.state.ticker.curTicker.expanded = newExpanded;
-        //debugger;
-
         const strTitleTicker = this.$comma(mapUpbitTicker["KRW-BTC"].trade_price) + " | "+ "KRW-BTC" + " | " + this.$config.appName;
 
         //debugger;
         document.title = strTitleTicker;
-
         
         mapUpbitTicker["KRW-BTC"].ch = mapUpbitTicker["KRW-BTC"].trade_price - this.$store.state.ticker.titleTicker.trade_price;
         this.$store.state.ticker.titleTicker = mapUpbitTicker["KRW-BTC"];

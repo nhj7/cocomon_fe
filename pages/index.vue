@@ -102,38 +102,12 @@
             :sort-by="'acc_trade_price_24h'"
             :sort-desc="false"
             :custom-sort="customSort"
-            
-            style="overflow-x:hidden;overflow-y:auto;height:40vh"
+            :style="dtHeight"
           >
-            <!-- 
-            single-sort
-            :sort-by="'atp24h'"
-            :sort-desc="false"
-            :custom-sort="customSort"-->
-
-            <!--template #header="{ props: { headers } }">
-              <thead class="v-data-table-header">
-                <tr>
-                  <th
-                    v-for="header in headers"
-                    :key="header.value"
-                    class="text-uppercase"
-                    scope="col"
-                    :class="header.class"
-                    :style="header.width"
-                  >
-                    {{ header.text }}
-                  </th>
-                </tr>
-              </thead>
-            </template-->
-
             <template v-slot:item="{ item }">
-              <tr @click="addExpand(item)" class="row1">
-                <td class="text-left">{{ item.korean_name }}</td>
-                <td
-                  class="text-center"
-                  :class="[
+              <tr @click="toggleExpand(item)" class="row1" >
+                <td class="text-left" v-ripple="{ }" >{{ item.korean_name }}</td>
+                <td :class="[
                     $store.state.config.isTickerColor
                       ? 0 > item.signed_change_price
                         ? 'fall--text'
@@ -141,11 +115,9 @@
                       : '',
                   ]"
                 >
-                  {{ item.trade_price ? comma(item.trade_price) : "" }}
+                  {{ item.trade_price ? $comma(item.trade_price) : "" }}
                 </td>
-                <td
-                  class="text-center"
-                  :class="[
+                <td :class="[
                     $store.state.config.isTickerColor
                       ? 0 > item.signed_change_price
                         ? 'fall--text'
@@ -160,9 +132,7 @@
                     )
                   }}
                 </td>
-                <td
-                  class="text-center"
-                  :class="[
+                <td :class="[
                     !$store.state.config.isTickerColor || item.kp == 0
                       ? 'grey--text'
                       : item.kp > 0
@@ -170,9 +140,9 @@
                       : 'fall--text',
                   ]"
                 >
-                  {{ item.kp }}
+                  {{ (item.kp>0?'+':(item.kp==0?'':'-')) + item.kp }}
                 </td>
-                <td class="text-center">
+                <td>
                   {{
                     Math.floor(item.acc_trade_price_24h / 100000000)
                       .toString()
@@ -180,58 +150,54 @@
                   }}
                 </td>
               </tr>
-              <tr @click="addExpand(item)" class="row2">
+              <!-- row2 --> 
+              <tr @click="toggleExpand(item)" class="row2">
+                <td class="text-left">
+                  {{ item.market }}
+                </td>
                 <td>
-                  <span>
-                    <span>{{ item.market }}</span>
-                  </span>
+                  {{
+                    $store.state.ticker.binance.mapTicker[
+                      item["market"].split("-")[1] + "USDT"
+                    ]
+                      ? $comma(
+                          $store.state.ticker.binance.mapTicker[
+                            item["market"].split("-")[1] + "USDT"
+                          ].krwPrice
+                        )
+                      : ""
+                  }}
                 </td>
-                <td class="text-center">
-                  <span>
-                    <span>
-                      {{
-                        $store.state.ticker.binance.mapTicker[
-                          item["market"].split("-")[1] + "USDT"
-                        ]
-                          ? comma(
-                              $store.state.ticker.binance.mapTicker[
-                                item["market"].split("-")[1] + "USDT"
-                              ].krwPrice
-                            )
-                          : "-"
-                      }}
-                    </span>
-                  </span>
+                <td>
+                  {{ $comma(item.signed_change_price) }}
                 </td>
-                <td class="text-center">
-                  <span>
-                    <span>{{ comma(item.signed_change_price) }}</span>
-                  </span>
+                <td> 
+                  {{ $store.state.ticker.binance.mapTicker[item["market"].split("-")[1] + "USDT"] ? 
+                    $comma( (item.trade_price - $store.state.ticker.binance.mapTicker[item["market"].split("-")[1] + "USDT"].krwPrice)) : '' }}
                 </td>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
+                <td></td>
               </tr>
-            </template>
-            <template v-slot:expanded-item="{ item }">
-              <tr class="row3">
-                <td>
-                  <span>
-                    <span>{{ }}-</span>
-                  </span>
+              <!-- row3 -->
+              <tr class="row3" v-show="$store.state.localStorage.expandList.indexOf(item.gcd) > -1">
+                <td class="text-left">
+                  <v-icon @click="toggleFavorCoin(item)" dense ripple="false" v-show="item.gcd!='UBT-KRW-BTC'">
+                    {{ $store.state.localStorage.favorCoinList.indexOf('UBT-'+item.market) > -1 ? 'mdi-star-plus' : 'mdi-star-plus-outline' }}
+                  </v-icon>
                 </td>
                 <td>
-                  <span>
-                    <span>{{ !$store.state.ticker.binance.mapTicker[ item["market"].split("-")[1] + "USDT" ] ? '' : 
-                      $store.state.ticker.binance.mapTicker[ item["market"].split("-")[1] + "USDT" ].price }}</span>
-                  </span>
+                  {{ !$store.state.ticker.binance.mapTicker[ item["market"].split("-")[1] + "USDT" ] ? '' : 
+                      $comma( $store.state.ticker.binance.mapTicker[ item["market"].split("-")[1] + "USDT" ].price)  }}
                 </td>
                 <td>
-                  <span>
-                    <span>-</span>
-                  </span>
+                  1
                 </td>
-                <td></td>
-                <td></td>
+                <td>
+                  2
+                </td>
+                <td>
+                  3
+                </td>
+                
               </tr>
             </template>
           </v-data-table>
@@ -262,6 +228,10 @@
               </template>
               <span>현찰 살 때 {{ $comma($store.state.exchangeRate.cashBuyingPrice) }}원, 매매기준율 : {{ $comma($store.state.exchangeRate.basePrice) }}원</span>
             </v-tooltip>
+
+            <br />
+
+            <span>{{ this.$vuetify.breakpoint.name }}</span>
           </v-card>
         </v-col>
       </v-row>
@@ -348,28 +318,43 @@ export default {
         { tab: "BTC", content: "Tab 3 Content" },
         { tab: "USDT", content: "Tab 4 Content" },
       ],
+
+      favorCoinList : this.$store.state.localStorage.favorCoinList,
+      
     };
   }, // end data.
   components: {},
   counter: 0,
   methods: {
-    addExpand(slotData) {
-      //debugger;
-      const expanded = this.$store.state.ticker.curTicker.expanded;
-      console.log("addExpand", slotData, expanded, expanded.indexOf(slotData));
-      if (expanded.indexOf(slotData) == -1) {
-        expanded.push(slotData);
-      } else {
-        expanded.pop(slotData);
-      }
-      //this.$store.state.ticker.titleTicker = slotData.cd;
-    },
-    customSort(items, index, isDesc) {
-      // console.log("customSort", index, isDesc, this.$store.state.ticker.upbit.arrTicker.length, this.$store.state.market.upbit.krw.length);
+    
+    toggleExpand(item) {
+      
+      const expandList = this.$store.state.localStorage.expandList;
+      const idx = expandList.indexOf(item.gcd);
 
-      // if(  this.$store.state.ticker.upbit.arrTicker.length == this.$store.state.market.upbit.krw.length ){
-      //   return items;
-      // }
+      console.log("toggleExpand", item, idx);
+
+      if (idx == -1) {
+        expandList.push(item.gcd);
+      } else {
+        expandList.splice(idx, 1);
+      }
+      
+    } // end toggleExpand
+    ,toggleFavorCoin(item){
+      const favorCoinList = this.favorCoinList;
+      console.log("toggleFavorCoin", favorCoinList, item.gcd);
+      // UBT : upbit code
+      const idx = favorCoinList.indexOf(item.gcd);
+      if (idx == -1) {
+        favorCoinList.push(item.gcd);
+      } else {
+        favorCoinList.splice(idx, 1);
+      }
+      //localStorage.setItem("favorCoinList", JSON.stringify(favorCoinList));
+      
+    } // end toggleFavorCoin
+    ,customSort(items, index, isDesc) {
       items.sort((a, b) => {
         if (isDesc != "false") {
           return a[index] - b[index];
@@ -378,17 +363,18 @@ export default {
         }
       });
       return items;
-    },
-    clickTab(event, obj) {
+    }
+    ,clickTab(event, obj) {
       console.log("clickTab", event.target.textContent);
-    },
-    onTabChange(idx) {
+    }
+    ,onTabChange(idx) {
+      this.$store.state.ticker.curTicker.arrTicker = [];
       if ("관심" == this.assetTabs[idx].tab) {
-        console.log("onTabChange", "관심1111");
-      }
-      console.log("onTabChange", this.assetTabs[idx].tab);
-    },
-    padRate(value) {
+        console.log("onTabChange", "관심1111");        
+      }      
+      this.$store.state.ticker.mode = this.assetTabs[idx].tab;
+    }
+    ,padRate(value) {
       if (value.length == 2) {
         return value + ".00";
       }
@@ -398,14 +384,11 @@ export default {
         return (value + ".").padEnd(5, "0");
       }
       return value;
-    },
-    comma(value) {
-      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    },
-    kp(kp, op) {
+    }   
+    , kp(kp, op) {
       return ((kp / op - 1) * 100).toFixed(2);
-    },
-    pushData(map, arr, obj, key, state) {
+    }
+    ,pushData(map, arr, obj, key, state) {
       //console.log("pushData");
       // obj.kp = state.ticker.binance.mapTicker[obj.cd.split("-")[1]+"USDT" ] ?
       //     (((obj.tp / state.ticker.binance.mapTicker[obj.cd.split("-")[1]+"USDT" ].krwPrice ) - 1) * 100) .toFixed(2)
@@ -427,88 +410,29 @@ export default {
           kp: obj.kp,
         });
       }
-    },
+    },    
   },
-  created: async function () {
+  computed : {
+    dtHeight(){
+
+      return "max-height:40vh;" ;
+
+
+
+      // switch (this.$vuetify.breakpoint.name) {
+      //     case 'xs': return "40vh;"
+      //     case 'sm': return "55vh"
+      //     case 'md': return "70vh"
+      //     case 'lg': return "70vh"
+      //     case 'xl': return "70vh"
+      // }
+    }
+  }
+  , created: async function () {
     console.log("index.vue", "created!!!");
 
     if (!process.server) {
-      console.log(this);
-
-      const self = this;
-      const td = new TextDecoder("utf-8");
-      // upbit websocket start
-      const connectUpbit = () => {
-        const ws = new WebSocket("wss://api.upbit.com/websocket/v1");
-        ws.binaryType = "arraybuffer";
-        ws.onopen = () => {
-          // subscribe to some channels
-          ws.send(
-            JSON.stringify([
-              { ticket: $nuxt.$store.state.id.cid },
-              {
-                type: "ticker",
-                codes: arrKrwMarket,
-                //codes: ["KRW-BTC"]
-              },
-              { format: "SIMPLE" },
-            ])
-          );
-          self.wsMap["upbit"] = ws;
-          //debugger;
-        };
-
-        ws.onmessage = (event) => {
-          var arr = new Uint8Array(event.data);
-          const tickerSon = JSON.parse(td.decode(arr));
-          /*
-          if (
-            !self.$store.state.ticker.upbit.mapTicker[tickerSon.cd] ||
-            self.$store.state.ticker.upbit.mapTicker[tickerSon.cd]["tp"] !=
-              tickerSon.tp
-          ) {
-            if (tickerSon.cd == self.$store.state.ticker.titleTicker) {
-              document.title =
-                self.$comma(tickerSon.tp) +
-                "(" +
-                (tickerSon.scr < 0 ? "-" : "+") +
-                Math.round(tickerSon.cr * 10000) / 100 +
-                "%) " +
-                tickerSon.cd.split("-")[1];
-            }
-
-            //self.$store.commit("setTicker", tickerSon);
-          }
-          */
-          //console.log(self);
-          self.pushData(
-            self.curTicker.mapTicker,
-            self.curTicker.arrTicker,
-            tickerSon,
-            "cd"
-          );
-        };
-
-        ws.onclose = (e) => {
-          console.log(
-            "Socket is closed. Reconnect will be attempted in 1 second.",
-            e.reason
-          );
-          setTimeout(() => {
-            connectUpbit();
-          }, 1000);
-        };
-
-        ws.onerror = (err) => {
-          console.error(
-            "Socket encountered error: ",
-            err.message,
-            "Closing socket"
-          );
-          ws.close();
-        };
-      };
-      //connectUpbit();
+      
     } // end created function
   },
   mounted() {
@@ -658,9 +582,54 @@ tbody > tr:hover {
   margin-top: 0.01em;
 }
 .rise--text {
-  color: #009688;
+  /* color: #009688; */
+  color : #2196F3;
 }
 .fall--text {
-  color: #E91E63;
+  color:#F44336;
+}
+#dtTicker{
+  overflow-x:hidden;overflow-y:auto;
+}
+.theme--light::-webkit-scrollbar {
+  width: 15px;
+}
+
+.theme--light::-webkit-scrollbar-track {
+  background: #e6e6e6;
+  border-left: 1px solid #dadada;
+}
+
+.theme--light::-webkit-scrollbar-thumb {
+  background: #b0b0b0;
+  border: solid 3px #e6e6e6;
+  border-radius: 7px;
+}
+
+.theme--light::-webkit-scrollbar-thumb:hover {
+  background: black;
+}
+
+.theme--dark::-webkit-scrollbar {
+  width: 15px;
+}
+
+.theme--dark::-webkit-scrollbar-track {
+  background: #202020;
+  border-left: 1px solid #2c2c2c;
+}
+
+.theme--dark::-webkit-scrollbar-thumb {
+  background: #3e3e3e;
+  border: solid 3px #202020;
+  border-radius: 7px;
+}
+
+.theme--dark::-webkit-scrollbar-thumb:hover {
+  background: white;
+}
+
+.v-data-table__wrapper > table td {
+  text-align:center;
 }
 </style>
