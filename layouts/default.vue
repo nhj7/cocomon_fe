@@ -132,7 +132,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-footer :absolute="!fixed" app>
+    <v-footer absolute fixed inset padless >
       <v-spacer />
       <span>
         All content &copy; {{ $config.appName }}.
@@ -556,3 +556,6 @@ export default {
   }
 };
 </script>
+<style scoped>
+  
+</style>

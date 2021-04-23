@@ -204,7 +204,23 @@
         </v-col>
 
         <v-col cols="12" sm="4" md="4" class=".rounded-lg">
-          <v-card class="d-flex pa-2" outlined tile>채팅 영역</v-card>
+          <v-card class="d-flex pa-2" outlined tile>
+            채팅 영역
+
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+          </v-card>
         </v-col>
         <v-col cols="12" sm="4" md="3">
           <v-card class="d-flex pa-2" outlined tile>뉴스 영역</v-card>
@@ -414,18 +430,15 @@ export default {
   },
   computed : {
     dtHeight(){
-
-      return "max-height:40vh;" ;
-
-
-
-      // switch (this.$vuetify.breakpoint.name) {
-      //     case 'xs': return "40vh;"
-      //     case 'sm': return "55vh"
-      //     case 'md': return "70vh"
-      //     case 'lg': return "70vh"
-      //     case 'xl': return "70vh"
-      // }
+      const maxHeightMap = {
+        xs : '40vh'
+        , sm : '55vh'
+        , md : '70vh'
+        , lg : '70vh'
+        , xl : '70vh'
+      }
+      //console.log("dtHeight", maxHeightMap[this.$vuetify.breakpoint.name] );
+      return `max-height:${maxHeightMap[this.$vuetify.breakpoint.name]};`;
     }
   }
   , created: async function () {
