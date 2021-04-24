@@ -3,7 +3,14 @@ import colors from 'vuetify/es5/util/colors'
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: true,
-
+  server: {
+    host: '0.0.0.0' // default: localhost
+    , port: process.env.port || 7001
+    , https: {
+      key: fs.readFileSync('/etc/letsencrypt/live/cocomon.kr/privkey.pem'),
+      cert: fs.readFileSync('/etc/letsencrypt/live/cocomon.kr/fullchain.pem')
+    }
+  },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -111,10 +118,7 @@ export default {
     parallel: true,
     cache: true,
     hardSource: true,
-  }, server: {
-    host: '0.0.0.0' // default: localhost
-    , port: process.env.port || 7001
-  },
+  }, 
   publicRuntimeConfig: {
     baseURL: 'https://cocomon.kr'
     , appName: process.env.appName

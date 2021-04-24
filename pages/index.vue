@@ -664,10 +664,10 @@ tbody > tr:hover {
 
 @keyframes row1-ch-rise-ani {
     0% {
-        box-shadow:0.02em 0.02em 0.1em 0.01em #7dc0f7;
+        box-shadow:0.03em 0.03em 0.2em 0.02em #7dc0f7;
     }
     75% {
-        box-shadow:0.02em 0.02em 0.1em 0.01em #2196f3;
+        box-shadow:0.03em 0.03em 0.2em 0.02em #2196f3;
     }
     100% {
         box-shadow:none;
@@ -682,10 +682,10 @@ tbody > tr:hover {
 }
 @keyframes row1-ch-fall-ani {
     0% {
-        box-shadow:0.02em 0.02em 0.1em 0.01em rgb(248, 134, 126);
+        box-shadow:0.03em 0.03em 0.2em 0.02em rgb(248, 134, 126);
     }
     50%{
-      box-shadow:0.02em 0.02em 0.1em 0.01em #F44336;
+      box-shadow:0.03em 0.03em 0.2em 0.02em #F44336;
     }
     100% {
         box-shadow:none;
