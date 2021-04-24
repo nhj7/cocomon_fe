@@ -4,25 +4,19 @@ import fs from 'fs'
 //let colors = require('vuetify/es5/util/colors')
 //const fs = require( 'fs')
 
-export default {
+//export default {
 //colors = colors.default;
 //console.log(colors);
 
 //module.exports = {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
+
+const config = {  
   ssr: true
   ,isDev: process.env.NODE_ENV !== 'production'
   ,server: {
-    mode : 'http'
-    , host: '0.0.0.0' // default: localhost
+    host: '0.0.0.0' // default: localhost
     , port: process.env.port || 7001
-    , http: {
-      port: 8080 // default
-    }
-    , https: {
-      key: process.env.NODE_ENV !== 'production' ? '' : fs.readFileSync('/etc/letsencrypt/live/cocomon.kr/privkey.pem'),
-      cert: process.env.NODE_ENV !== 'production' ? '' : fs.readFileSync('/etc/letsencrypt/live/cocomon.kr/fullchain.pem')
-    }
   },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
@@ -146,3 +140,12 @@ export default {
   }, serverMiddleware: ['~/middleware-server/logger', { path: '/api', handler: '~/middleware-server/index.js' }]
 
 }
+if( process.env.NODE_ENV == "production"){
+  config.server.https = {
+    key: process.env.NODE_ENV !== 'production' ? '' : fs.readFileSync('/etc/letsencrypt/live/cocomon.kr/privkey.pem'),
+    cert: process.env.NODE_ENV !== 'production' ? '' : fs.readFileSync('/etc/letsencrypt/live/cocomon.kr/fullchain.pem')
+  }
+}
+
+
+module.exports = config;
