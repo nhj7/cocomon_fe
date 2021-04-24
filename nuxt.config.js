@@ -1,15 +1,27 @@
 import colors from 'vuetify/es5/util/colors'
 import fs from 'fs'
 
+//let colors = require('vuetify/es5/util/colors')
+//const fs = require( 'fs')
+
 export default {
+//colors = colors.default;
+//console.log(colors);
+
+//module.exports = {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
-  ssr: true,
-  server: {
-    host: '0.0.0.0' // default: localhost
+  ssr: true
+  ,isDev: process.env.NODE_ENV !== 'production'
+  ,server: {
+    mode : 'http'
+    , host: '0.0.0.0' // default: localhost
     , port: process.env.port || 7001
+    , http: {
+      port: 8080 // default
+    }
     , https: {
-      key: fs.readFileSync('/etc/letsencrypt/live/cocomon.kr/privkey.pem'),
-      cert: fs.readFileSync('/etc/letsencrypt/live/cocomon.kr/fullchain.pem')
+      key: process.env.NODE_ENV !== 'production' ? '' : fs.readFileSync('/etc/letsencrypt/live/cocomon.kr/privkey.pem'),
+      cert: process.env.NODE_ENV !== 'production' ? '' : fs.readFileSync('/etc/letsencrypt/live/cocomon.kr/fullchain.pem')
     }
   },
 
@@ -106,7 +118,7 @@ export default {
           error: colors.deepOrange.accent4,
           success: colors.green.accent3
         }
-      }
+      } // end theme
     },
     icons: {
       iconfont: 'mdi', // default - only for display purposes
