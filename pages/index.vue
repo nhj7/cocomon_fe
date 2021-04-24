@@ -18,7 +18,7 @@
       ></iframe-->
 
       <v-row>
-        <v-col cols="12" sm="8" md="5">
+        <v-col cols="12" sm="6" xs="12">
           <v-card class="d-flex pa-2" outlined tile>
             <v-layout justify-center mb-1>
               <v-flex xs4>
@@ -113,9 +113,13 @@
                         ? 'fall--text'
                         : 'rise--text'
                       : '',
+
+                    $store.state.config.isTickerColor ? ( item.ch==0?'':(item.ch > 0 ? 'row1-ch-rise' : 'row1-ch-fall' )) : ''
                   ]"
                 >
-                  {{ item.trade_price ? $comma(item.trade_price) : "" }}
+                  <span>{{ item.trade_price ? 
+                      ( $store.state.ticker.mode == 'BTC' ? item.trade_price : $comma(item.trade_price, true)) : "" }}
+                  </span>
                 </td>
                 <td :class="[
                     $store.state.config.isTickerColor
@@ -155,7 +159,7 @@
                 <td class="text-left">
                   {{ item.market }}
                 </td>
-                <td>
+                <td :class="[item.ch==0?'':(item.ch > 0 ? 'row2-ch-rise' : 'row2-ch-fall' )]">
                   {{
                     $store.state.ticker.binance.mapTicker[
                       item["market"].split("-")[1] + "USDT"
@@ -169,11 +173,11 @@
                   }}
                 </td>
                 <td>
-                  {{ $comma(item.signed_change_price) }}
+                  {{ $comma(item.signed_change_price, 'Y') }}
                 </td>
                 <td> 
                   {{ $store.state.ticker.binance.mapTicker[item["market"].split("-")[1] + "USDT"] ? 
-                    $comma( (item.trade_price - $store.state.ticker.binance.mapTicker[item["market"].split("-")[1] + "USDT"].krwPrice)) : '' }}
+                    $comma( (item.trade_price - $store.state.ticker.binance.mapTicker[item["market"].split("-")[1] + "USDT"].krwPrice), 'Y') : '' }}
                 </td>
                 <td></td>
               </tr>
@@ -202,9 +206,10 @@
             </template>
           </v-data-table>
         </v-col>
-
-        <v-col cols="12" sm="4" md="4" class=".rounded-lg">
-          <v-card class="d-flex pa-2" outlined tile>
+        <!--v-col cols="12" sm="1" ></v-col-->
+        
+        <v-col cols="12" sm="6" xs="12" class=".rounded-lg">
+          <v-card class="d-flex pa-2" outlined tile :style="chatHeight">
             채팅 영역
 
             <br />
@@ -222,7 +227,7 @@
             <br />
           </v-card>
         </v-col>
-        <v-col cols="12" sm="4" md="3">
+        <v-col cols="12" sm="12" md="12">
           <v-card class="d-flex pa-2" outlined tile>뉴스 영역</v-card>
         </v-col>
       </v-row>
@@ -359,7 +364,7 @@ export default {
     } // end toggleExpand
     ,toggleFavorCoin(item){
       const favorCoinList = this.favorCoinList;
-      console.log("toggleFavorCoin", favorCoinList, item.gcd);
+      
       // UBT : upbit code
       const idx = favorCoinList.indexOf(item.gcd);
       if (idx == -1) {
@@ -367,6 +372,8 @@ export default {
       } else {
         favorCoinList.splice(idx, 1);
       }
+
+      console.log("toggleFavorCoin", favorCoinList, item.gcd, $store.state.ticker.mode);
       //localStorage.setItem("favorCoinList", JSON.stringify(favorCoinList));
       
     } // end toggleFavorCoin
@@ -433,9 +440,19 @@ export default {
       const maxHeightMap = {
         xs : '40vh'
         , sm : '55vh'
-        , md : '70vh'
-        , lg : '70vh'
-        , xl : '70vh'
+        , md : '55vh'
+        , lg : '55vh'
+        , xl : '55vh'
+      }
+      //console.log("dtHeight", maxHeightMap[this.$vuetify.breakpoint.name] );
+      return `max-height:${maxHeightMap[this.$vuetify.breakpoint.name]};`;
+    }, chatHeight(){
+      const maxHeightMap = {
+        xs : '30vh'
+        , sm : '55vh'
+        , md : '55vh'
+        , lg : '55vh'
+        , xl : '55vh' 
       }
       //console.log("dtHeight", maxHeightMap[this.$vuetify.breakpoint.name] );
       return `max-height:${maxHeightMap[this.$vuetify.breakpoint.name]};`;
@@ -532,7 +549,7 @@ export default {
 .col-2,
 .col-1 {
   width: 100%;
-  padding: 2px;
+  padding: 3px;
 }
 
 table tr td,
@@ -629,7 +646,6 @@ tbody > tr:hover {
 
 .theme--dark::-webkit-scrollbar-track {
   background: #202020;
-  border-left: 1px solid #2c2c2c;
 }
 
 .theme--dark::-webkit-scrollbar-thumb {
@@ -644,5 +660,41 @@ tbody > tr:hover {
 
 .v-data-table__wrapper > table td {
   text-align:center;
+}
+
+@keyframes row1-ch-rise-ani {
+    0% {
+        box-shadow:0.02em 0.02em 0.1em 0.01em #7dc0f7;
+    }
+    75% {
+        box-shadow:0.02em 0.02em 0.1em 0.01em #2196f3;
+    }
+    100% {
+        box-shadow:none;
+    }
+}
+
+.row1-ch-rise{
+  animation-name:row1-ch-rise-ani;
+  animation-duration: .75s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+}
+@keyframes row1-ch-fall-ani {
+    0% {
+        box-shadow:0.02em 0.02em 0.1em 0.01em rgb(248, 134, 126);
+    }
+    50%{
+      box-shadow:0.02em 0.02em 0.1em 0.01em #F44336;
+    }
+    100% {
+        box-shadow:none;
+    }
+}
+.row1-ch-fall{
+  animation-name: row1-ch-fall-ani;
+  animation-duration: 0.75s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
 }
 </style>

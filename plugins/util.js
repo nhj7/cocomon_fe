@@ -1,7 +1,7 @@
 export default ( context, inject ) => {
-    inject('comma', value => {
+    inject('comma', (value, isFixed ) => {
         if(!value) return "";
-        if( value.toString().indexOf(".") > -1){
+        if( isFixed && value.toString().indexOf(".") > -1){
             value = parseFloat(value).toFixed(2);
         }
         value = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");

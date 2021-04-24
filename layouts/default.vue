@@ -17,7 +17,7 @@
       <v-divider></v-divider>
       <v-list>
         <v-list-item>
-          <v-btn icon @click.stop="x = !miniVariant">
+          <v-btn icon @click.stop="miniVariant = !miniVariant">
             <v-icon>mdi-{{ `chevron-${miniVariant ? "right" : "left"}` }}</v-icon>
           </v-btn>
           <v-btn icon @click.stop="clipped = !clipped">
@@ -169,11 +169,24 @@ export default {
           icon: "mdi-chart-areaspline",
           title: "Ticker",
           to: "/"
-        },
-        {
+        }
+        /*
+        , {
           icon: "mdi-chart-bubble",
           title: "Inspire",
           to: "/inspire"
+        }
+        */
+        
+        , {
+          icon: "mdi-dev-to",
+          title: "RoadMap",
+          to: "/roadMap"
+        }
+        , {
+          icon: "mdi-application",
+          title: "template",
+          to: "/template"
         }
       ],
       miniVariant: true,
@@ -183,6 +196,8 @@ export default {
       wsMap: {},      
       titleTicker : { market : '', trade_price : 0, signed_change_rate : 0 },
       ticker : { mapUpbitTicker : {} }
+      , refUpbitSetInterval : 0
+      , refBinanceSetInterval : 0
     };
   }, // end data
   async asyncData({ req, res }) {
@@ -212,6 +227,10 @@ export default {
     console.log("cookiesRes", cookiesRes);
     this.$vuetify.theme.dark = cookiesRes.dark;
     if (!process.server) {
+
+      window.addEventListener('beforeunload', this.beforeunloadHandler)
+
+
       console.log("created", $nuxt.$store.state.id.cid);
 
       // ticker color config
@@ -318,7 +337,7 @@ export default {
         );
         setBinanceTicker(responseList);
       };
-      setInterval(getBinanceTicker, 7000);
+      this.refBinanceSetInterval = setInterval(getBinanceTicker, 7000);
 
 
       const arrUpbitMarkets = responseArr[1];
@@ -351,21 +370,28 @@ export default {
         if( this.$store.state.ticker.mode == "관심"){
           ubtMarkets = this.$store.state.localStorage.favorCoinList.map((item) => {return item.replace("UBT-","")}).join(",")
         }else{
-          ubtMarkets = this.$store.state.market.UBT.markets.map(market => market.market).filter(market => market.indexOf(this.$store.state.ticker.mode) > -1).join(",");
+          ubtMarkets = (this.$store.state.ticker.mode=="KRW"?"":"KRW-BTC,")+this.$store.state.market.UBT.markets.map(market => market.market).filter(market => market.split("-")[0] == (this.$store.state.ticker.mode) ).join(",");
         }
         const arrUpbitTicker = await this.$axios.$get("https://api.upbit.com/v1/ticker?markets="+ubtMarkets);        
-        const mapUpbitTicker = {};
+        const mapUpbitTicker = this.$store.state.ticker.upbit.mapTicker;
 
         //const expandList = this.$store.state.localStorage.expandList;
 
+        const curTicker = this.$store.state.ticker.curTicker.arrTicker;
+
         for(let idxUt = 0; idxUt < arrUpbitTicker.length;idxUt++){
           const marketName = arrUpbitTicker[idxUt].market.split("-")[1];
+          const marketCode = arrUpbitTicker[idxUt].market;
 
           //arrUpbitTicker[idxUt].expand = expandList.indexOf( "UBT-"+arrUpbitTicker[idxUt].market) > -1 ? true : false;
-          arrUpbitTicker[idxUt].gcd = "UBT-" + arrUpbitTicker[idxUt].market;
+          arrUpbitTicker[idxUt].gcd = "UBT-" + marketCode;
 
-
-          arrUpbitTicker[idxUt].korean_name = mapUpbitMarkets[arrUpbitTicker[idxUt].market].korean_name;
+          if(mapUpbitTicker[marketCode]){
+            arrUpbitTicker[idxUt].ch = arrUpbitTicker[idxUt].trade_price - mapUpbitTicker[marketCode].trade_price;
+          }else{
+            arrUpbitTicker[idxUt].ch = 0;
+          }
+          arrUpbitTicker[idxUt].korean_name = mapUpbitMarkets[marketCode].korean_name;
           arrUpbitTicker[idxUt].kp = binanceTicker[marketName+"USDT" ] ?
             (((arrUpbitTicker[idxUt].trade_price / binanceTicker[marketName+"USDT" ].krwPrice ) - 1) * 100) .toFixed(2)
             : 0;
@@ -388,7 +414,7 @@ export default {
       
       await getUpbitTicker();
 
-      setInterval(getUpbitTicker, 2000 );
+      this.refUpbitSetInterval = setInterval(getUpbitTicker, 2000 );
 
       
 
@@ -460,51 +486,7 @@ export default {
       //connectUpbit();
       // upbit websocket end
 
-      // binance websocket start
-      const connectBinance = () => {
-        const ws = new WebSocket(
-          "wss://stream.binance.com:9443/ws/btcusdt@miniTicker/ethusdt@miniTicker"
-        );
-        ws.onopen = () => {
-          // subscribe to some channels
-          // ws.send(
-          //   JSON.stringify([
-          //     { ticket: $nuxt.$store.state.id.cid },
-          //     {
-          //       type: "ticker",
-          //       codes: arrKrwMarket,
-          //       //codes: ["KRW-BTC"]
-          //     },
-          //     { format: "SIMPLE" },
-          //   ])
-          // );
-          self.wsMap["binance"] = ws;
-          //debugger;
-        };
-
-        ws.onmessage = event => {
-          console.log("binance ws 1", JSON.parse(event.data));
-        };
-
-        ws.onclose = e => {
-          console.log(
-            "Socket is closed. Reconnect will be attempted in 1 second.",
-            e.reason
-          );
-          setTimeout(() => {
-            connectBinance();
-          }, 1000);
-        };
-
-        ws.onerror = err => {
-          console.error(
-            "Socket encountered error: ",
-            err.message,
-            "Closing socket"
-          );
-          ws.close();
-        };
-      };
+      
       //connectBinance();
       // binance websocket end
     } // !process.server
@@ -539,6 +521,8 @@ export default {
       }
       this.rightDrawer = !this.rightDrawer;
       $nuxt.$cookies.set("dark", $nuxt.$vuetify.theme.dark);
+    }, beforeunloadHandler(){
+      console.log("beforeunloadHandler");
     }
   },
   mounted: function() {
@@ -553,8 +537,15 @@ export default {
     //   //console.log(tickerSon);
     //   self.$store.commit("setTicker", tickerSon);
     // })
+  }, destroyed : function(){
+    console.log("destroyed");
+    clearInterval(this.refUpbitSetInterval);
+    clearInterval(this.refBinanceSetInterval);
+    
   }
-};
+
+}; // end vue.js
+
 </script>
 <style scoped>
   

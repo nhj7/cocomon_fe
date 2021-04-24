@@ -52,7 +52,7 @@ export default {
     ['cookie-universal-nuxt', { alias: 'cookies' }],
     ['nuxt-vuex-localstorage', {
       mode: 'debug'
-    }],
+    }]
     
   ],
   io: {

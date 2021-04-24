@@ -1,0 +1,132 @@
+<html>
+
+<body>
+  <script>
+    console.log(this);
+
+    const self = this;
+    const td = new TextDecoder("utf-8");
+    // upbit websocket start
+    const connectUpbit = () => {
+      const ws = new WebSocket("wss://api.upbit.com/websocket/v1");
+      ws.binaryType = "arraybuffer";
+      ws.onopen = () => {
+        // subscribe to some channels
+        ws.send(
+          JSON.stringify([
+            { ticket: $nuxt.$store.state.id.cid },
+            {
+              type: "ticker",
+              codes: arrKrwMarket,
+              //codes: ["KRW-BTC"]
+            },
+            { format: "SIMPLE" },
+          ])
+        );
+        self.wsMap["upbit"] = ws;
+        //debugger;
+      };
+
+      ws.onmessage = (event) => {
+        var arr = new Uint8Array(event.data);
+        const tickerSon = JSON.parse(td.decode(arr));
+        /*
+        if (
+          !self.$store.state.ticker.upbit.mapTicker[tickerSon.cd] ||
+          self.$store.state.ticker.upbit.mapTicker[tickerSon.cd]["tp"] !=
+            tickerSon.tp
+        ) {
+          if (tickerSon.cd == self.$store.state.ticker.titleTicker) {
+            document.title =
+              self.$comma(tickerSon.tp) +
+              "(" +
+              (tickerSon.scr < 0 ? "-" : "+") +
+              Math.round(tickerSon.cr * 10000) / 100 +
+              "%) " +
+              tickerSon.cd.split("-")[1];
+          }
+    
+          //self.$store.commit("setTicker", tickerSon);
+        }
+        */
+        //console.log(self);
+        self.pushData(
+          self.curTicker.mapTicker,
+          self.curTicker.arrTicker,
+          tickerSon,
+          "cd"
+        );
+      };
+
+      ws.onclose = (e) => {
+        console.log(
+          "Socket is closed. Reconnect will be attempted in 1 second.",
+          e.reason
+        );
+        setTimeout(() => {
+          connectUpbit();
+        }, 1000);
+      };
+
+      ws.onerror = (err) => {
+        console.error(
+          "Socket encountered error: ",
+          err.message,
+          "Closing socket"
+        );
+        ws.close();
+      };
+    };
+    //connectUpbit();
+    // binance websocket start
+    const connectBinance = () => {
+      const ws = new WebSocket(
+        "wss://stream.binance.com:9443/ws/btcusdt@miniTicker/ethusdt@miniTicker"
+      );
+      ws.onopen = () => {
+        // subscribe to some channels
+        // ws.send(
+        //   JSON.stringify([
+        //     { ticket: $nuxt.$store.state.id.cid },
+        //     {
+        //       type: "ticker",
+        //       codes: arrKrwMarket,
+        //       //codes: ["KRW-BTC"]
+        //     },
+        //     { format: "SIMPLE" },
+        //   ])
+        // );
+        self.wsMap["binance"] = ws;
+        //debugger;
+      };
+
+      ws.onmessage = event => {
+        console.log("binance ws 1", JSON.parse(event.data));
+      };
+
+      ws.onclose = e => {
+        console.log(
+          "Socket is closed. Reconnect will be attempted in 1 second.",
+          e.reason
+        );
+        setTimeout(() => {
+          connectBinance();
+        }, 1000);
+      };
+
+      ws.onerror = err => {
+        console.error(
+          "Socket encountered error: ",
+          err.message,
+          "Closing socket"
+        );
+        ws.close();
+      };
+    };
+
+
+
+  </script>
+</body>
+
+</html>
