@@ -39,6 +39,5 @@ jobs:
       - name : Run Build
         run: npm run build
       - name : Run Start
-        run: |
-          pm2 reload echosystem.config.js
+        run: pm2 start echosystem.config.js
           
