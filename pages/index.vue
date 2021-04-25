@@ -586,9 +586,9 @@ tbody > tr:hover {
   background-color: transparent !important;
 }
 
-.v-data-table .sticky-header {
+.v-data-table /deep/ .sticky-header {
   position: sticky;
-  top: var(--toolbarHeight);
+  top: 0;
 }
 
 .v-data-table .v-data-table__wrapper {
