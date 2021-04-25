@@ -7,7 +7,7 @@ const config = {
     name: 'cocomon',
     script: './node_modules/nuxt/bin/nuxt.js',
     args : 'start',
-    instances: 2,
+    instances: 'max',
     exec_mode: `cluster`
     }]
 }
