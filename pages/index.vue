@@ -586,13 +586,14 @@ tbody > tr:hover {
   background-color: transparent !important;
 }
 
-.v-data-table /deep/ .sticky-header {
+.v-data-table .v-data-table-header {
   position: sticky;
   top: 0;
 }
 
 .v-data-table .v-data-table__wrapper {
   overflow: unset;
+  overflow-y : unset !important;
 }
 
 .v-slide-group__prev {
