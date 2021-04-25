@@ -157,7 +157,7 @@ if( process.env.NODE_ENV == "production"){
   }
 }
 
-/*
+
 import { format, transports } from 'winston'
 const { combine, timestamp, label, prettyPrint } = format
 
@@ -175,7 +175,7 @@ config.winstonLog = {
     transports: [new transports.Console()]
   }
 }
-*/
+
 
 console.log("nuxt.config.js configuaration end.");
 

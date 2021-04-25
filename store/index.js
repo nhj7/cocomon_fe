@@ -116,18 +116,18 @@ export const getters = {
 
 export const actions = {
     async nuxtServerInit({ commit }, { req 
-    //    , $winstonLog
+        , $winstonLog
     }) {
         const v4 = uuid.v4();
-        //$winstonLog.info(`nuxtServerInit v4 ${v4}` );
+        $winstonLog.info(`nuxtServerInit v4 ${v4}` );
         commit('setId', { sid : v4 });
         this.$cookies.set("sid", v4);
 
         const cookiesRes = this.$cookies.getAll()
-        //$winstonLog.info(`cookiesRes ${cookiesRes}`);
+        $winstonLog.info(`cookiesRes ${cookiesRes}`);
         if( cookiesRes.cid == undefined ){
             const cid = uuid.v4()
-            //$winstonLog.info(`create cid ${cid}` );
+            $winstonLog.info(`create cid ${cid}` );
             this.$cookies.set("cid", cid);
             commit('setId', { cid : cid });
         }
