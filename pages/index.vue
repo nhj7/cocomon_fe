@@ -486,6 +486,10 @@ export default {
 </script>
 
 <style>
+.container {
+  padding-top : 2px;
+}
+
 .col-xl,
 .col-xl-auto,
 .col-xl-12,
