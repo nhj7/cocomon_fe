@@ -7,8 +7,8 @@ const config = {
     name: 'cocomon',
     script: './node_modules/nuxt/bin/nuxt.js',
     args : 'start',
-    instances: 'max',
-    //instances: 1,
+    //instances: 'max',
+    instances: 1,
     //exec_mode: `cluster`
     exec_mode: 'fork'
     }]
