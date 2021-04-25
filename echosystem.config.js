@@ -9,8 +9,9 @@ const config = {
     args : 'start',
     //instances: 'max',
     instances: 0,
-    exec_mode: 'cluster'
+    exec_mode: 'cluster',
     //exec_mode: 'fork'
+    wait_ready: true,
     }]
 }
 
