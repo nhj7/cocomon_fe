@@ -19,8 +19,8 @@
 
       <v-row>
         <v-col cols="12" sm="6" xs="12">
-          <v-card class="d-flex pa-2" outlined tile>
-            <v-layout justify-center mb-1>
+          <v-card class="d-flex pa-1" outlined tile>
+            <v-layout justify-center mb-1  >
               <v-flex xs4>
                 <v-select
                   v-model="curruntExchange"
@@ -180,8 +180,14 @@
               <!-- row3 -->
               <tr class="row3" v-show="$store.state.localStorage.expandList.indexOf(item.gcd) > -1">
                 <td v-ripple class="text-left">
-                  <v-icon @click="toggleFavorCoin(item)" dense ripple="false" v-show="item.gcd!='UBT-KRW-BTC'" style="color:silver;">
+                  <v-icon @click="toggleFavorCoin(item)" dense ripple="false" v-show="item.gcd!='UBT-KRW-BTC'" style="color:silver;" class="pr-2">
                     {{ $store.state.localStorage.favorCoinList.indexOf('UBT-'+item.market) > -1 ? 'mdi-star-plus' : 'mdi-star-plus-outline' }}
+                  </v-icon>
+
+                  
+
+                  <v-icon @click="toggleChart(item)" dense v-ripple=false style="color:silver;">
+                    {{'mdi-finance' }}
                   </v-icon>
                 </td>
                 <td v-ripple>
@@ -380,11 +386,11 @@ export default {
       } else {
         favorCoinList.splice(idx, 1);
       }
-
-      console.log("toggleFavorCoin", favorCoinList, item.gcd, this.$store.state.ticker.mode);
-      //localStorage.setItem("favorCoinList", JSON.stringify(favorCoinList));
-      
+      //console.log("toggleFavorCoin", favorCoinList, item.gcd, this.$store.state.ticker.mode);
     } // end toggleFavorCoin
+    , toggleChart(item){
+
+    }
     ,customSort(items, index, isDesc) {
       items.sort((a, b) => {
         if (isDesc != "false") {
@@ -633,6 +639,8 @@ tbody > tr:hover {
 #dtTicker{
   overflow-x:hidden;overflow-y:auto;
 }
+
+@media screen and (min-width: 960px) { 
 .theme--light::-webkit-scrollbar {
   width: 15px;
 }
@@ -669,6 +677,11 @@ tbody > tr:hover {
 .theme--dark::-webkit-scrollbar-thumb:hover {
   background: white;
 }
+}
+
+
+
+
 
 .v-data-table__wrapper > table td {
   text-align:center;
