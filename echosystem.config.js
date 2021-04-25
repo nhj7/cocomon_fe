@@ -5,8 +5,8 @@ const isProd = process.env.NODE_ENV == "production";
 const config = {
   apps: [{
     name: 'cocomon',
-    script: 'npm',
-    args : isProd ? 'start' : 'run dev',
+    script: './node_modules/nuxt/bin/nuxt.js',
+    args : 'start',
     instances: 2,
     exec_mode: `cluster`
     }]
