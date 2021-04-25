@@ -389,7 +389,7 @@ export default {
       //console.log("toggleFavorCoin", favorCoinList, item.gcd, this.$store.state.ticker.mode);
     } // end toggleFavorCoin
     , toggleChart(item){
-
+      console.log("toggleChart");
     }
     ,customSort(items, index, isDesc) {
       items.sort((a, b) => {

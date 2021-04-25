@@ -12,7 +12,8 @@ import redirectSSL from 'redirect-ssl'
 //module.exports = {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
 
-console.log(process.env);  
+//console.log(process.env);  
+console.log("nuxt.config.js configuaration start.");
 const config = {  
   ssr: true
   ,isDev: process.env.NODE_ENV !== 'production'
@@ -142,7 +143,11 @@ const config = {
   , loading: {
     color: "blue",
     height: "5px"
-  }, serverMiddleware: ['~/middleware-server/logger', { path: '/api', handler: '~/middleware-server/index.js' }]
+  }, serverMiddleware: [
+    '~/middleware-server/logger'
+    , { path: '/api', handler: '~/middleware-server/index.js' }
+    
+  ]
 
 }
 if( process.env.NODE_ENV == "production"){
@@ -151,11 +156,10 @@ if( process.env.NODE_ENV == "production"){
     cert: fs.readFileSync('/etc/letsencrypt/live/cocomon.kr/fullchain.pem')
   }
   config.serverMiddleware.push(
-    redirectSSL.create({
-      enabled: process.env.NODE_ENV === 'production'
-     })
+    'redirect-ssl'
   );
 }
 
+console.log("nuxt.config.js configuaration end.");
 
 module.exports = config;

@@ -64,3 +64,8 @@ pm2 start npm --name "cocomon" -- start
 
 https://vuetifyjs.com/en/styles/colors/#material-colors
 
+## github action runner
+
+<pre>
+nohup ./run.sh &
+</pre>
