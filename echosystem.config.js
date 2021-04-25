@@ -6,7 +6,7 @@ const config = {
   apps: [{
     name: 'cocomon',
     script: 'npm',
-    args : isProd ? 'run start' : 'run dev',
+    args : isProd ? 'start' : 'run dev',
     instances: 2,
     exec_mode: `cluster`
     }]
