@@ -28,7 +28,7 @@ export default {
 
     if( process.browser){
       console.log("brr");
-      const mdTxt = await $nuxt.$axios.$get(window.location.protocol + '//' + window.location.host +"/roadMap.md");
+      const mdTxt = await $nuxt.$axios.$get(window.location.protocol + '//' + window.location.host +"/roadmap.md");
       this.readMapHtml = marked(mdTxt);
       //console.log(readMapHtml);
     }
