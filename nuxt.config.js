@@ -73,7 +73,7 @@ const config = {
     ['nuxt-vuex-localstorage', {
       mode: 'debug'
     }]
-   , 'nuxt-winston-log' 
+   
   ],
   io: {
     // module options
@@ -157,8 +157,11 @@ if( process.env.NODE_ENV == "production"){
   }
 }
 
+/*
 import { format, transports } from 'winston'
 const { combine, timestamp, label, prettyPrint } = format
+
+config.modules.push('nuxt-winston-log');
 
 config.winstonLog = {
   useDefaultLogger: false,
@@ -172,6 +175,7 @@ config.winstonLog = {
     transports: [new transports.Console()]
   }
 }
+*/
 
 console.log("nuxt.config.js configuaration end.");
 
