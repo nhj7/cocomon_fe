@@ -12,5 +12,4 @@ const config = {
     exec_mode: `cluster`
     }]
 }
-
 module.exports = config;
