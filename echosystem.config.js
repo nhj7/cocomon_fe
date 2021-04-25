@@ -6,8 +6,8 @@ const config = {
   apps: [{
     name: 'cocomon',
     //script: './node_modules/nuxt/bin/nuxt.js',
-    script: 'npm',
-    args : 'run start',
+    script: 'nuxt',
+    args : 'start',
     //instances: 'max',
     instances: 2,
     exec_mode: 'cluster',
