@@ -9,6 +9,8 @@ on:
 jobs:
   ci:
     runs-on: self-hosted
+    env:
+        working-directory: /app/cocomon/
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@master
