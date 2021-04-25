@@ -41,6 +41,6 @@ jobs:
       - name : Run Start
         run: |
           pm2 delete echosystem.config.js
-          pm2 start echosystem.config.js
+          pm2 start echosystem.config.js & npx wait-on https://localhost:4443
         
           
