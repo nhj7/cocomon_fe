@@ -12,12 +12,16 @@ import redirectSSL from 'redirect-ssl'
 //module.exports = {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
 
+console.log(process.env);  
 const config = {  
   ssr: true
   ,isDev: process.env.NODE_ENV !== 'production'
   ,server: {
     host: '0.0.0.0' // default: localhost
-    , port: process.env.port || 7001
+    , port: process.env.httpPort || 8080
+    , http : {
+      
+    }
   },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
@@ -143,13 +147,11 @@ const config = {
 }
 if( process.env.NODE_ENV == "production"){
   config.server.https = {
-    key: process.env.NODE_ENV !== 'production' ? '' : fs.readFileSync('/etc/letsencrypt/live/cocomon.kr/privkey.pem'),
-    cert: process.env.NODE_ENV !== 'production' ? '' : fs.readFileSync('/etc/letsencrypt/live/cocomon.kr/fullchain.pem')
+    key: fs.readFileSync('/etc/letsencrypt/live/cocomon.kr/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/cocomon.kr/fullchain.pem')
   }
   config.serverMiddleware.push(
-    redirectSSL.create({
-      enabled: process.env.NODE_ENV === 'production'
-     })
+    'redirect-ssl'
   );
 }
 
