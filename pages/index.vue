@@ -318,7 +318,7 @@ export default {
           class: "text-center",
         },
         {
-          text: "거래량",
+          text: "거래액(억)",
           value: "acc_trade_price_24h",
           class: "sticky-header",
           width: "15%",

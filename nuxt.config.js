@@ -1,5 +1,6 @@
 import colors from 'vuetify/es5/util/colors'
 import fs from 'fs'
+import redirectSSL from 'redirect-ssl'
 
 //let colors = require('vuetify/es5/util/colors')
 //const fs = require( 'fs')
@@ -145,6 +146,11 @@ if( process.env.NODE_ENV == "production"){
     key: process.env.NODE_ENV !== 'production' ? '' : fs.readFileSync('/etc/letsencrypt/live/cocomon.kr/privkey.pem'),
     cert: process.env.NODE_ENV !== 'production' ? '' : fs.readFileSync('/etc/letsencrypt/live/cocomon.kr/fullchain.pem')
   }
+  config.serverMiddleware.push(
+    redirectSSL.create({
+      enabled: process.env.NODE_ENV === 'production'
+     })
+  );
 }
 
 

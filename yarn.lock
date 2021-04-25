@@ -6199,6 +6199,11 @@
   "resolved" "https://registry.npmjs.org/is-hexadecimal/-/is-hexadecimal-1.0.4.tgz"
   "version" "1.0.4"
 
+"is-https@^2.0.0":
+  "integrity" "sha512-UfUCKVQH/6PQRCh5Qk9vNu4feLZiFmV/gr8DjbtJD0IrCRIDTA6E+d/AVFGPulI5tqK5W45fYbn1Nir1O99rFw=="
+  "resolved" "https://registry.npmjs.org/is-https/-/is-https-2.0.2.tgz"
+  "version" "2.0.2"
+
 "is-negative-zero@^2.0.1":
   "integrity" "sha512-2z6JzQvZRa9A2Y7xC6dQQm4FSTSTNWjKIYYTt4246eMTJmIo0Q+ZyOsU66X8lxK1AbB92dFeglPLrhwpeRKO6w=="
   "resolved" "https://registry.npmjs.org/is-negative-zero/-/is-negative-zero-2.0.1.tgz"
@@ -9586,6 +9591,13 @@
   "version" "3.5.0"
   dependencies:
     "picomatch" "^2.2.1"
+
+"redirect-ssl@^2.0.1":
+  "integrity" "sha512-8Hq12jCQJFmPqMd2+lE/10Fz70g/XK/Ec/i4lPxjWMp6N8kIaoI1pigOfWQk4NtHYYD6NKkZMMSA2nGiV0WhxQ=="
+  "resolved" "https://registry.npmjs.org/redirect-ssl/-/redirect-ssl-2.0.1.tgz"
+  "version" "2.0.1"
+  dependencies:
+    "is-https" "^2.0.0"
 
 "regenerate-unicode-properties@^8.2.0":
   "integrity" "sha512-F9DjY1vKLo/tPePDycuH3dn9H1OTPIkVD9Kz4LODu+F2C75mgjAJ7x/gwy6ZcSNRAAkhNlJSOHRe8k3p+K9WhA=="
