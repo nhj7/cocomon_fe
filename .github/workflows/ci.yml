@@ -12,6 +12,7 @@ jobs:
     env:
         working-directory: /app/cocomon/
         port: 4443
+        NODE_ENV : 'production'
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@master
