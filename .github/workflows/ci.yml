@@ -40,4 +40,4 @@ jobs:
       - name : Run Build
         run: npm run build
       - name : Run Start
-        run: pm2 start echosystem.config.js
+        run: npm run start
