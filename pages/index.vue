@@ -137,11 +137,7 @@
                   }}
                 </td>
                 <td v-ripple :class="[
-                    !$store.state.config.isTickerColor || item.kp == 0
-                      ? 'grey--text'
-                      : item.kp > 0
-                      ? 'rise--text'
-                      : 'fall--text',
+                    
                   ]"
                 >
                   {{ (item.kp>0?'+':(item.kp==0?'':'-')) + item.kp }}
@@ -330,10 +326,10 @@ export default {
           class: "text-center",
         },
         {
-          text: "거래액(억)",
+          text: "거래(억)",
           value: "acc_trade_price_24h",
           class: "sticky-header",
-          width: "15%",
+          width: "17%",
           class: "text-right",
         },
         {
