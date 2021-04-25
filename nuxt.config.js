@@ -156,7 +156,7 @@ if( process.env.NODE_ENV == "production"){
     cert: fs.readFileSync('/etc/letsencrypt/live/cocomon.kr/fullchain.pem')
   }
   config.serverMiddleware.push(
-    'redirect-ssl'
+    '~/middleware-server/redirect'
   );
 }
 
