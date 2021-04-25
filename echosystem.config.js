@@ -12,6 +12,7 @@ const config = {
     exec_mode: 'cluster',
     //exec_mode: 'fork'
     wait_ready: true,
+    listen_timeout: 50000
     }]
 }
 
