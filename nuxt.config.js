@@ -155,9 +155,7 @@ if( process.env.NODE_ENV == "production"){
     key: fs.readFileSync('/etc/letsencrypt/live/cocomon.kr/privkey.pem'),
     cert: fs.readFileSync('/etc/letsencrypt/live/cocomon.kr/fullchain.pem')
   }
-  config.serverMiddleware.push(
-    '~/middleware-server/redirect'
-  );
+  
 }
 
 console.log("nuxt.config.js configuaration end.");
