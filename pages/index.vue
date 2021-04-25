@@ -105,9 +105,9 @@
             :style="dtHeight"
           >
             <template v-slot:item="{ item }">
-              <tr @click="toggleExpand(item)" class="row1" >
-                <td class="text-left" v-ripple="{ }" >{{ item.korean_name }}</td>
-                <td :class="[
+              <tr @click="toggleExpand(item)" class="row1"  >
+                <td class="text-left" v-ripple>{{ item.korean_name }}</td>
+                <td v-ripple :class="[
                     $store.state.config.isTickerColor
                       ? 0 > item.signed_change_price
                         ? 'fall--text'
@@ -118,10 +118,10 @@
                   ]"
                 >
                   <span>{{ item.trade_price ? 
-                      ( $store.state.ticker.mode == 'BTC' ? item.trade_price : $comma(item.trade_price, true)) : "" }}
+                      ( $store.state.ticker.mode == 'BTC' ? item.trade_price : $p_comma(item.trade_price, true)) : "" }}
                   </span>
                 </td>
-                <td :class="[
+                <td v-ripple :class="[
                     $store.state.config.isTickerColor
                       ? 0 > item.signed_change_price
                         ? 'fall--text'
@@ -136,7 +136,7 @@
                     )
                   }}
                 </td>
-                <td :class="[
+                <td v-ripple :class="[
                     !$store.state.config.isTickerColor || item.kp == 0
                       ? 'grey--text'
                       : item.kp > 0
@@ -146,7 +146,7 @@
                 >
                   {{ (item.kp>0?'+':(item.kp==0?'':'-')) + item.kp }}
                 </td>
-                <td>
+                <td v-ripple>
                   {{
                     Math.floor(item.acc_trade_price_24h / 100000000)
                       .toString()
@@ -156,15 +156,15 @@
               </tr>
               <!-- row2 --> 
               <tr @click="toggleExpand(item)" class="row2">
-                <td class="text-left">
+                <td v-ripple class="text-left">
                   {{ item.market }}
                 </td>
-                <td :class="[item.ch==0?'':(item.ch > 0 ? 'row2-ch-rise' : 'row2-ch-fall' )]">
+                <td v-ripple :class="[item.ch==0?'':(item.ch > 0 ? 'row2-ch-rise' : 'row2-ch-fall' )]">
                   {{
                     $store.state.ticker.binance.mapTicker[
                       item["market"].split("-")[1] + "USDT"
                     ]
-                      ? $comma(
+                      ? $p_comma(
                           $store.state.ticker.binance.mapTicker[
                             item["market"].split("-")[1] + "USDT"
                           ].krwPrice
@@ -172,33 +172,33 @@
                       : ""
                   }}
                 </td>
-                <td>
-                  {{ $comma(item.signed_change_price, 'Y') }}
+                <td v-ripple>
+                  {{ $p_comma(item.signed_change_price, 'Y') }}
                 </td>
-                <td> 
+                <td v-ripple> 
                   {{ $store.state.ticker.binance.mapTicker[item["market"].split("-")[1] + "USDT"] ? 
-                    $comma( (item.trade_price - $store.state.ticker.binance.mapTicker[item["market"].split("-")[1] + "USDT"].krwPrice), 'Y') : '' }}
+                    $p_comma( (item.trade_price - $store.state.ticker.binance.mapTicker[item["market"].split("-")[1] + "USDT"].krwPrice), 'Y') : '' }}
                 </td>
                 <td></td>
               </tr>
               <!-- row3 -->
               <tr class="row3" v-show="$store.state.localStorage.expandList.indexOf(item.gcd) > -1">
-                <td class="text-left">
-                  <v-icon @click="toggleFavorCoin(item)" dense ripple="false" v-show="item.gcd!='UBT-KRW-BTC'">
+                <td v-ripple class="text-left">
+                  <v-icon @click="toggleFavorCoin(item)" dense ripple="false" v-show="item.gcd!='UBT-KRW-BTC'" style="color:silver;">
                     {{ $store.state.localStorage.favorCoinList.indexOf('UBT-'+item.market) > -1 ? 'mdi-star-plus' : 'mdi-star-plus-outline' }}
                   </v-icon>
                 </td>
-                <td>
+                <td v-ripple>
                   {{ !$store.state.ticker.binance.mapTicker[ item["market"].split("-")[1] + "USDT" ] ? '' : 
-                      $comma( $store.state.ticker.binance.mapTicker[ item["market"].split("-")[1] + "USDT" ].price)  }}
+                      ('')+( $p_usd($store.state.ticker.binance.mapTicker[ item["market"].split("-")[1] + "USDT" ].price))  }}
                 </td>
-                <td>
+                <td v-ripple>
                   1
                 </td>
-                <td>
+                <td v-ripple>
                   2
                 </td>
-                <td>
+                <td v-ripple>
                   3
                 </td>
                 
@@ -237,7 +237,7 @@
         <v-col>
           <br />
           <v-card class="d-flex pa-2" outlined tile>
-            USD/KRW {{ $comma($store.state.exchangeRate.basePrice) }}원 (
+            USD/KRW {{ $p_comma($store.state.exchangeRate.basePrice) }}원 (
             {{
               (0 > $store.state.exchangeRate.signedChangeRate ? "" : "+") +
               Math.floor($store.state.exchangeRate.signedChangeRate * 10000) /
@@ -247,7 +247,7 @@
               <template v-slot:activator="{ on, attrs }">
                 <v-icon v-bind="attrs" v-on="on">mdi-chat-question-outline</v-icon>
               </template>
-              <span>현찰 살 때 {{ $comma($store.state.exchangeRate.cashBuyingPrice) }}원, 매매기준율 : {{ $comma($store.state.exchangeRate.basePrice) }}원</span>
+              <span>현찰 살 때 {{ $p_comma($store.state.exchangeRate.cashBuyingPrice) }}원, 매매기준율 : {{ $p_comma($store.state.exchangeRate.basePrice) }}원</span>
             </v-tooltip>
 
             <br />
@@ -385,7 +385,7 @@ export default {
         favorCoinList.splice(idx, 1);
       }
 
-      console.log("toggleFavorCoin", favorCoinList, item.gcd, $store.state.ticker.mode);
+      console.log("toggleFavorCoin", favorCoinList, item.gcd, this.$store.state.ticker.mode);
       //localStorage.setItem("favorCoinList", JSON.stringify(favorCoinList));
       
     } // end toggleFavorCoin
@@ -578,6 +578,11 @@ table th {
 .row2 > td {
   height: 22px !important;
   vertical-align: text-top;
+  font-size: 0.725em !important;
+  color: gray !important;
+}
+.row3 > td {
+  height: 26px !important;  
   font-size: 0.725em !important;
   color: gray !important;
 }

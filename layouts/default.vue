@@ -46,8 +46,8 @@
       <v-spacer />
       <span class="caption">
         <span>{{ $store.state.ticker.titleTicker.market }}</span> |
-        <span id="titleTp" :class=" !$store.state.config.isTickerColor ? '' : ($store.state.ticker.titleTicker.ch) > 0 ? 'rise--text' : ( $store.state.ticker.titleTicker.ch < 0 ? 'fall--text' : '' ) ">{{ $comma($store.state.ticker.titleTicker.trade_price) }}</span>
-        (<span :class=" !$store.state.config.isTickerColor ? '' : $store.state.ticker.titleTicker.signed_change_rate > 0 ? 'rise--text':( $store.state.ticker.titleTicker.signed_change_rate < 0 ? 'fall--text':'') ">{{ $toTickerRate($store.state.ticker.titleTicker.signed_change_rate) }}%</span>)
+        <span id="titleTp" :class=" !$store.state.config.isTickerColor ? '' : ($store.state.ticker.titleTicker.ch) > 0 ? 'rise--text' : ( $store.state.ticker.titleTicker.ch < 0 ? 'fall--text' : '' ) ">{{ $p_comma($store.state.ticker.titleTicker.trade_price) }}</span>
+        (<span :class=" !$store.state.config.isTickerColor ? '' : $store.state.ticker.titleTicker.signed_change_rate > 0 ? 'rise--text':( $store.state.ticker.titleTicker.signed_change_rate < 0 ? 'fall--text':'') ">{{ $p_toTickerRate($store.state.ticker.titleTicker.signed_change_rate) }}%</span>)
         <!--span>({{ $store.state.ticker.titleTicker.ch }})</span-->
       </span>
       <!--v-btn @click.stop="drawer = !drawer" icon>
@@ -400,7 +400,7 @@ export default {
           mapUpbitTicker[arrUpbitTicker[idxUt].market] = arrUpbitTicker[idxUt];
         }
         this.$store.state.ticker.curTicker.arrTicker = arrUpbitTicker;
-        const strTitleTicker = this.$comma(mapUpbitTicker["KRW-BTC"].trade_price) + " | "+ "KRW-BTC" + " | " + this.$config.appName;
+        const strTitleTicker = this.$p_comma(mapUpbitTicker["KRW-BTC"].trade_price) + " | "+ "KRW-BTC" + " | " + this.$config.appName;
 
         //debugger;
         document.title = strTitleTicker;
@@ -452,7 +452,7 @@ export default {
           ) {
             if (tickerSon.cd == self.$store.state.ticker.titleTicker) {
               document.title =
-                self.$comma(tickerSon.tp) +
+                self.$p_comma(tickerSon.tp) +
                 "(" +
                 (tickerSon.scr < 0 ? "-" : "+") +
                 Math.round(tickerSon.cr * 10000) / 100 +
