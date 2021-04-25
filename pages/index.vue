@@ -611,13 +611,7 @@ tbody > tr:hover {
 .row {
   margin-top: 0.01em;
 }
-.rise--text {
-  /* color: #009688; */
-  color : #2196F3;
-}
-.fall--text {
-  color:#F44336;
-}
+
 #dtTicker{
   overflow-x:hidden;overflow-y:auto;
 }
@@ -661,13 +655,19 @@ tbody > tr:hover {
 .v-data-table__wrapper > table td {
   text-align:center;
 }
-
+.rise--text {
+  /* color: #009688; */
+  color : #F44336;
+}
+.fall--text {
+  color:#2196F3;
+}
 @keyframes row1-ch-rise-ani {
     0% {
-        box-shadow:0.03em 0.03em 0.2em 0.02em #7dc0f7;
+        box-shadow:0.03em 0.03em 0.3em 0.02em rgb(248, 134, 126);
     }
     75% {
-        box-shadow:0.03em 0.03em 0.2em 0.02em #2196f3;
+        box-shadow:0.03em 0.03em 0.3em 0.02em #F44336;
     }
     100% {
         box-shadow:none;
@@ -682,10 +682,10 @@ tbody > tr:hover {
 }
 @keyframes row1-ch-fall-ani {
     0% {
-        box-shadow:0.03em 0.03em 0.2em 0.02em rgb(248, 134, 126);
+        box-shadow:0.03em 0.03em 0.3em 0.02em #7dc0f7;
     }
     50%{
-      box-shadow:0.03em 0.03em 0.2em 0.02em #F44336;
+      box-shadow:0.03em 0.03em 0.3em 0.02em #2196f3;
     }
     100% {
         box-shadow:none;
