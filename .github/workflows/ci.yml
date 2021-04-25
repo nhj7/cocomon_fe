@@ -12,13 +12,7 @@ on:
 
 jobs:
   ci:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        node: [14]
-
+    runs-on: self-hosted
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@master
