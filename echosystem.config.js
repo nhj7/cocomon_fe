@@ -8,9 +8,9 @@ const config = {
     script: './node_modules/nuxt/bin/nuxt.js',
     args : 'start',
     //instances: 'max',
-    instances: 1,
-    //exec_mode: `cluster`
-    exec_mode: 'fork'
+    instances: 0,
+    exec_mode: 'cluster'
+    //exec_mode: 'fork'
     }]
 }
 
