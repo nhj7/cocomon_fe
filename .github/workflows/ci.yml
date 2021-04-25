@@ -40,4 +40,4 @@ jobs:
       - name : Run Build
         run: npm run build
       - name : Run Start
-        run: npm start
+        run: npm start & npx wait-on https://localhost:4443
