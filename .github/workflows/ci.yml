@@ -33,9 +33,7 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: Install dependencies 👨🏻‍💻        
-        run: npm install
-        with: 
-          node-version: 14
+        run: npm install        
         
       # name: Run tests 🧪
       #  run: npm run test
