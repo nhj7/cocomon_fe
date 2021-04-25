@@ -35,8 +35,6 @@ jobs:
       - name: Run tests 🧪
         run: npm run test
 
-
-
       - name : Run Build
         run: npm run build
       - name : Run Start
