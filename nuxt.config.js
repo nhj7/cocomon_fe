@@ -18,7 +18,7 @@ const config = {
   ,isDev: process.env.NODE_ENV !== 'production'
   ,server: {
     host: '0.0.0.0' // default: localhost
-    , port: process.env.httpPort || 8080
+    , port: process.env.NODE_ENV == 'production' ? '4443' : ( process.env.httpPort || 8080 )
     , http : {
       
     }
