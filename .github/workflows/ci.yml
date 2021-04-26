@@ -49,4 +49,5 @@ jobs:
         run:  |
             node -v
             npm -v
-            sh start.sh
+            pm2 reload echosystem.config.js --watch
+          # sh start.sh
