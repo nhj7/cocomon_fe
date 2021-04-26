@@ -1,4 +1,4 @@
-name: ci & cd
+name: ci
 
 on:
   push:
@@ -9,47 +9,26 @@ on:
 jobs:
   ci:
     runs-on: self-hosted
-    env:
-        port: 4443
-        NODE_ENV : 'production'
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@master
 
       - name: Setup node env 🏗
-        uses: actions/setup-node@master
+        uses: actions/setup-node@v2.1.2
         with:
-          node-version: 14
+          node-version: ${{ matrix.node }}
           check-latest: true
 
       - name: Cache node_modules 📦
-        uses: actions/cache@master
+        uses: actions/cache@v2
         with:
-          node-version: 14
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+      - name: Install dependencies 👨🏻‍💻
+        run: npm ci
 
-      - name: Install dependencies 👨🏻‍💻        
-        run : |
-          node -v
-          npm -v
-          npm i
-      #  uses: bahmutov/npm-install@v1
-      #  with:
-      #    useLockFile: false
-        
+
       - name: Run tests 🧪
         run: npm run test
-
-      - name : Run Build
-        run:   |
-          node -v
-          npm -v
-          npm run build
-      - name : Run Start
-        run: |
-          pm2 reload echosystem.config.js
-        
-          
