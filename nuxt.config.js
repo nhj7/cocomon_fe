@@ -150,10 +150,10 @@ const config = {
 
 }
 if( process.env.NODE_ENV == "production"){
-  // config.server.https = {
-  //   key: fs.readFileSync('/etc/letsencrypt/live/cocomon.kr/privkey.pem'),
-  //   cert: fs.readFileSync('/etc/letsencrypt/live/cocomon.kr/fullchain.pem')
-  // }
+  config.server.https = {
+    key: fs.readFileSync('/etc/letsencrypt/live/cocomon.kr/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/cocomon.kr/fullchain.pem')
+  }
 }
 
 /*
