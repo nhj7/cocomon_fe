@@ -49,5 +49,6 @@ jobs:
         run:  |
             node -v
             npm -v
-            pm2 reload echosystem.config.js --watch
+            pm2 start npm --name "cocomon" -- start
+          #  pm2 reload echosystem.config.js --watch
           # sh start.sh
