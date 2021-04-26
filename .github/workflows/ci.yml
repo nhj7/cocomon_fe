@@ -36,7 +36,7 @@ jobs:
           node -v
           npm -v
           npm cache clean --force
-          npm i        
+          npm i --force
         
       - name: Run tests 🧪
         run: npm run test
