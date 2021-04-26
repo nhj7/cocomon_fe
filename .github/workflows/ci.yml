@@ -53,6 +53,7 @@ jobs:
             node -v
             npm -v
             pm2 reload echosystem.config.js
+            pm2 list
         env:
           CI : true
           #  pm2 reload echosystem.config.js --watch
