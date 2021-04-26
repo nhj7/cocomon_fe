@@ -12,7 +12,7 @@ import redirectSSL from 'redirect-ssl'
 //module.exports = {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
 
-//console.log(process.env);  
+console.log(process.env);
 console.log("nuxt.config.js configuaration start.");
 const config = {  
   ssr: true
