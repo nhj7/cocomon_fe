@@ -34,10 +34,19 @@ jobs:
 
 
       - name: Run tests 🧪
-        run: npm run test
+        run:  |
+            node -v
+            npm -v
+            npm run test
 
       - name: Run build
-        run: npm run build
+        run:  |
+            node -v
+            npm -v
+            npm run build
 
       - name: Run start
-        run: pm2 start echosystem.config.js
+        run:  |
+            node -v
+            npm -v
+            pm2 start echosystem.config.js
