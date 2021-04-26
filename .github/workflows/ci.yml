@@ -49,5 +49,5 @@ jobs:
         run:  |
             node -v
             npm -v
-            pm2 delete echosystem.config.js
-            pm2 start echosystem.config.js
+            pm2 reload echosystem.config.js
+            pm2 save
