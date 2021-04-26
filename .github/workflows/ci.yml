@@ -10,7 +10,6 @@ jobs:
   ci:
     runs-on: self-hosted
     env:
-        working-directory: /app/cocomon/
         port: 4443
         NODE_ENV : 'production'
     steps:
@@ -39,8 +38,8 @@ jobs:
           npm cache clean --force
           npm i        
         
-      # name: Run tests 🧪
-      #  run: npm run test
+      - name: Run tests 🧪
+        run: npm run test
 
       - name : Run Build
         run:   |
