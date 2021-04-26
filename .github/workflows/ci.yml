@@ -49,4 +49,4 @@ jobs:
         run:  |
             node -v
             npm -v
-            start.sh
+            ./start.sh
