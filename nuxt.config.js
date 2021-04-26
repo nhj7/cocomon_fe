@@ -8,9 +8,8 @@ import redirectSSL from 'redirect-ssl'
 //export default {
 //colors = colors.default;
 //console.log(colors);
-
 //module.exports = {
-  // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
+// Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
 
 console.log(process.env);
 console.log("nuxt.config.js configuaration start.");
