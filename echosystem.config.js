@@ -1,7 +1,4 @@
 //ecosystem.config.js
-
-
-
 const config = {
   apps: [{
     name: 'cocomon',
