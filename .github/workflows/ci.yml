@@ -28,9 +28,9 @@ jobs:
             ${{ runner.os }}-node-
       - name: Install dependencies 👨🏻‍💻
         run: |
-        node -v
-        npm -v
-        npm ci
+            node -v
+            npm -v
+            npm ci
 
 
       - name: Run tests 🧪
