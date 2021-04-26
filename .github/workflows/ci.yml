@@ -45,11 +45,14 @@ jobs:
             npm -v
             npm run build
 
+      - name: Install PM2
+        run : npm i pm2
+
       - name: Run start
         run:  |
             node -v
             npm -v
-            pm2 start npm --name "cocomon" -- start
+            pm2 reload echosystem.config.js
         env:
           CI : true
           #  pm2 reload echosystem.config.js --watch
