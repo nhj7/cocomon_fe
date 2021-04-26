@@ -19,13 +19,13 @@ jobs:
       - name: Setup node env 🏗
         uses: actions/setup-node@v2.1.5
         with:
-          node-version: 15
+          node-version: 14
           check-latest: true
 
       - name: Cache node_modules 📦
         uses: actions/cache@v2.1.5
         with:
-          node-version: 15
+          node-version: 14
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |

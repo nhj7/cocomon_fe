@@ -21,7 +21,6 @@
     "nuxt": "^2.15.4",
     "nuxt-socket-io": "^1.1.17",
     "nuxt-vuex-localstorage": "^1.3.0",
-    "nuxt-winston-log": "^1.2.0",
     "redirect-ssl": "^2.0.1",
     "vue-uuid": "^2.0.2"
   },
