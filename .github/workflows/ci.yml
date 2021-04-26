@@ -27,7 +27,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - name: Install dependencies 👨🏻‍💻
-        run: npm ci
+        run: |
+        node -v
+        npm -v
+        npm ci
 
 
       - name: Run tests 🧪
