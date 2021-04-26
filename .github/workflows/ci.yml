@@ -58,3 +58,9 @@ jobs:
           CI : true
           #  pm2 reload echosystem.config.js --watch
           # sh start.sh
+
+      - name: Run tests 2 🧪
+        run:  |
+            node -v
+            npm -v
+            npm run test
