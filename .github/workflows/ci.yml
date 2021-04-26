@@ -34,7 +34,7 @@ jobs:
 
       - name: Install dependencies 👨🏻‍💻        
         run:  |
-          npm cache clean
+          npm cache clean --force
           npm ci        
         
       # name: Run tests 🧪
