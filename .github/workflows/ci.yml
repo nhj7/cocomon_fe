@@ -32,11 +32,7 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: Install dependencies 👨🏻‍💻        
-        run:  |
-          node -v
-          npm -v
-          npm cache clean --force
-          npm i --force
+        uses: bahmutov/npm-install@v1
         
       - name: Run tests 🧪
         run: npm run test
