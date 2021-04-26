@@ -20,13 +20,13 @@ jobs:
       - name: Setup node env 🏗
         uses: actions/setup-node@v2.1.5
         with:
-          node-version: 14
+          node-version: 15
           check-latest: true
 
       - name: Cache node_modules 📦
         uses: actions/cache@v2.1.5
         with:
-          node-version: 14
+          node-version: 15
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
@@ -43,7 +43,10 @@ jobs:
       #  run: npm run test
 
       - name : Run Build
-        run: npm run build
+        run:   |
+          node -v
+          npm -v
+          npm run build
       - name : Run Start
         run: |
           pm2 reload echosystem.config.js
