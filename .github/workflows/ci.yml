@@ -32,7 +32,10 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: Install dependencies 👨🏻‍💻        
-        run : npm install
+        run : |
+          node -v
+          npm -v
+          npm ci
       #  uses: bahmutov/npm-install@v1
       #  with:
       #    useLockFile: false
