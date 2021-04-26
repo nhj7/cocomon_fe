@@ -17,13 +17,13 @@ jobs:
         uses: actions/checkout@master
 
       - name: Setup node env 🏗
-        uses: actions/setup-node@v2.1.5
+        uses: actions/setup-node@master
         with:
           node-version: 14
           check-latest: true
 
       - name: Cache node_modules 📦
-        uses: actions/cache@v2.1.5
+        uses: actions/cache@master
         with:
           node-version: 14
           path: ~/.npm
