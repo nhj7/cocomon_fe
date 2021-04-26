@@ -49,5 +49,6 @@ jobs:
         run:  |
             node -v
             npm -v
-            pm2 reload echosystem.config.js --env production -e err.log -o out.log
+            pm2 delete echosystem.config.js
+            pm2 reload echosystem.config.js --env production
             pm2 save

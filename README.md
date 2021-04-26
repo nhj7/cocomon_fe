@@ -69,3 +69,8 @@ https://vuetifyjs.com/en/styles/colors/#material-colors
 <pre>
 nohup ./run.sh &
 </pre>
+
+install dir 
+
+/app/actions-runner/_work/cocomon_fe/cocomon_fe
+
