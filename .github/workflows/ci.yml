@@ -34,6 +34,7 @@ jobs:
 
       - name: Install dependencies 👨🏻‍💻        
         run:  |
+          npm -v
           npm cache clean --force
           npm ci        
         
