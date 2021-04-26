@@ -50,5 +50,7 @@ jobs:
             node -v
             npm -v
             pm2 start npm --name "cocomon" -- start
+        env:
+          CI : true
           #  pm2 reload echosystem.config.js --watch
           # sh start.sh
