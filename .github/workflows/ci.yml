@@ -35,7 +35,7 @@ jobs:
         run : |
           node -v
           npm -v
-          npm ci
+          npm i
       #  uses: bahmutov/npm-install@v1
       #  with:
       #    useLockFile: false
