@@ -49,8 +49,7 @@ jobs:
         run:  |
             node -v
             npm -v
-            pm2 reload echosystem.config.js
-            pm2 reload ./middleware-server/serverRedirect.js --name "redirectServer"
+            pm2 reload echosystem.config.js            
             pm2 list
         env:
           CI : true
