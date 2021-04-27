@@ -52,7 +52,8 @@ jobs:
         run:  |
             node -v
             npm -v
-            pm2 reload echosystem.config.js
+          # pm2 reload echosystem.config.js            
+            start.sh >> /app/test.log
             pm2 list
         env:
           CI : true
