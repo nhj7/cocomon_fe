@@ -1,5 +1,8 @@
 const app = require('express')()
+const redirectSSL = require('redirect-ssl')
 const port = 8080;
+
+app.use(redirectSSL);
 
 app.get('/', (req, res) => {
     console.log('redirectServer response!');

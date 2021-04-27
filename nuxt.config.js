@@ -11,7 +11,7 @@ const colors = _colors.default;
 //module.exports = {
 // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
 
-console.log(process.env);
+//console.log(process.env);
 console.log("nuxt.config.js configuaration start.");
 const config = {  
   ssr: true
@@ -154,10 +154,6 @@ if( process.env.NODE_ENV == "production"){
     key: fs.readFileSync('/etc/letsencrypt/live/cocomon.kr/privkey.pem'),
     cert: fs.readFileSync('/etc/letsencrypt/live/cocomon.kr/fullchain.pem')
   }
-
-
-  
-  
 }
 
 /*
