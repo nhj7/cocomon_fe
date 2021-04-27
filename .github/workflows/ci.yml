@@ -52,7 +52,7 @@ jobs:
         run:  |
             node -v
             npm -v           
-            ./start.sh >> /app/test.log
+            sh -x start.sh
             pm2 list
         env:
           CI : true
