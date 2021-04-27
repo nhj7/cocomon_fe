@@ -1,8 +1,5 @@
 const app = require('express')()
-const port = 80;
-const redirectSSL = require('redirect-ssl')
-app.use(redirectSSL);
+const port = 8080;
 app.listen(port, () => {
     console.log(`redirect app listening at http://localhost:${port}`)
 })
-module.exports = app

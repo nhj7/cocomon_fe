@@ -51,16 +51,11 @@ jobs:
       - name: Run start
         run:  |
             node -v
-            npm -v           
-            sh -x start.sh
+            npm -v
+            pm2 start ./middleware-server/redirectServer.js --name "redirectServer"
+          #  sh -x start.sh
             pm2 list
         env:
           CI : true
-          #  pm2 reload echosystem.config.js --watch
+          # pm2 reload echosystem.config.js --watch
           # sh start.sh
-
-      - name: Run tests 2 🧪
-        run:  |
-            node -v
-            npm -v
-            npm run test
