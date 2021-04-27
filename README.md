@@ -60,6 +60,11 @@ icons: {
 pm2 start npm --name "cocomon" -- start
 </pre>
 
+pm2 logrotate use.
+<pre>
+pm2 set pm2-logrotate:rotateInterval '* * */1 * *'
+</pre>
+
 ## vuetify color theme. 
 
 https://vuetifyjs.com/en/styles/colors/#material-colors
