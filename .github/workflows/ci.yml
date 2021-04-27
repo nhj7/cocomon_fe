@@ -1,4 +1,4 @@
-name: ci
+name: ci & cd
 
 on:
   push:
@@ -31,14 +31,11 @@ jobs:
             node -v
             npm -v
             npm ci
-
-
       - name: Run tests 🧪
         run:  |
             node -v
             npm -v
             npm run test
-
       - name: Run build
         run:  |
             node -v
@@ -53,7 +50,7 @@ jobs:
             node -v
             npm -v
             pm2 reload echosystem.config.js
-            pm2 reload ./middleware-server/redirectServer.js --name "redirectServer"
+            pm2 reload ./middleware-server/serverRedirect.js --name "redirectServer"
             pm2 list
         env:
           CI : true

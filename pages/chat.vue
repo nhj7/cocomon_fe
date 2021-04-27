@@ -1,5 +1,7 @@
 <template>
   <h1 @click="methodTmp">chat page</h1>
+
+  
 </template>
 
 <script>

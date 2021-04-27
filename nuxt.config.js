@@ -1,9 +1,9 @@
-import colors from 'vuetify/es5/util/colors'
-import fs from 'fs'
-import redirectSSL from 'redirect-ssl'
+//import colors from 'vuetify/es5/util/colors'
+//import fs from 'fs'
 
-//let colors = require('vuetify/es5/util/colors')
-//const fs = require( 'fs')
+const _colors = require('vuetify/es5/util/colors')
+const fs = require( 'fs')
+const colors = _colors.default;
 
 //export default {
 //colors = colors.default;
