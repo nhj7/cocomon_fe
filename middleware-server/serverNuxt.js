@@ -3,12 +3,12 @@ const app = require('express')()
 const port = process.env.PORT || 7001
 
 // We instantiate Nuxt.js with the options
-const config = require('./nuxt.config.js')
+const config = require('../nuxt.config.js')
 const nuxt = new Nuxt(config)
 app.use(nuxt.render)
 
 // Build only in dev mode
-if (config.dev) {
+if (process.env.NODE_ENV != 'production') {
   new Builder(nuxt).build()
 }
 

@@ -1,9 +1,9 @@
-import colors from 'vuetify/es5/util/colors'
-import fs from 'fs'
-import redirectSSL from 'redirect-ssl'
+//import colors from 'vuetify/es5/util/colors'
+//import fs from 'fs'
 
-//let colors = require('vuetify/es5/util/colors')
-//const fs = require( 'fs')
+const _colors = require('vuetify/es5/util/colors')
+const fs = require( 'fs')
+const colors = _colors.default;
 
 //export default {
 //colors = colors.default;
@@ -11,7 +11,7 @@ import redirectSSL from 'redirect-ssl'
 //module.exports = {
 // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
 
-console.log(process.env);
+//console.log(process.env);
 console.log("nuxt.config.js configuaration start.");
 const config = {  
   ssr: true
@@ -154,10 +154,6 @@ if( process.env.NODE_ENV == "production"){
     key: fs.readFileSync('/etc/letsencrypt/live/cocomon.kr/privkey.pem'),
     cert: fs.readFileSync('/etc/letsencrypt/live/cocomon.kr/fullchain.pem')
   }
-
-
-  
-  
 }
 
 /*

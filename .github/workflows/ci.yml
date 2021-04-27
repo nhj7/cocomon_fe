@@ -1,4 +1,4 @@
-name: ci
+name: ci & cd
 
 on:
   push:
@@ -14,7 +14,7 @@ jobs:
         uses: actions/checkout@master
 
       - name: Setup node env 🏗
-        uses: actions/setup-node@v2.1.2
+        uses: actions/setup-node@v2.1.5
         with:
           node-version: ${{ matrix.node }}
           check-latest: true
@@ -31,14 +31,11 @@ jobs:
             node -v
             npm -v
             npm ci
-
-
       - name: Run tests 🧪
         run:  |
             node -v
             npm -v
             npm run test
-
       - name: Run build
         run:  |
             node -v
@@ -52,10 +49,18 @@ jobs:
         run:  |
             node -v
             npm -v
+<<<<<<< HEAD
             pm2 start ./middleware-server/redirectServer.js --name "redirectServer"
           #  sh -x start.sh
             pm2 list
         env:
           CI : true
           # pm2 reload echosystem.config.js --watch
+=======
+            pm2 reload echosystem.config.js            
+            pm2 list
+        env:
+          CI : true
+          #  pm2 reload echosystem.config.js --watch
+>>>>>>> 67014f77515799a3c5b6578d71ca6241ba616931
           # sh start.sh
