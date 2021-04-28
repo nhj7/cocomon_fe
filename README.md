@@ -17,17 +17,20 @@ $ npm run start
 $ npm run generate
 ```
 
+<br /><br />
 ## Screen Capture
 
 ![cocomon](/assets/images/cocomon.gif)
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
 
+<br /><br />
 ## upbit api 
 
 https://api.upbit.com/v1/market/all
 https://api.upbit.com/v1/ticker?markets=KRW-BTC
 
+<br /><br />
 ## binance api
 
 base url : https://api.binance.com/
@@ -40,6 +43,7 @@ ticekr rest api : https://api.binance.com/api/v3/ticker/24hr/[symbol]
 
 all ticker price : https://api.binance.com/api/v3/ticker/price
 
+<br /><br />
 
 ### vuetify sort first descending.
 
@@ -54,6 +58,7 @@ icons: {
 },
 </pre>
 
+<br /><br />
 ## PM2 npm start
 
 <pre>
@@ -65,27 +70,24 @@ pm2 logrotate use.
 pm2 set pm2-logrotate:rotateInterval '* * */1 * *'
 </pre>
 
+<br /><br />
 ## vuetify color theme. 
 
 https://vuetifyjs.com/en/styles/colors/#material-colors
 
+<br /><br />
+
 ## github action runner
+
+github action service install
+https://docs.github.com/en/actions/hosting-your-own-runners/configuring-the-self-hosted-runner-application-as-a-service
+
 
 <pre>
 nohup ./run.sh &
 </pre>
 
 install dir 
-
 /app/actions-runner/_work/cocomon_fe/cocomon_fe
 
-   
-
-
-
-
-
-
-
-
-   
+<br />

@@ -17,8 +17,8 @@ async function start() {
     build(nuxt)
   }
 
-  console.log(config);
-  
+  //console.log(config);
+
   if( config.server.https ){
     const https = require('https');
     https.createServer(config.server.https, app).listen(httpsPort);

@@ -3,6 +3,8 @@ const config = {
   apps: [{
     name: 'cocomon',
     script: './startNuxt.js',
+    // script: './node_modules/nuxt/bin/nuxt.js',
+    // args: 'start',
     // script: 'nuxt',
     // args : 'start',
     //instances: 'max',
