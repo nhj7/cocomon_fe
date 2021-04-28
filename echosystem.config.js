@@ -6,7 +6,7 @@ const config = {
     // script: 'nuxt',
     // args : 'start',
     //instances: 'max',
-    instances: 2,
+    instances: 0,
     exec_mode: 'cluster',
     // exec_mode: 'fork',
     //wait_ready: true,

@@ -3,7 +3,9 @@ const config = require('./nuxt.config.js')
 
 const app = require('express')()
 const isDev = process.env.NODE_ENV !== 'production'
-const port = config.server.https ? 8080 : 4443;
+const httpPort = 8080;
+const httpsPort = 4443;
+const port = config.server.https ? httpPort : httpsPort;
 
 async function start() {
   // We get Nuxt instance
@@ -16,11 +18,18 @@ async function start() {
   }
   if( config.server.https ){
     const https = require('https');
-    https.createServer(config.server.https, app).listen(port);
+    https.createServer(config.server.https, app).listen(httpsPort);
+    console.log('Server listening on `localhost:' + httpsPort + '`.')
+    const redirectApp = require('express')()
+    const redirectSSL = require('redirect-ssl')
+    redirectApp.use(redirectSSL);
+    redirectApp.listen(httpPort, '0.0.0.0');
+    console.log('Redirect Server listening on `localhost:' + httpPort + '`.')
   }else{
     // Listen the server
-    app.listen(port, '0.0.0.0')
+    app.listen(httpPort, '0.0.0.0')
+    console.log('Http Server listening on `localhost:' + httpsPort + '`.')
   }  
-  console.log('Server listening on `localhost:' + port + '`.')
+  
 }
 start()
