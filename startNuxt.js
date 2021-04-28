@@ -16,10 +16,14 @@ async function start() {
   if (isDev) {
     build(nuxt)
   }
+
+  console.log(config);
+  
   if( config.server.https ){
     const https = require('https');
     https.createServer(config.server.https, app).listen(httpsPort);
-    console.log('Server listening on `localhost:' + httpsPort + '`.')
+    console.log('Https Server listening on `localhost:' + httpsPort + '`.')
+    
     const redirectApp = require('express')()
     const redirectSSL = require('redirect-ssl')
     redirectApp.use(redirectSSL);
