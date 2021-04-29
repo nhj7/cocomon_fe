@@ -10,14 +10,38 @@
 
 <body>
     <div id="app">
-        <v-app>
+        <v-app :dark="setTheme">
             <v-main>
                 <v-container>
 
+                    <v-switch :label="`Dark Theme`" v-model="goDark"></v-switch>
+
+                    <br /><br />
+
+                    <v-card class="d-flex flex-row mb-6 pa-1">
+                        <v-card>
+                            <v-avatar size="36">
+                                <img alt="Avatar" src="icon.png">
+                        </v-card>
+                        <div class="grey--text caption ml-2">마누라</div>
+
+                        <v-card>
+                            ㅠㅠ 요즘에 왜 저녁에 늦게와... 
+                        </v-card>
+
+                    </v-card>
+
+
                     <v-row>
                         <v-col class="text-center">
-                            
+                            <v-avatar>
+                                <v-icon size="36">
+                                    mdi-account-circle
+                                </v-icon>
+                            </v-avatar>
+
                         </v-col>
+
                     </v-row>
 
 
@@ -28,12 +52,31 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>    
     <script>
+        
         new Vue({
             el: '#app',
-            vuetify: new Vuetify(),
-        })
+            opts: {
+                theme: {
+                    dark: false
+                }
+            },
+            vuetify: new Vuetify(this.opts),
+            data() {
+                return {
+                    goDark: false
+                };
+            }, computed: {
+                setTheme() {
+                    if (this.goDark == true) {
+                        return (this.$vuetify.theme.dark = true);
+                    } else {
+                        return (this.$vuetify.theme.dark = false);
+                    }
+                }
+            }
+            })
     </script>
 </body>
 
