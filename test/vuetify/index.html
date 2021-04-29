@@ -6,6 +6,12 @@
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <style>
+
+        .mb-1{
+            margin-bottom: 4px !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -13,23 +19,55 @@
         <v-app :dark="setTheme">
             <v-main>
                 <v-container>
-
                     <v-switch :label="`Dark Theme`" v-model="goDark"></v-switch>
-
                     <br /><br />
+                    <v-row>
+                        <v-col class="text-center">
+                            <v-card class="d-flex flex-row mb-6 pa-1 mb-1">
+                                <v-card>
+                                    <v-avatar size="36">
+                                        <img alt="Avatar" src="icon.png">
+                                </v-card>
+                                <v-card class="align-self-start">
+                                    <div class="grey--text caption ml-2 text-left">마누라</div>
+                                    <div class="ml-2 text-left">
+                                        ㅠㅠ 요즘에 왜 저녁에 늦게와... <br /><br /><br /><br />
 
-                    <v-card class="d-flex flex-row mb-6 pa-1">
-                        <v-card>
-                            <v-avatar size="36">
-                                <img alt="Avatar" src="icon.png">
-                        </v-card>
-                        <div class="grey--text caption ml-2">마누라</div>
+                                        그런데 요즘에는 저녁에 집에 와서 밥을 먹어...
+                                    </div>
+                                </v-card>
+                            </v-card>
 
-                        <v-card>
-                            ㅠㅠ 요즘에 왜 저녁에 늦게와... 
-                        </v-card>
 
-                    </v-card>
+                            <v-card class="d-flex flex-row mb-6 pa-1">
+                                <v-card>
+                                    <v-avatar size="36">
+                                        <img alt="Avatar" src="icon.png">
+                                </v-card>
+                                <v-card class="align-self-center">
+                                    <div class="grey--text caption ml-2 text-left">마누라</div>
+                                    <div class="ml-2 text-left">
+                                        ㅠㅠ 요즘에 왜 저녁에 늦게와... <br />
+                                    </div>
+                                </v-card>
+                            </v-card>
+
+                            <v-card class="d-flex flex-row-reverse mb-6 pa-1">
+                                <v-card>
+                                    <v-avatar size="36">
+                                        <img alt="Avatar" src="icon.png">
+                                </v-card>
+                                <v-card class="align-self-center">
+                                    <div class="grey--text caption ml-2 text-right">마누라</div>
+                                    <div class="ml-2 text-right">
+                                        ㅠㅠ 요즘에 왜 저녁에 늦게와... <br />
+                                    </div>
+                                </v-card>
+                            </v-card>
+
+                        </v-col>
+
+                    </v-row>
 
 
                     <v-row>
@@ -44,7 +82,17 @@
 
                     </v-row>
 
+                    <div>
+                        <v-card v-for="j in justify" :key="j" class="d-flex mb-6" color="grey lighten-2" flat
+                            height="100" tile>
+                            <v-card v-for="n in 3" :key="n" class="pa-2" :class="[n === 2 && `align-self-${j}`]"
+                                outlined tile>
+                                {{ n === 2 ? 'Aligned flex item' : 'Flex item' }}
 
+                                {{'align-self-' + j}}
+                            </v-card>
+                        </v-card>
+                    </div>
 
                 </v-container>
             </v-main>
@@ -52,9 +100,9 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>    
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
     <script>
-        
+
         new Vue({
             el: '#app',
             opts: {
@@ -66,6 +114,14 @@
             data() {
                 return {
                     goDark: false
+                    , justify: [
+                        'start',
+                        'end',
+                        'center',
+                        'baseline',
+                        'auto',
+                        'stretch',
+                    ],
                 };
             }, computed: {
                 setTheme() {
@@ -76,7 +132,7 @@
                     }
                 }
             }
-            })
+        })
     </script>
 </body>
 
