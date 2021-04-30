@@ -7,8 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
     <style>
-
-        .mb-1{
+        .mb-1 {
             margin-bottom: 4px !important;
         }
     </style>
@@ -21,53 +20,52 @@
                 <v-container>
                     <v-switch :label="`Dark Theme`" v-model="goDark"></v-switch>
                     <br /><br />
-                    <v-row>
-                        <v-col class="text-center">
-                            <v-card class="d-flex flex-row mb-6 pa-1 mb-1">
-                                <v-card>
-                                    <v-avatar size="36">
-                                        <img alt="Avatar" src="icon.png">
-                                </v-card>
-                                <v-card class="align-self-start">
-                                    <div class="grey--text caption ml-2 text-left">마누라</div>
-                                    <div class="ml-2 text-left">
-                                        ㅠㅠ 요즘에 왜 저녁에 늦게와... <br /><br /><br /><br />
 
-                                        그런데 요즘에는 저녁에 집에 와서 밥을 먹어...
-                                    </div>
-                                </v-card>
+
+                    <v-virtual-scroll height="200" item-height="100" :items="chats">
+                        <template v-slot:default="{ item }">
+                        <v-card class="d-flex flex-row pa-1 mb-1">
+                            <div>
+                                <v-avatar size="36">
+                                <img alt="Avatar" src="icon.png">
+                            </div>
+                            <div class="align-self-start">
+                                <div class="grey--text body-1 ml-2 text-left">{{item.userId}}</div>
+                                <div class="ml-2 text-left">
+                                    <v-card class="pa-1 mb-1" v-for="msg in item.msgs">{{msg.cont}}</v-card>
+                                </div>
+                            </div>
+                        </v-card>
+                    </template>
+                    </v-virtual-scroll>
+
+
+                    <!-- v-card class="d-flex flex-row pa-1 mb-1">
+                            <div>
+                                <v-avatar size="36">
+                                    <img alt="Avatar" src="icon.png">
+                            </div>
+                            <div class="align-self-start">
+                                <div class="grey--text body-1 ml-2 text-left">코린이</div>
+                                <div class="ml-2 text-left">
+                                    <v-card class="pa-1  mb-1">그런데 요즘에는 저녁에 집에 와서 밥을 먹어...</v-card>
+                                </div>
+                            </div>
+                        </v-card>
+
+                        <v-card class="d-flex flex-row-reverse mb-6 pa-1">
+                            <v-card>
+                                <v-avatar size="36">
+                                    <img alt="Avatar" src="icon.png">
                             </v-card>
-
-
-                            <v-card class="d-flex flex-row mb-6 pa-1">
-                                <v-card>
-                                    <v-avatar size="36">
-                                        <img alt="Avatar" src="icon.png">
-                                </v-card>
-                                <v-card class="align-self-center">
-                                    <div class="grey--text caption ml-2 text-left">마누라</div>
-                                    <div class="ml-2 text-left">
-                                        ㅠㅠ 요즘에 왜 저녁에 늦게와... <br />
-                                    </div>
-                                </v-card>
+                            <v-card class="align-self-center">
+                                <div class="grey--text body-1 ml-2 text-right">나형</div>
+                                <div class="ml-2 text-right">
+                                    ㅠㅠ 요즘에 왜 저녁에 늦게와... <br />
+                                </div>
                             </v-card>
+                        </v-card-->
 
-                            <v-card class="d-flex flex-row-reverse mb-6 pa-1">
-                                <v-card>
-                                    <v-avatar size="36">
-                                        <img alt="Avatar" src="icon.png">
-                                </v-card>
-                                <v-card class="align-self-center">
-                                    <div class="grey--text caption ml-2 text-right">마누라</div>
-                                    <div class="ml-2 text-right">
-                                        ㅠㅠ 요즘에 왜 저녁에 늦게와... <br />
-                                    </div>
-                                </v-card>
-                            </v-card>
-
-                        </v-col>
-
-                    </v-row>
 
 
                     <v-row>
@@ -121,7 +119,24 @@
                         'baseline',
                         'auto',
                         'stretch',
-                    ],
+                    ], chats : [ 
+                        { 
+                            userId : '앵무새', 
+                            msgs : [
+                                { cont : `ㅠㅠ 요즘에 왜 저녁에 늦게와... ㅠㅠ 요즘에 왜 저녁에 늦게와... ㅠㅠ 요즘에 왜 저녁에
+                                        늦게와... ㅠㅠ 요즘에 왜 저녁에 늦게와... ㅠㅠ 요즘에 왜 저녁에 늦게와... `
+                                }, {
+                                    cont : `오늘은 저녁에 집에 와서 밥을 먹어...`
+                                }
+                            ]
+                        }, { 
+                            userId : '코린이', 
+                            msgs : [
+                                { cont : `근데 리플은 언제 오름??? ` }
+                            ]
+                        }
+
+                    ]
                 };
             }, computed: {
                 setTheme() {
