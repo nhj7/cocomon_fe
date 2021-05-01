@@ -170,13 +170,13 @@ export default {
           title: "Ticker",
           to: "/"
         }
-        /*
+        
         , {
-          icon: "mdi-chart-bubble",
-          title: "Inspire",
-          to: "/inspire"
+          icon: "mdi-chat-processing",
+          title: "Chat",
+          to: "/Chat"
         }
-        */
+        
         
         , {
           icon: "mdi-dev-to",

@@ -21,23 +21,28 @@
                     <v-switch :label="`Dark Theme`" v-model="goDark"></v-switch>
                     <br /><br />
 
+                    <v-row >
+                        <v-col style="border: 2px solid;height:30vh;overflow-y:auto;" class="rounded-lg">
+                            <div v-for="item in chats">
+                                <v-card class="d-flex flex-row pa-1 mb-1">
+                                    <div>
+                                        <v-avatar size="36">
+                                            <img alt="Avatar" src="icon.png">
+                                    </div>
+                                    <div class="align-self-start">
+                                        <div class="grey--text body-1 ml-2 text-left">{{item.userId}}</div>
+                                        <div class="ml-2 text-left">
+                                            <v-card class="pa-1 mb-1" v-for="msg in item.msgs">{{msg.cont}}</v-card>
+                                        </div>
+                                    </div>
+                                </v-card>
+                            </div>
 
-                    <v-virtual-scroll height="200" item-height="100" :items="chats">
-                        <template v-slot:default="{ item }">
-                        <v-card class="d-flex flex-row pa-1 mb-1">
-                            <div>
-                                <v-avatar size="36">
-                                <img alt="Avatar" src="icon.png">
-                            </div>
-                            <div class="align-self-start">
-                                <div class="grey--text body-1 ml-2 text-left">{{item.userId}}</div>
-                                <div class="ml-2 text-left">
-                                    <v-card class="pa-1 mb-1" v-for="msg in item.msgs">{{msg.cont}}</v-card>
-                                </div>
-                            </div>
-                        </v-card>
-                    </template>
-                    </v-virtual-scroll>
+                        </v-col>
+                    </v-row>
+
+
+
 
 
                     <!-- v-card class="d-flex flex-row pa-1 mb-1">
@@ -119,20 +124,26 @@
                         'baseline',
                         'auto',
                         'stretch',
-                    ], chats : [ 
-                        { 
-                            userId : '앵무새', 
-                            msgs : [
-                                { cont : `ㅠㅠ 요즘에 왜 저녁에 늦게와... ㅠㅠ 요즘에 왜 저녁에 늦게와... ㅠㅠ 요즘에 왜 저녁에
+                    ], chats: [
+                        {
+                            userId: '앵무새',
+                            msgs: [
+                                {
+                                    cont: `ㅠㅠ 요즘에 왜 저녁에 늦게와... ㅠㅠ 요즘에 왜 저녁에 늦게와... ㅠㅠ 요즘에 왜 저녁에
                                         늦게와... ㅠㅠ 요즘에 왜 저녁에 늦게와... ㅠㅠ 요즘에 왜 저녁에 늦게와... `
                                 }, {
-                                    cont : `오늘은 저녁에 집에 와서 밥을 먹어...`
+                                    cont: `오늘은 저녁에 집에 와서 밥을 먹어...`
                                 }
                             ]
-                        }, { 
-                            userId : '코린이', 
-                            msgs : [
-                                { cont : `근데 리플은 언제 오름??? ` }
+                        }, {
+                            userId: '코린이',
+                            msgs: [
+                                { cont: `근데 리플은 언제 오름??? ` }
+                            ]
+                        }, {
+                            userId: '나형',
+                            msgs: [
+                                { cont: `리플 지금도 많이 올랐는디... ` }
                             ]
                         }
 

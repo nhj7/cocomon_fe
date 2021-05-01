@@ -13,6 +13,7 @@ const colors = _colors.default;
 
 //console.log(process.env);
 console.log("nuxt.config.js configuaration start.");
+const title = '김치프리미엄, 김프, 가상자산, 코인, 암호화폐, 가상화폐 실시간 시세 확인';
 const config = {  
   ssr: true
   ,isDev: process.env.NODE_ENV !== 'production'
@@ -27,11 +28,18 @@ const config = {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     titleTemplate: `%s - ${process.env.appName}`,
-    title: `${process.env.appName}`,
+    title: title,
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
+      { hid: 'description', name: 'description', content: '김프, 김치프리미엄, 역프, 가상자산, 코인, 암호화폐, 비트코인, 이더리움, 리플, 비트코인캐시 실시간 시세 확인. 김치프리미엄 김프 역프 확인 사이트 코코몬' },
+      { name : 'keyword' , content : `"김치 프리미엄, 김프, 역프, 가상자산 시세, 가상화폐 시세, 암호화폐 시세, 코인 시세, 재정거래` }
+      , { name : 'apple-mobile-web-app-title', content : 'cocomon'}
+      , { name : 'og:type', type : 'og:type' , content : 'website'}
+      , { name : 'og:title', type : 'og:title', content : title }
+      , { name : 'og:site_name', type : 'og:site_name', content : '코코몬'}
+      , { name : 'og:image', type : 'og:image', content : '/icon.png'}
+      , { name : 'og:url', type : 'og:url', content : 'http://cocomon.kr'}
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
