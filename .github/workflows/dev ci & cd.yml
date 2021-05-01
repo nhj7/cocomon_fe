@@ -33,11 +33,11 @@ jobs:
             node -v
             npm -v
             npm ci
-      - name: Run tests 🧪
-        run:  |
-            node -v
-            npm -v
-            npm run test
+      # - name: Run tests 🧪
+      #  run:  |
+      #      node -v
+      #      npm -v
+      #      npm run test
       - name: Run build
         run:  |
             node -v
