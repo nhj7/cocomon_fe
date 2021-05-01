@@ -12,7 +12,7 @@ const colors = _colors.default;
 // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
 
 //console.log(process.env);
-console.log("nuxt.config.js configuaration start.");
+console.log("nuxt.config.js configuaration start.", process.env.NODE_ENV, process.env.httpPort, process.env.httpsPort);
 const title = '김치프리미엄, 김프, 가상자산, 코인, 암호화폐, 가상화폐 실시간 시세 확인';
 const config = {  
   ssr: true
