@@ -6,7 +6,7 @@ on:
       - dev
 
 jobs:
-  ci&cd:
+  ci_cd:
     runs-on: self-hosted
     steps:
       - name: Checkout 🛎
@@ -44,7 +44,7 @@ jobs:
             node -v
             npm -v
             npm run test
-            
+
       - name: Run build
         run:  |
             cd cocomon_dev

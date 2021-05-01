@@ -6,7 +6,7 @@ on:
       - main      
 
 jobs:
-  ci&cd:
+  ci_cd:
     runs-on: self-hosted
     steps:
       - name: Checkout 🛎
