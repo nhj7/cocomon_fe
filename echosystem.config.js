@@ -40,6 +40,11 @@ const config = {
       NODE_ENV: "production",
       httpPort: 8081,
       httpsPort: 8443,
+    },
+    env_production: {
+      NODE_ENV: "production",
+      httpPort: 8081,
+      httpsPort: 8443,
     }
   }
   ]

@@ -56,7 +56,7 @@ jobs:
             pwd
             node -v
             npm -v
-            pm2 reload echosystem.config.js --only cocomon_dev
+            pm2 reload echosystem.config.js --env production --only cocomon_dev
             pm2 list
         env:
           CI : true
