@@ -1,0 +1,57 @@
+name: main ci & cd
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  ci:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@master
+
+      - name: Setup node env 🏗
+        uses: actions/setup-node@v2.1.5
+        with:
+          node-version: ${{ matrix.node }}
+          check-latest: true
+
+      - name: Cache node_modules 📦
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Install dependencies 👨🏻‍💻
+        run: |
+            node -v
+            npm -v
+            npm ci
+      - name: Run tests 🧪
+        run:  |
+            node -v
+            npm -v
+            npm run test
+      - name: Run build
+        run:  |
+            node -v
+            npm -v
+            npm run build
+
+      - name: Install PM2
+        run : npm i pm2
+
+      - name: Run start
+        run:  |
+            node -v
+            npm -v
+            pm2 reload echosystem.config.js --env production --only cocomon
+            pm2 list
+        env:
+          CI : true
+          #  pm2 reload echosystem.config.js --watch
+          # sh start.sh

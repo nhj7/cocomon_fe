@@ -3,8 +3,8 @@ const config = require('./nuxt.config.js')
 
 const app = require('express')()
 const isDev = process.env.NODE_ENV !== 'production'
-const httpPort = 8080;
-const httpsPort = 4443;
+const httpPort = process.env.httpPort || 8080;
+const httpsPort = process.env.httpsPort || 4443;
 const port = config.server.https ? httpPort : httpsPort;
 
 async function start() {
