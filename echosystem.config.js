@@ -37,14 +37,14 @@ const config = {
     //wait_ready: true,
     //listen_timeout: 3000,
     env: {
-      "NODE_ENV": "production",
-      "httpPort": 8081,
-      "httpsPort": 8443,
+      NODE_ENV: "production",
+      httpPort: 7070,
+      httpsPort: 7443,
     },
     env_production: {
-      "NODE_ENV": "production",
-      "httpPort": 8081,
-      "httpsPort": 8443,
+      NODE_ENV: "production",
+      httpPort: 8081,
+      httpsPort: 8443,
     }
   }
   ]
