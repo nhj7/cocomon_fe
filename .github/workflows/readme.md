@@ -1,20 +1,3 @@
-name: dev ci & cd
-
-on:
-  push:
-    branches:
-      - dev
-
-jobs:
-  ci:
-    runs-on: self-hosted
-    steps:
-      - name: Checkout 🛎
-        uses: actions/checkout@master
-        with:
-          ref: dev
-          path: cocomon_dev
-
       - name: Setup node env 🏗
         uses: actions/setup-node@v2.1.5
         with:
@@ -35,28 +18,18 @@ jobs:
             node -v
             npm -v
             npm ci
-      - name: Run tests 🧪
+      # - name: Run tests 🧪
+      #  run:  |\
+      #      node -v
+      #      npm -v
+      #      npm run test      
+      - name: Run Dev start
         run:  |
             cd cocomon_dev
             pwd
             node -v
             npm -v
-            npm run test
-      - name: Run build
-        run:  |
-            cd cocomon_dev
-            pwd
-            node -v
-            npm -v
-            npm run build
-
-      - name: Run start
-        run:  |
-            cd cocomon_dev
-            pwd
-            node -v
-            npm -v
-            pm2 reload echosystem.config.js --env production --only cocomon_dev
+            pm2 reload echosystem.config.js --only cocomon_dev
             pm2 list
         env:
           CI : true
