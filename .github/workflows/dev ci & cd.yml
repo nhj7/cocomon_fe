@@ -30,7 +30,7 @@ jobs:
             ${{ runner.os }}-node-
       - name: Install dependencies 👨🏻‍💻
         run: |
-            ll
+            ls -al
             node -v
             npm -v
             npm ci
@@ -41,7 +41,7 @@ jobs:
       #      npm run test      
       - name: Run Dev start
         run:  |
-            ll
+            ls -al
             node -v
             npm -v
             pm2 reload echosystem.config.js --only cocomon_dev
