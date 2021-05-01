@@ -1,15 +1,7 @@
-//import colors from 'vuetify/es5/util/colors'
-//import fs from 'fs'
-
 const _colors = require('vuetify/es5/util/colors')
 const fs = require( 'fs')
 const colors = _colors.default;
 
-//export default {
-//colors = colors.default;
-//console.log(colors);
-//module.exports = {
-// Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
 
 //console.log(process.env);
 console.log("nuxt.config.js configuaration start.", process.env.NODE_ENV, process.env.httpPort, process.env.httpsPort);
