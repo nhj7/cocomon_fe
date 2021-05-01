@@ -12,7 +12,7 @@ jobs:
       - name: Checkout 🛎
         uses: actions/checkout@master
         with:
-          ref: main
+          ref: dev
           path: cocomon_dev
 
       - name: Setup node env 🏗
