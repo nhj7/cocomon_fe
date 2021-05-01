@@ -3,8 +3,8 @@ const config = require('./nuxt.config.js')
 
 const app = require('express')()
 const isDev = process.env.NODE_ENV !== 'production'
-const httpPort = 8080;
-const httpsPort = 4443;
+const httpPort = process.env.httpPort || 8080;
+const httpsPort = process.env.httpsPort || 4443;
 const port = config.server.https ? httpPort : httpsPort;
 
 async function start() {
@@ -16,7 +16,6 @@ async function start() {
   if (isDev) {
     build(nuxt)
   }
-
   //console.log(config);
 
   if( config.server.https ){
@@ -32,7 +31,7 @@ async function start() {
   }else{
     // Listen the server
     app.listen(httpPort, '0.0.0.0')
-    console.log('Http Server listening on `localhost:' + httpsPort + '`.')
+    console.log('Http Server listening on `localhost:' + httpPort + '`.')
   }  
   
 }

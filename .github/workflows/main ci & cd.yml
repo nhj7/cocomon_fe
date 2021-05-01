@@ -1,4 +1,4 @@
-name: ci & cd
+name: main ci & cd
 
 on:
   push:
@@ -49,7 +49,7 @@ jobs:
         run:  |
             node -v
             npm -v
-            pm2 reload echosystem.config.js --env production
+            pm2 reload echosystem.config.js --env production --only cocomon
             pm2 list
         env:
           CI : true
