@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@master
         with:
           ref: dev
-          path: cocomon_dev
+          path: ../cocomon_dev
 
       - name: Setup node env 🏗
         uses: actions/setup-node@v2.1.5
