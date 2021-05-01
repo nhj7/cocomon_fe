@@ -37,7 +37,7 @@ const config = {
     //wait_ready: true,
     //listen_timeout: 3000,
     env: {
-      NODE_ENV: "development",
+      NODE_ENV: "production",
       httpPort: 8081,
       httpsPort: 8443,
     }

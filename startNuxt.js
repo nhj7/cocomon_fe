@@ -25,6 +25,11 @@ async function start() {
     
     const redirectApp = require('express')()
     const redirectSSL = require('redirect-ssl')
+    redirectApp.all('/', function(req, res, next) {
+      console.log("redirectApp");
+      //res.send('redirectApp hello');
+      next();
+    });
     redirectApp.use(redirectSSL);
     redirectApp.listen(httpPort, '0.0.0.0');
     console.log('Redirect Server listening on `localhost:' + httpPort + '`.')
