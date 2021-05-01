@@ -37,17 +37,8 @@ jobs:
       #  run:  |
       #      node -v
       #      npm -v
-      #      npm run test
-      - name: Run build
-        run:  |
-            node -v
-            npm -v
-            npm run build
-
-      - name: Install PM2
-        run : npm i pm2
-
-      - name: Run start
+      #      npm run test      
+      - name: Run Dev start
         run:  |
             node -v
             npm -v

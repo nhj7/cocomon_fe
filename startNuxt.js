@@ -16,7 +16,6 @@ async function start() {
   if (isDev) {
     build(nuxt)
   }
-
   //console.log(config);
 
   if( config.server.https ){
@@ -32,7 +31,7 @@ async function start() {
   }else{
     // Listen the server
     app.listen(httpPort, '0.0.0.0')
-    console.log('Http Server listening on `localhost:' + httpsPort + '`.')
+    console.log('Http Server listening on `localhost:' + httpPort + '`.')
   }  
   
 }
