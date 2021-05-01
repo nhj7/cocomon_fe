@@ -3,8 +3,7 @@ name: main ci & cd
 on:
   push:
     branches:
-      - main
-      - master
+      - main      
 
 jobs:
   ci:
@@ -12,6 +11,9 @@ jobs:
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@master
+        with:
+          ref: main
+          path: cocomon_main
 
       - name: Setup node env 🏗
         uses: actions/setup-node@v2.1.5
@@ -28,16 +30,22 @@ jobs:
             ${{ runner.os }}-node-
       - name: Install dependencies 👨🏻‍💻
         run: |
+            cd cocomon_main
+            pwd
             node -v
             npm -v
             npm ci
       - name: Run tests 🧪
         run:  |
+            cd cocomon_main
+            pwd
             node -v
             npm -v
             npm run test
       - name: Run build
         run:  |
+            cd cocomon_main
+            pwd
             node -v
             npm -v
             npm run build
@@ -47,6 +55,8 @@ jobs:
 
       - name: Run start
         run:  |
+            cd cocomon_main
+            pwd
             node -v
             npm -v
             pm2 reload echosystem.config.js --env production --only cocomon
