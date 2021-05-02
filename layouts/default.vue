@@ -547,6 +547,25 @@ export default {
 }; // end vue.js
 
 </script>
-<style scoped>
-  
+<style>
+@media screen and (min-width: 600px) { 
+  body::-webkit-scrollbar {
+    width: 15px;
+  }
+
+  body::-webkit-scrollbar-track {
+    background: #e6e6e6;
+    border-left: 1px solid #dadada;
+  }
+
+  body::-webkit-scrollbar-thumb {
+    background: #b0b0b0;
+    border: solid 3px #e6e6e6;
+    border-radius: 7px;
+  }
+
+  body::-webkit-scrollbar-thumb:hover {
+    background: black;
+  }
+}
 </style>

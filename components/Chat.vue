@@ -3,9 +3,10 @@
     <div v-for="item in chats" :key="item.CUID">
       <v-card class="d-flex flex-row pa-1 mb-1">
         <div>
-          <v-avatar size="30">
+          <!--v-avatar size="30">
             <img alt="Avatar" src="icon.png" />
-          </v-avatar>
+          </v-avatar-->
+          <v-icon @click="setChatIcon">mdi-emoticon</v-icon>
         </div>
         <div class="align-self-start">
           <div class="grey--text body-1 ml-2 text-left">{{item.userId}}</div>
@@ -15,6 +16,23 @@
         </div>
       </v-card>
     </div>
+    <div class="mt-3">
+      <v-text-field
+            v-model="inp_chatMsg"
+            append-icon="mdi-chat-processing"
+            label="CoCo Talk"
+            placeholder=""
+            outlined
+            hide-details="auto"
+            clearable
+            height="2.2em"
+            dense
+            @click:append="sendChatMsg"
+            @keyup.enter="sendChatMsg"
+          ></v-text-field>
+
+
+    </div>
   </div>
 </template>
 
@@ -23,6 +41,7 @@ export default {
   data() {
     return {
       pageName: false,
+      inp_chatMsg : '',
       chats: [
         {
           userId: "앵무새",
@@ -60,8 +79,13 @@ export default {
     log: msg => {
       console.log(msg);
     },
-    methodTmp() {
-      console.log("methodTmp");
+    setChatIcon(){
+      console.log("setChatIcon");
+    },
+    sendChatMsg(){
+      console.log("sendChatMsg", this.inp_chatMsg );
+
+      this.inp_chatMsg = "";
     }
   },
   mounted: async function() {
