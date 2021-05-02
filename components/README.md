@@ -5,3 +5,8 @@
 The components directory contains your Vue.js Components.
 
 _Nuxt.js doesn't supercharge these components._
+
+
+## mdi icon list ref
+
+https://pictogrammers.github.io/@mdi/font/5.4.55/
