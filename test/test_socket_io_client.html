@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <style>
+        .mb-1 {
+            margin-bottom: 4px !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <v-app :dark="setTheme">
+            <v-main>
+                <v-container>
+                    <v-switch :label="`Dark Theme`" v-model="goDark"></v-switch>
+                    <br /><br />
+
+                    <v-row >
+                        <v-col style="border: 2px solid;height:30vh;overflow-y:auto;" class="rounded-lg">
+                            <div v-for="item in chats">
+                                <v-card class="d-flex flex-row pa-1 mb-1">
+                                    <div>
+                                        <v-icon>mdi-emoticon</v-icon>
+                                    </div>
+                                    <div class="align-self-start">
+                                        <div class="grey--text body-1 ml-2 text-left">{{item.userId}}</div>
+                                        <div class="ml-2 text-left">
+                                            <v-card class="pa-1 mb-1" v-for="msg in item.msgs">{{msg.cont}}</v-card>
+                                        </div>
+                                    </div>
+                                </v-card>
+                            </div>
+
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col class="text-center">
+                            <div class="mt-1">
+                                <v-text-field
+                                      v-model="inp_chatMsg"
+                                      append-icon="mdi-chat-processing"
+                                      label="CoCo Talk"
+                                      placeholder=""
+                                      outlined
+                                      hide-details="auto"
+                                      clearable
+                                      height="2.2em"
+                                      dense
+                                      @click:append="sendChatMsg"
+                                      @keyup.enter="sendChatMsg"
+                                    ></v-text-field>
+                          
+                          
+                              </div>
+                        </v-col>
+                    </v-row>
+                </v-container>
+            </v-main>
+        </v-app>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js" integrity="sha512-eVL5Lb9al9FzgR63gDs1MxcDS2wFu3loYAgjIH0+Hg38tCS8Ag62dwKyH+wzDb+QauDpEZjXbMn11blw8cbTJQ==" crossorigin="anonymous"></script>
+    <script>
+        const socket = io('http://localhost:3001' , {transports: [ 'websocket' ]});
+        Vue.prototype.$socket = socket;
+        new Vue({
+            el: '#app',
+            opts: {
+                theme: {
+                    dark: false
+                }
+            },
+            vuetify: new Vuetify(this.opts),
+            data() {
+                return {
+                    goDark: false
+                    , inp_chatMsg : ''
+                    , justify: [
+                        'start',
+                        'end',
+                        'center',
+                        'baseline',
+                        'auto',
+                        'stretch',
+                    ], chats: [
+                        {
+                            userId: '앵무새',
+                            msgs: [
+                                {
+                                    cont: `ㅠㅠ 요즘에 왜 저녁에 늦게와... ㅠㅠ 요즘에 왜 저녁에 늦게와... ㅠㅠ 요즘에 왜 저녁에
+                                        늦게와... ㅠㅠ 요즘에 왜 저녁에 늦게와... ㅠㅠ 요즘에 왜 저녁에 늦게와... `
+                                }, {
+                                    cont: `오늘은 저녁에 집에 와서 밥을 먹어...`
+                                }
+                            ]
+                        }, {
+                            userId: '코린이',
+                            msgs: [
+                                { cont: `근데 리플은 언제 오름??? ` }
+                            ]
+                        }, {
+                            userId: '나형',
+                            msgs: [
+                                { cont: `리플 지금도 많이 올랐는디... ` }
+                            ]
+                        }
+
+                    ]
+                };
+            }, computed: {
+                setTheme() {
+                    if (this.goDark == true) {
+                        return (this.$vuetify.theme.dark = true);
+                    } else {
+                        return (this.$vuetify.theme.dark = false);
+                    }
+                }
+            }, methods : {
+                sendChatMsg() {
+                    console.log("sendChatMsg");
+                    this.$socket.emit('chat',{ message: this.inp_chatMsg });
+                    this.inp_chatMsg = '';
+                }
+            }, created() { 
+                console.log("created");
+                this.$socket.on('chat', function(data){ console.log('chat', data); }) 
+            },
+        })
+    </script>
+</body>
+
+</html>
