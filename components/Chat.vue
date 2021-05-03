@@ -16,7 +16,8 @@
         </div>
       </v-card>
     </div>
-    <div class="mt-3">
+    <div class="mt-3 d-flex flex-row">
+      <v-icon color="primary" class="mr-2" >mdi-emoticon</v-icon>
       <v-text-field
             v-model="inp_chatMsg"
             append-icon="mdi-chat-processing"

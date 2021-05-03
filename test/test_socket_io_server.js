@@ -31,3 +31,5 @@ server.listen(3001, function () { console.log('socket io server listening on por
 // https://library.gabia.com/contents/8018/
 // https://engineering.linecorp.com/ko/blog/the-architecture-behind-chatting-on-line-live/
 // https://bcho.tistory.com/899
+// redis-cli monitor
+// 

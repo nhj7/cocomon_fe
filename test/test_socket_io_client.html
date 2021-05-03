@@ -68,7 +68,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js" integrity="sha512-eVL5Lb9al9FzgR63gDs1MxcDS2wFu3loYAgjIH0+Hg38tCS8Ag62dwKyH+wzDb+QauDpEZjXbMn11blw8cbTJQ==" crossorigin="anonymous"></script>
     <script>
-        const socket = io('http://localhost:8080' , {transports: [ 'websocket' ]});
+        const socket = io('https://192.168.55.26:8443' , {transports: [ 'websocket' ]});
         Vue.prototype.$socket = socket;
         new Vue({
             el: '#app',

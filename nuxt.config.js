@@ -78,7 +78,7 @@ const config = {
     // module options
     sockets: [{
       name: 'main',
-      url: 'https://api.upbit.com/websocket/v1'
+      url: 'http://localhost:3000'
     }]
   },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
