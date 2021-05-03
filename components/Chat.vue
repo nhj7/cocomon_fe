@@ -6,7 +6,7 @@
           <!--v-avatar size="30">
             <img alt="Avatar" src="icon.png" />
           </v-avatar-->
-          <v-icon @click="setChatIcon">mdi-emoticon</v-icon>
+          <v-icon @click="setChatIcon" color="primary">mdi-emoticon</v-icon>
         </div>
         <div class="align-self-start">
           <div class="grey--text body-1 ml-2 text-left">{{item.userId}}</div>

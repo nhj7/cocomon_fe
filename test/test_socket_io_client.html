@@ -26,12 +26,12 @@
                             <div v-for="item in chats">
                                 <v-card class="d-flex flex-row pa-1 mb-1">
                                     <div>
-                                        <v-icon>mdi-emoticon</v-icon>
+                                        <v-icon :color="item.userInfo.emoticon.color">{{item.userInfo.emoticon.icon}}</v-icon>
                                     </div>
                                     <div class="align-self-start">
-                                        <div class="grey--text body-1 ml-2 text-left">{{item.userId}}</div>
+                                        <div class="grey--text body-1 ml-2 text-left">{{item.userInfo.nickName}}</div>
                                         <div class="ml-2 text-left">
-                                            <v-card class="pa-1 mb-1" v-for="msg in item.msgs">{{msg.cont}}</v-card>
+                                            <v-card class="pa-1 mb-1">{{item.message}}</v-card>
                                         </div>
                                     </div>
                                 </v-card>
@@ -41,7 +41,8 @@
                     </v-row>
                     <v-row>
                         <v-col class="text-center">
-                            <div class="mt-1">
+                            <div class="mt-1 d-flex flex-row">
+                                <v-icon :color="this.userInfo.emoticon.color" class="mr-2" @click="setEmoticon">{{this.userInfo.emoticon.icon}}</v-icon>
                                 <v-text-field
                                       v-model="inp_chatMsg"
                                       append-icon="mdi-chat-processing"
@@ -55,8 +56,6 @@
                                       @click:append="sendChatMsg"
                                       @keyup.enter="sendChatMsg"
                                     ></v-text-field>
-                          
-                          
                               </div>
                         </v-col>
                     </v-row>
@@ -69,7 +68,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js" integrity="sha512-eVL5Lb9al9FzgR63gDs1MxcDS2wFu3loYAgjIH0+Hg38tCS8Ag62dwKyH+wzDb+QauDpEZjXbMn11blw8cbTJQ==" crossorigin="anonymous"></script>
     <script>
-        const socket = io('http://localhost:3001' , {transports: [ 'websocket' ]});
+        const socket = io('http://localhost:8080' , {transports: [ 'websocket' ]});
         Vue.prototype.$socket = socket;
         new Vue({
             el: '#app',
@@ -82,6 +81,14 @@
             data() {
                 return {
                     goDark: false
+                    , userInfo : {
+                        cid : ''
+                        , nickName : '코린이1'
+                        , emoticon : {
+                            color : 'primary'
+                            , icon : 'mdi-emoticon'
+                        }
+                    }
                     , inp_chatMsg : ''
                     , justify: [
                         'start',
@@ -91,28 +98,6 @@
                         'auto',
                         'stretch',
                     ], chats: [
-                        {
-                            userId: '앵무새',
-                            msgs: [
-                                {
-                                    cont: `ㅠㅠ 요즘에 왜 저녁에 늦게와... ㅠㅠ 요즘에 왜 저녁에 늦게와... ㅠㅠ 요즘에 왜 저녁에
-                                        늦게와... ㅠㅠ 요즘에 왜 저녁에 늦게와... ㅠㅠ 요즘에 왜 저녁에 늦게와... `
-                                }, {
-                                    cont: `오늘은 저녁에 집에 와서 밥을 먹어...`
-                                }
-                            ]
-                        }, {
-                            userId: '코린이',
-                            msgs: [
-                                { cont: `근데 리플은 언제 오름??? ` }
-                            ]
-                        }, {
-                            userId: '나형',
-                            msgs: [
-                                { cont: `리플 지금도 많이 올랐는디... ` }
-                            ]
-                        }
-
                     ]
                 };
             }, computed: {
@@ -125,13 +110,20 @@
                 }
             }, methods : {
                 sendChatMsg() {
+                    if( this.inp_chatMsg.length == 0 ) return;
                     console.log("sendChatMsg");
-                    this.$socket.emit('chat',{ message: this.inp_chatMsg });
+                    this.$socket.emit('chat',{ userInfo : this.userInfo, message: this.inp_chatMsg });
                     this.inp_chatMsg = '';
+                }, setEmoticon(){
+                    console.log("setEmoticon");
                 }
             }, created() { 
                 console.log("created");
-                this.$socket.on('chat', function(data){ console.log('chat', data); }) 
+                const self = this;
+                this.$socket.on('chat', function(data){ 
+                    console.log('ws chat', data); 
+                    self.chats.push(data);
+                }) 
             },
         })
     </script>
