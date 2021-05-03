@@ -21,3 +21,7 @@ io.on('connection', function (socket) {
 })
 server.listen(3001, function () { console.log('socket io server listening on port 3001') })
 
+// redis-server install https://dejavuqa.tistory.com/153
+// https://library.gabia.com/contents/8018/
+// https://engineering.linecorp.com/ko/blog/the-architecture-behind-chatting-on-line-live/
+// https://bcho.tistory.com/899
