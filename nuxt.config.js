@@ -67,13 +67,13 @@ const config = {
     '@nuxtjs/pwa',
     // https://go.nuxtjs.dev/content
     //'@nuxt/content',
-    'nuxt-socket-io', 
+    //'nuxt-socket-io', 
     ['cookie-universal-nuxt', { alias: 'cookies' }],
     ['nuxt-vuex-localstorage', {
       mode: 'debug'
     }]
     , '~/modules/socket-io'
-   
+    //, 'socket.io-client'
   ],
   io: {
     // module options

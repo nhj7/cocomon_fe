@@ -156,6 +156,9 @@
 </template>
 
 <script>
+import io from 'socket.io-client'
+
+
 export default {
   data() {
     return {
@@ -223,14 +226,17 @@ export default {
   created: async function() {
     console.log("default.vue created", this.$store.state.id.cid);
 
+    
+
     const cookiesRes = this.$cookies.getAll();
     console.log("cookiesRes", cookiesRes);
     this.$vuetify.theme.dark = cookiesRes.dark;
     if (!process.server) {
+      var curUrl = window.location.protocol + "//" + window.location.host;
+      console.log("curUrl : ", curUrl);
+      $nuxt.$store.state.socketIO.socket = io(curUrl);
 
       window.addEventListener('beforeunload', this.beforeunloadHandler)
-
-
       console.log("created", $nuxt.$store.state.id.cid);
 
       // ticker color config

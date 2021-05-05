@@ -7,8 +7,17 @@ module.exports = async (wsServer) => {
     }); //setting cors 
     
     // add redis
-    const redis = require('socket.io-redis');
-    const adapterRedis = redis({ host: '192.168.55.26', port: 6379 });
+    const redis = require('redis');
+    const redisClient = redis.createClient({
+        host : '192.168.55.26'
+        , port : 6379
+    });
+    redisClient.on("error", function(error) {
+        console.error(error);
+    });
+
+    const socketIO_redis = require('socket.io-redis');
+    const adapterRedis = socketIO_redis({ host: '192.168.55.26', port: 6379 });
     io.adapter(adapterRedis);
     // adapterRedis.pubClient.on('error', function(error){
     //     console.log("adapter pubClient error", error);
@@ -33,6 +42,9 @@ module.exports = async (wsServer) => {
             //var rtnMessage = { message: data.message }; // 클라이언트에게 메시지를 전송한다 
             socket.emit('chat', data);
             socket.broadcast.emit('chat', data);
+
+            redisClient.rpush("chats", JSON.stringify(data));
+            redisClient.ltrim('chats', -1000 , -1);
         });
     })
 }

@@ -9626,7 +9626,7 @@
   dependencies:
     "redis-errors" "^1.0.0"
 
-"redis@^3.0.0":
+"redis@^3.0.0", "redis@^3.1.2":
   "integrity" "sha512-grn5KoZLr/qrRQVwoSkmzdbw6pwF+/rwODtrOr6vuBRiR/f3rjSTGupbF90Zpqm2oenix8Do6RV7pYEkGwlKkw=="
   "resolved" "https://registry.npmjs.org/redis/-/redis-3.1.2.tgz"
   "version" "3.1.2"
@@ -10397,7 +10397,7 @@
   "resolved" "https://registry.npmjs.org/socket.io-adapter/-/socket.io-adapter-2.1.0.tgz"
   "version" "2.1.0"
 
-"socket.io-client@^3.1.0":
+"socket.io-client@^3.1.0", "socket.io-client@^3.1.3":
   "integrity" "sha512-4sIGOGOmCg3AOgGi7EEr6ZkTZRkrXwub70bBB/F0JSkMOUFpA77WsL87o34DffQQ31PkbMUIadGOk+3tx1KGbw=="
   "resolved" "https://registry.npmjs.org/socket.io-client/-/socket.io-client-3.1.3.tgz"
   "version" "3.1.3"
