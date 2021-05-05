@@ -7,6 +7,7 @@ module.exports = async (wsServer) => {
             transports: ['websocket', 'polling'],
             credentials: true
         }
+        , allowEIO3: true
     }); //setting cors 
     
     // add redis
