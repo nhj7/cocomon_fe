@@ -3,7 +3,11 @@ module.exports = async (wsServer) => {
     const io = require('socket.io')(wsServer, {
         cors: {
             origin: '*',
+            methods: ["GET", "POST"],
+            transports: ['websocket', 'polling'],
+            credentials: true
         }
+        , allowEIO3: true
     }); //setting cors 
     
     // add redis
