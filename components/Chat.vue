@@ -1,40 +1,44 @@
 <template>
-  <div>
-    <div v-for="item in chats" :key="item.CUID">
-      <v-card class="d-flex flex-row pa-1 mb-1">
-        <div>
-          <!--v-avatar size="30">
-            <img alt="Avatar" src="icon.png" />
-          </v-avatar-->
-          <v-icon @click="setChatIcon" color="primary">mdi-emoticon</v-icon>
-        </div>
-        <div class="align-self-start">
-          <div class="grey--text body-1 ml-2 text-left">{{item.userId}}</div>
-          <div class="ml-2 text-left">
-            <v-card class="pa-1 mb-1" v-for="msg in item.msgs" :key="msg.CUID">{{msg.cont}}</v-card>
+  <v-card class="d-flex pa-1 overflow-hidden" outlined tile  >
+  <v-row>
+    <v-col id="chatsLayer" cols="12" md="12" sm="12" xs="12" class="pa-2 overflow-y-auto" :style="chatHeight">
+      <div v-for="item in chats" :key="item.CUID">
+        <v-card class="d-flex flex-row pa-1 mb-1">
+          <div>
+            <v-icon @click="setChatIcon" color="primary">mdi-emoticon</v-icon>
           </div>
-        </div>
-      </v-card>
-    </div>
-    <div class="mt-3 d-flex flex-row">
-      <v-icon color="primary" class="mr-2" >mdi-emoticon</v-icon>
-      <v-text-field
-            v-model="inp_chatMsg"
-            append-icon="mdi-chat-processing"
-            label="CoCo Talk"
-            placeholder=""
-            outlined
-            hide-details="auto"
-            clearable
-            height="2.2em"
-            dense
-            @click:append="sendChatMsg"
-            @keyup.enter="sendChatMsg"
-          ></v-text-field>
-
-
-    </div>
-  </div>
+          <div class="align-self-start">
+            <div class="grey--text caption ml-2 text-left">{{item.userInfo.nickName}}</div>
+            <div class="ml-2 text-left">
+              <v-card class="caption pl-1 pr-1 " v-html="item.message" >  </v-card>
+            </div>
+          </div>
+        </v-card>
+      </div>
+    </v-col>
+    <v-col cols="12" md="12" sm="12" xs="12" style class="pl-2 pr-2 pb-3">
+      <div class="mt-3 d-flex flex-row">
+        <v-icon color="primary" class="mr-2">mdi-emoticon</v-icon>
+        <v-text-field
+          v-model="inp_chatMsg"
+          append-icon="mdi-chat-processing"
+          label="CoCo Talk"
+          placeholder
+          outlined
+          hide-details="auto"
+          clearable
+          height="2.2em"
+          dense
+          @click:append="sendChatMsg"
+          @keyup.enter="sendChatMsg"
+          ref="inpChat"
+          @blur="isInpChatFocus=false;"
+          @focus="isInpChatFocus=true;"
+        ></v-text-field>
+      </div>
+    </v-col>
+  </v-row>
+  </v-card>
 </template>
 
 <script>
@@ -42,28 +46,17 @@ export default {
   data() {
     return {
       pageName: false,
-      inp_chatMsg : '',
-      chats: [
-        {
-          userId: "앵무새",
-          msgs: [
-            {
-              cont: `리도석 동무 언제 올라갑니까? 리플 2025년 가격은 아직도 500원이다. 내가 가서 보고 왔다.... `
-            },
-            {
-              cont: `오늘은 저녁에 집에 와서 밥을 먹어...`
-            }
-          ]
-        },
-        {
-          userId: "코린이",
-          msgs: [{ cont: `근데 리플은 언제 오름??? ` }]
-        },
-        {
-          userId: "나형",
-          msgs: [{ cont: `리플 지금도 많이 올랐는디... ` }]
+      inp_chatMsg: "",
+      isInpChatFocus : false,
+      chats: [],
+      userInfo : {
+          cid : ''
+          , nickName : '코린이1'
+          , emoticon : {
+              color : 'primary'
+              , icon : 'mdi-emoticon'
+          }
         }
-      ]
     };
   }, // end data
   async asyncData({ req, res }) {
@@ -73,24 +66,72 @@ export default {
   },
   created: async function() {
     if (process.browser) {
-      console.log($nuxt.$route.name, "template.vue created");
+      console.log($nuxt.$route.name, "chat.vue created 11");
+
+      window.addEventListener('keyup', () => {
+        //console.log("window.keyup");
+        if( !this.isInpChatFocus ){
+          this.$refs.inpChat.focus();
+        }
+      });
     }
   }, // end created
   methods: {
     log: msg => {
       console.log(msg);
     },
-    setChatIcon(){
+    setChatIcon() {
       console.log("setChatIcon");
     },
-    sendChatMsg(){
-      console.log("sendChatMsg", this.inp_chatMsg );
-
+    sendChatMsg() {
+      if( this.inp_chatMsg == "" )
+        return;
+      console.log("sendChatMsg", this.inp_chatMsg);
+      this.socket.emit('chat', {
+        userInfo : this.userInfo, message: this.inp_chatMsg
+      }, (resp) => {
+        /* Handle response, if any */
+        console.log('resp', resp);
+      })
       this.inp_chatMsg = "";
     }
   },
   mounted: async function() {
-    console.log("template.vue mounted");
+    console.log("chat.vue mounted", this.$nuxtSocket);
+    this.$nuxtSocket.connect("http://localhost:8080");
+    this.socket = this.$nuxtSocket({
+      channel: "/"
+      , name : "home"
+      , url : "http://localhost:8080"
+    });
+    /* Listen for events: */
+    this.socket.on("chat", (msg, cb) => {
+      /* Handle event */
+      console.log("socket on", msg, cb);
+      this.chats.push(msg);
+    });
+  } // mounted
+  , watch : {
+    chats() {
+      console.log("watch chats update.");
+      const chatsLayer = document.getElementById("chatsLayer")
+      setTimeout( () => { chatsLayer.scrollTop = chatsLayer.scrollHeight; } , 0 );
+
+    }
+  }, computed : {
+    chatHeight() {
+      const minHeight = '32vh';
+      const lgHeight = '60vh';
+      const maxHeightMap = {
+        xs: minHeight,
+        sm: lgHeight,
+        md: lgHeight,
+        lg: lgHeight,
+        xl: lgHeight
+      };
+      //console.log("dtHeight", maxHeightMap[this.$vuetify.breakpoint.name] );
+      return `height:${maxHeightMap[this.$vuetify.breakpoint.name]};`;
+    }
   }
 }; // end vue.js
 </script>

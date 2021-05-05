@@ -18,6 +18,8 @@ async function start() {
   }
   //console.log(config);
 
+  let wsServer;
+
   if( config.server.https ){
     const https = require('https');
     const httpsServer = https.createServer(config.server.https, app).listen(httpsPort);
@@ -33,54 +35,18 @@ async function start() {
     redirectApp.listen(httpPort, '0.0.0.0');
     console.log('Redirect Server listening on `localhost:' + httpPort + '`.')
 
-    const io = require('socket.io')(httpsServer, {
-      cors: {
-        origin: '*',
-      }
-    }); //setting cors 
-    
-    // add redis
-    const redis = require('socket.io-redis');
-    io.adapter(redis({ host: '192.168.55.26', port: 6379 }));
-    
-    io.on('connection', function (socket) {
-        console.log('Connect from Client1111: ' + socket)
-        socket.on('chat', function (data) {
-            console.log('message from Client: ' + data.message)
-            var rtnMessage = { message: data.message }; // 클라이언트에게 메시지를 전송한다 
-            socket.emit('chat',  data);
-            socket.broadcast.emit( 'chat', data );
-        });
-    })
-
+    wsServer = httpsServer;
   }else{
     // Listen the server
     //const server = app.listen(httpPort, '0.0.0.0')
     const server = require('http').createServer(app);
     server.listen(httpPort, '0.0.0.0')
     console.log('Http Server listening on `localhost:' + httpPort + '`.')
+    wsServer = server;
+  }
+  require("./middleware-server/socket-io")(wsServer); // socket-io regist.
 
-    const io = require('socket.io')(server, {
-      cors: {
-        origin: '*',
-      }
-    }); //setting cors 
-    
-    // add redis
-    const redis = require('socket.io-redis');
-    io.adapter(redis({ host: '192.168.55.26', port: 6379 }));
-    
-    io.on('connection', function (socket) {
-        console.log('Connect from Client: ' + socket)
-        socket.on('chat', function (data) {
-            console.log('message from Client: ' + data.message)
-            var rtnMessage = { message: data.message }; // 클라이언트에게 메시지를 전송한다 
-            socket.emit('chat',  data);
-            socket.broadcast.emit( 'chat', data );
-        });
-    })
-
-  }  
+  
   
 }
 start()

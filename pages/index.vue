@@ -24,9 +24,7 @@
         <!--v-col cols="12" sm="1" ></v-col-->
         
         <v-col cols="12" md="6" sm="12" xs="12" class=".rounded-lg">
-          <v-card class="d-flex pa-2 overflow-y-auto" outlined tile :style="chatHeight" >
             <Chat />
-          </v-card>
         </v-col>
         <v-col cols="12" sm="12" md="12" xs="12">
           <v-card class="d-flex pa-2" outlined tile>
@@ -98,19 +96,7 @@ export default {
      
   },
   computed : {
-    chatHeight() {
-
-      
-      const maxHeightMap = {
-        xs: "30vh",
-        sm: "55vh",
-        md: "55vh",
-        lg: "55vh",
-        xl: "55vh"
-      };
-      //console.log("dtHeight", maxHeightMap[this.$vuetify.breakpoint.name] );
-      return `min-height:${maxHeightMap[this.$vuetify.breakpoint.name]};`;
-    }
+    
   }
   , created: async function () {
     console.log("index.vue", "created!!!");

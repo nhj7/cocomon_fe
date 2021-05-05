@@ -66,20 +66,22 @@ const config = {
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
     // https://go.nuxtjs.dev/content
-    '@nuxt/content',
+    //'@nuxt/content',
     'nuxt-socket-io', 
     ['cookie-universal-nuxt', { alias: 'cookies' }],
     ['nuxt-vuex-localstorage', {
       mode: 'debug'
     }]
+    , '~/modules/socket-io'
    
   ],
   io: {
     // module options
-    sockets: [{
-      name: 'main',
-      url: 'http://localhost:3000'
-    }]
+    // sockets: [{
+    //   name: 'main',
+    //   url: 'http://localhost:8080',
+    //   transports : ['websocket']
+    // }]
   },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
