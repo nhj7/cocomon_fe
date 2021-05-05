@@ -6,7 +6,7 @@ on:
       - dev
 
 jobs:
-  ci:
+  ci_cd:
     runs-on: self-hosted
     steps:
       - name: Checkout 🛎
@@ -28,6 +28,7 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+
       - name: Install dependencies 👨🏻‍💻
         run: |
             cd cocomon_dev
@@ -35,6 +36,7 @@ jobs:
             node -v
             npm -v
             npm ci
+
       - name: Run tests 🧪
         run:  |
             cd cocomon_dev
@@ -42,6 +44,7 @@ jobs:
             node -v
             npm -v
             npm run test
+
       - name: Run build
         run:  |
             cd cocomon_dev

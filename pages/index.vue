@@ -18,17 +18,15 @@
       ></iframe-->
 
       <v-row>
-        <v-col cols="12" sm="6" xs="12" id="TickerLayer" >
+        <v-col cols="12" md="6" sm="12" xs="12" id="TickerLayer" >
           <Ticker />
         </v-col>
         <!--v-col cols="12" sm="1" ></v-col-->
         
-        <v-col cols="12" sm="6" xs="12" class=".rounded-lg">
-          <v-card class="d-flex pa-2 overflow-y-auto" outlined tile :style="chatHeight" >
+        <v-col cols="12" md="6" sm="12" xs="12" class=".rounded-lg">
             <Chat />
-          </v-card>
         </v-col>
-        <v-col cols="12" sm="12" md="12">
+        <v-col cols="12" sm="12" md="12" xs="12">
           <v-card class="d-flex pa-2" outlined tile>
             <News />
           </v-card>
@@ -98,19 +96,7 @@ export default {
      
   },
   computed : {
-    chatHeight() {
-
-      
-      const maxHeightMap = {
-        xs: "30vh",
-        sm: "55vh",
-        md: "55vh",
-        lg: "55vh",
-        xl: "55vh"
-      };
-      //console.log("dtHeight", maxHeightMap[this.$vuetify.breakpoint.name] );
-      return `min-height:${maxHeightMap[this.$vuetify.breakpoint.name]};`;
-    }
+    
   }
   , created: async function () {
     console.log("index.vue", "created!!!");
@@ -280,43 +266,43 @@ tbody > tr:hover {
   overflow-x:hidden;overflow-y:auto;
 }
 
-@media screen and (min-width: 960px) { 
-.theme--light::-webkit-scrollbar {
-  width: 15px;
-}
+@media screen and (min-width: 600px) { 
+  .theme--light::-webkit-scrollbar {
+    width: 15px;
+  }
 
-.theme--light::-webkit-scrollbar-track {
-  background: #e6e6e6;
-  border-left: 1px solid #dadada;
-}
+  .theme--light::-webkit-scrollbar-track {
+    background: #e6e6e6;
+    border-left: 1px solid #dadada;
+  }
 
-.theme--light::-webkit-scrollbar-thumb {
-  background: #b0b0b0;
-  border: solid 3px #e6e6e6;
-  border-radius: 7px;
-}
+  .theme--light::-webkit-scrollbar-thumb {
+    background: #b0b0b0;
+    border: solid 3px #e6e6e6;
+    border-radius: 7px;
+  }
 
-.theme--light::-webkit-scrollbar-thumb:hover {
-  background: black;
-}
+  .theme--light::-webkit-scrollbar-thumb:hover {
+    background: black;
+  }
 
-.theme--dark::-webkit-scrollbar {
-  width: 15px;
-}
+  .theme--dark::-webkit-scrollbar {
+    width: 15px;
+  }
 
-.theme--dark::-webkit-scrollbar-track {
-  background: #202020;
-}
+  .theme--dark::-webkit-scrollbar-track {
+    background: #202020;
+  }
 
-.theme--dark::-webkit-scrollbar-thumb {
-  background: #3e3e3e;
-  border: solid 3px #202020;
-  border-radius: 7px;
-}
+  .theme--dark::-webkit-scrollbar-thumb {
+    background: #3e3e3e;
+    border: solid 3px #202020;
+    border-radius: 7px;
+  }
 
-.theme--dark::-webkit-scrollbar-thumb:hover {
-  background: white;
-}
+  .theme--dark::-webkit-scrollbar-thumb:hover {
+    background: white;
+  }
 }
 
 

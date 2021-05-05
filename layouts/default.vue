@@ -156,6 +156,9 @@
 </template>
 
 <script>
+import io from 'socket.io-client'
+
+
 export default {
   data() {
     return {
@@ -223,14 +226,17 @@ export default {
   created: async function() {
     console.log("default.vue created", this.$store.state.id.cid);
 
+    
+
     const cookiesRes = this.$cookies.getAll();
     console.log("cookiesRes", cookiesRes);
     this.$vuetify.theme.dark = cookiesRes.dark;
     if (!process.server) {
+      var curUrl = window.location.protocol + "//" + window.location.host;
+      console.log("curUrl : ", curUrl);
+      $nuxt.$store.state.socketIO.socket = io(curUrl);
 
       window.addEventListener('beforeunload', this.beforeunloadHandler)
-
-
       console.log("created", $nuxt.$store.state.id.cid);
 
       // ticker color config
@@ -547,6 +553,25 @@ export default {
 }; // end vue.js
 
 </script>
-<style scoped>
-  
+<style>
+@media screen and (min-width: 600px) { 
+  body::-webkit-scrollbar {
+    width: 15px;
+  }
+
+  body::-webkit-scrollbar-track {
+    background: #e6e6e6;
+    border-left: 1px solid #dadada;
+  }
+
+  body::-webkit-scrollbar-thumb {
+    background: #b0b0b0;
+    border: solid 3px #e6e6e6;
+    border-radius: 7px;
+  }
+
+  body::-webkit-scrollbar-thumb:hover {
+    background: black;
+  }
+}
 </style>

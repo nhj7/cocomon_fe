@@ -51,6 +51,8 @@ export const state = () => ({
         favorCoinList : ["UBT-KRW-BTC"]
         , expandList : []
         , expandMap : {}
+    }, socketIO : {
+        
     }
 })
 
