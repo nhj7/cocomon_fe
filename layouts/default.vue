@@ -219,7 +219,7 @@ export default {
         []
       );
 
-      console.log(ip[0]);
+      //console.log(ip[0]);
       return { host: ip[0] };
     }
   },
@@ -228,25 +228,37 @@ export default {
 
     
 
-    const cookiesRes = this.$cookies.getAll();
+    const cookiesRes = this.$cookies.getAll();  
     console.log("cookiesRes", cookiesRes);
     this.$vuetify.theme.dark = cookiesRes.dark;
     if (!process.server) {
       var curUrl = window.location.protocol + "//" + window.location.host;
-      console.log("curUrl : ", curUrl);
+      //console.log("curUrl : ", curUrl);
       $nuxt.$store.state.socketIO.socket = io(curUrl, { transports : ['websocket'] });
       const socket = $nuxt.$store.state.socketIO.socket;
       socket.on("connect", () => {
         $nuxt.$store.state.socketIO.connected = socket.connected;
-        console.log('socket.io', socket.connected); // true
+        console.log('socket.io connect', socket.connected); // true
       });
-      socket.on("disconnect", () => {
+      socket.on("disconnect", (reason) => {
           $nuxt.$store.state.socketIO.connected = socket.connected;
-          console.log('socket.io',socket.connected); // true
+          console.log('socket.io disconnect',socket.connected, reason); // true
+      });
+
+      /* Listen for events: */
+      socket.on("chat", (msg, cb) => {
+        /* Handle event */
+        if( Array.isArray(msg) ){
+          $nuxt.$store.state.chat.chats = msg;
+        }else{
+          console.log("chat on", msg, cb);
+          $nuxt.$store.state.chat.chats.push(msg);
+        }
+        
       });
 
       window.addEventListener('beforeunload', this.beforeunloadHandler)
-      console.log("created", $nuxt.$store.state.id.cid);
+      //console.log("default.vue created", $nuxt.$store.state.id.cid);
 
       // ticker color config
       const stc = {
@@ -296,7 +308,7 @@ export default {
         
       ]);
       console.log("responseArr", responseArr);
-      console.log("setExchangeRate", responseArr[0][0]);
+      //console.log("setExchangeRate", responseArr[0][0]);
       $nuxt.$store.commit("setExchangeRate", responseArr[0][0]);
 
       //let parser = new DOMParser();
@@ -373,7 +385,7 @@ export default {
       //const self = this;
       let strKrwMarkets = arrKrwMarket.join(",")
       // https://api.upbit.com/v1/ticker?markets=
-      console.log("strKrwMarkets", strKrwMarkets);
+      //console.log("strKrwMarkets", strKrwMarkets);
 
       
       

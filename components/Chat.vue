@@ -2,7 +2,7 @@
   <v-card class="d-flex pa-1 overflow-hidden" outlined tile  >
   <v-row>
     <v-col id="chatsLayer" cols="12" md="12" sm="12" xs="12" class="pa-2 overflow-y-auto" :style="chatHeight">
-      <div v-for="item in chats" :key="item.CUID">
+      <div v-for="item in $store.state.chat.chats" :key="item.CUID">
         <v-card class="d-flex flex-row pa-1 mb-1">
           <div>
             <v-icon @click="setChatIcon" color="primary">mdi-emoticon</v-icon>
@@ -22,7 +22,7 @@
         <v-text-field
           v-model="inp_chatMsg"
           append-icon="mdi-chat-processing"
-          :label=" $store.state.socketIO.connected ? 'CoCo Talk' :'CoCo Talk Connecting...' "
+          :label=" $store.state.socketIO.connected ? 'CoCo Talk ' + (sendableMsgCnt==0?'':sendableMsgCnt) :'CoCo Talk Connecting...' "
           placeholder
           outlined
           hide-details="auto"
@@ -54,6 +54,7 @@ export default {
       pageName: false,
       inp_chatMsg: "",
       isInpChatFocus : false,
+      sendableMsgCnt : 0, 
       chats: [],
       userInfo : {
           cid : ''
@@ -74,14 +75,6 @@ export default {
     
     //console.log(this.socket);
     if (process.browser) {
-
-      /* Listen for events: */
-      this.$store.state.socketIO.socket.on("chat", (msg, cb) => {
-        /* Handle event */
-        console.log("chat on", msg, cb);
-        this.chats.push(msg);
-      });
-      
       console.log($nuxt.$route.name, "chat.vue created");
 
       const self = this;
@@ -95,7 +88,7 @@ export default {
   } // end created
   , mounted: async function() {
     console.log("mounted chat.vue");
-    
+    this.doScrollDownChats();
   } // mounted
   , methods: {
     log: msg => {
@@ -105,9 +98,9 @@ export default {
       console.log("setChatIcon");
     },
     sendChatMsg() {
-      if( this.inp_chatMsg == "" )
+      if( this.inp_chatMsg == "" || this.sendableMsgCnt > 0 )
         return;
-      console.log("sendChatMsg", this.inp_chatMsg, this.$store.state.socketIO.socket.connected);
+      //console.log("sendChatMsg", this.inp_chatMsg, this.$store.state.socketIO.socket.connected);
       this.$store.state.socketIO.socket.emit('chat', {
         userInfo : this.userInfo, message: this.inp_chatMsg
       }, (resp) => {
@@ -115,14 +108,22 @@ export default {
         console.log('resp', resp);
       })
       this.inp_chatMsg = "";
+      this.sendableMsgCnt = 5;
+    },doScrollDownChats() {
+      const chatsLayer = document.getElementById("chatsLayer")
+      setTimeout( () => { chatsLayer.scrollTop = chatsLayer.scrollHeight; } , 0 );
     }
   }  
   , watch : {
-    chats() {
-      console.log("watch chats update.");
-      const chatsLayer = document.getElementById("chatsLayer")
-      setTimeout( () => { chatsLayer.scrollTop = chatsLayer.scrollHeight; } , 0 );
-
+    '$store.state.chat.chats' : {
+      handler(){
+        //console.log("watch chats update.");
+        this.doScrollDownChats();
+      }, deep : true
+    }, sendableMsgCnt(){
+      //console.log("sendableMsgCnt", this.sendableMsgCnt);
+      if( this.sendableMsgCnt == 0 ) return;
+      setTimeout( () => { this.sendableMsgCnt-- } , 1000 );
     }
   }, computed : {
     chatHeight() {

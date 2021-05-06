@@ -35,7 +35,18 @@ module.exports = async (wsServer) => {
     });
 
     io.on('connection',async (socket) => {
-        console.log('Connect from Client : ' + socket)
+        console.log('Connect from Client : ' + socket);
+        const datas = redisClient.lrange("chats", -100 ,-1, (err, arrData) => {
+            //console.log("datas", arrData);
+            const arrObj = [];
+            for(let i = 0; i < arrData.length;i++){
+                arrObj.push(JSON.parse(arrData[i]));
+            }
+            socket.emit('chat', arrObj);
+        });
+        
+
+
         socket.on('chat',  async (data) => {
 
             try{
