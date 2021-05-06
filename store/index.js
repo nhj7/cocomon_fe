@@ -52,7 +52,8 @@ export const state = () => ({
         , expandList : []
         , expandMap : {}
     }, socketIO : {
-        
+        socket : {}
+        , connected : false
     }
 })
 
