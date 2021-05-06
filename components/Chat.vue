@@ -22,7 +22,7 @@
         <v-text-field
           v-model="inp_chatMsg"
           append-icon="mdi-chat-processing"
-          label="CoCo Talk"
+          :label=" $store.state.socketIO.connected ? 'CoCo Talk' :'CoCo Talk Connecting...' "
           placeholder
           outlined
           hide-details="auto"
@@ -35,7 +35,10 @@
           @blur="isInpChatFocus=false;"
           @focus="isInpChatFocus=true;"
           class="mr-2"
+          :disabled="!$store.state.socketIO.connected"
         ></v-text-field>
+
+        <!--{{  $store.state.socketIO.connected }}-->
       </div>
     </v-col>
   </v-row>
@@ -104,7 +107,7 @@ export default {
     sendChatMsg() {
       if( this.inp_chatMsg == "" )
         return;
-      console.log("sendChatMsg", this.inp_chatMsg, this.$store.state.socketIO.socket);
+      console.log("sendChatMsg", this.inp_chatMsg, this.$store.state.socketIO.socket.connected);
       this.$store.state.socketIO.socket.emit('chat', {
         userInfo : this.userInfo, message: this.inp_chatMsg
       }, (resp) => {

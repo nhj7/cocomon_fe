@@ -234,7 +234,16 @@ export default {
     if (!process.server) {
       var curUrl = window.location.protocol + "//" + window.location.host;
       console.log("curUrl : ", curUrl);
-      $nuxt.$store.state.socketIO.socket = io(curUrl);
+      $nuxt.$store.state.socketIO.socket = io(curUrl, { transports : ['websocket'] });
+      const socket = $nuxt.$store.state.socketIO.socket;
+      socket.on("connect", () => {
+        $nuxt.$store.state.socketIO.connected = socket.connected;
+        console.log('socket.io', socket.connected); // true
+      });
+      socket.on("disconnect", () => {
+          $nuxt.$store.state.socketIO.connected = socket.connected;
+          console.log('socket.io',socket.connected); // true
+      });
 
       window.addEventListener('beforeunload', this.beforeunloadHandler)
       console.log("created", $nuxt.$store.state.id.cid);
