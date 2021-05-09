@@ -39,10 +39,12 @@ module.exports = async (wsServer) => {
         const datas = redisClient.lrange("chats", -100 ,-1, (err, arrData) => {
             //console.log("datas", arrData);
             const arrObj = [];
-            for(let i = 0; i < arrData.length;i++){
-                arrObj.push(JSON.parse(arrData[i]));
+            if(arrData){
+                for(let i = 0; i < arrData.length;i++){
+                    arrObj.push(JSON.parse(arrData[i]));
+                }
+                socket.emit('chat', arrObj);
             }
-            socket.emit('chat', arrObj);
         });
         
 
