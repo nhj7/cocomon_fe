@@ -14,14 +14,14 @@ module.exports = async (wsServer) => {
     const redis = require('redis');
     const redisClient = redis.createClient({
         host : '192.168.55.26'
-        , port : 6379
+        , port : 7379
     });
     redisClient.on("error", function(error) {
         console.error(error);
     });
 
     const socketIO_redis = require('socket.io-redis');
-    const adapterRedis = socketIO_redis({ host: '192.168.55.26', port: 6379 });
+    const adapterRedis = socketIO_redis({ host: '192.168.55.26', port: 7379 });
     io.adapter(adapterRedis);
     // adapterRedis.pubClient.on('error', function(error){
     //     console.log("adapter pubClient error", error);
