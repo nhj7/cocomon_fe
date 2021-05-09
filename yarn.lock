@@ -10563,10 +10563,17 @@
     "socket.io-adapter" "^2.2.0"
     "uid2" "0.0.3"
 
+<<<<<<< Updated upstream
 "socket.io@^4.0.1":
   "integrity" "sha512-g8eZB9lV0f4X4gndG0k7YZAywOg1VxYgCUspS4V+sDqsgI/duqd0AW84pKkbGj/wQwxrqrEq+VZrspRfTbHTAQ=="
   "resolved" "https://registry.npmjs.org/socket.io/-/socket.io-4.0.1.tgz"
   "version" "4.0.1"
+=======
+"socket.io@^3.1.0", "socket.io@^3.1.2":
+  "integrity" "sha512-JubKZnTQ4Z8G4IZWtaAZSiRP3I/inpy8c/Bsx2jrwGrTbKeVU5xd6qkKMHpChYeM3dWZSO0QACiGK+obhBNwYw=="
+  "resolved" "https://registry.npmjs.org/socket.io/-/socket.io-3.1.2.tgz"
+  "version" "3.1.2"
+>>>>>>> Stashed changes
   dependencies:
     "@types/cookie" "^0.4.0"
     "@types/cors" "^2.8.8"
@@ -11859,7 +11866,7 @@
     "hash-sum" "^1.0.2"
     "loader-utils" "^1.0.2"
 
-"vue-template-compiler@^2.6.12":
+"vue-template-compiler@^2.6.12", "vue-template-compiler@^2.x":
   "integrity" "sha512-OzzZ52zS41YUbkCBfdXShQTe69j1gQDZ9HIX8miuC9C3rBCk9wIRjLiZZLrmX9V+Ftq/YEyv1JaVr5Y/hNtByg=="
   "resolved" "https://registry.npmjs.org/vue-template-compiler/-/vue-template-compiler-2.6.12.tgz"
   "version" "2.6.12"
@@ -11880,7 +11887,7 @@
     "@types/uuid" "^8.0.0"
     "uuid" "^8.1.0"
 
-"vue@^2.6.12":
+"vue@^2.6.12", "vue@2.x":
   "integrity" "sha512-uhmLFETqPPNyuLLbsKz6ioJ4q7AZHzD8ZVFNATNyICSZouqP2Sz0rotWQC8UNBF6VGSCs5abnKJoStA6JbCbfg=="
   "resolved" "https://registry.npmjs.org/vue/-/vue-2.6.12.tgz"
   "version" "2.6.12"
