@@ -1,5 +1,13 @@
 module.exports = async (wsServer) => {
     console.log("middleware-server.socket-io.js");
+    if( !process.env.redis_host || !process.env.redis_port || !process.env.redis_password ){
+        throw Error(".env not in redis server config.")
+    }else{
+        console.log('process.env.redis_host : redis_port', process.env.redis_host, process.env.redis_port );
+    }
+    const redis_host = process.env.redis_host;
+    const redis_port = process.env.redis_port;
+    const redis_password = process.env.redis_password;
     const io = require('socket.io')(wsServer, {
         cors: {
             origin: '*',
@@ -13,15 +21,16 @@ module.exports = async (wsServer) => {
     // add redis
     const redis = require('redis');
     const redisClient = redis.createClient({
-        host : '192.168.55.26'
-        , port : 7379
+        host : redis_host
+        , port : redis_port
+        , password : redis_password
     });
     redisClient.on("error", function(error) {
         console.error(error);
     });
 
     const socketIO_redis = require('socket.io-redis');
-    const adapterRedis = socketIO_redis({ host: '192.168.55.26', port: 7379 });
+    const adapterRedis = socketIO_redis({ host: redis_host, port: redis_port , password : redis_password });
     io.adapter(adapterRedis);
     // adapterRedis.pubClient.on('error', function(error){
     //     console.log("adapter pubClient error", error);

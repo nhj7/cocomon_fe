@@ -105,3 +105,14 @@ install dir
 ## Https, SSL Certbot, LetsEncrypt install
 
 certbot -d cocomon.kr --manual --preferred-challenges dns certonly
+
+<br />
+
+## env
+
+appName=
+httpPort=
+sslPort=
+redis_host=ip
+redis_port=port
+redis_password=passwd
