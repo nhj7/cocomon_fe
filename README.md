@@ -110,9 +110,13 @@ certbot -d cocomon.kr --manual --preferred-challenges dns certonly
 
 ## env
 
+  files(.env_main(prod), .env_dev(dev)) in the github action dir
+
+```
 appName=
 httpPort=
 sslPort=
 redis_host=ip
 redis_port=port
 redis_password=passwd
+```
