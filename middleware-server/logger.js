@@ -1,4 +1,5 @@
 export default function (req, res, next) {
-    console.log("logger.js", req.url)
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    console.log("logger.js", req.url, ip)
     next()
 }

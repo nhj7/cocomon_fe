@@ -54,6 +54,8 @@ export const state = () => ({
     }, socketIO : {
         socket : {}
         , connected : false
+    } , chat : {
+        chats : []
     }
 })
 

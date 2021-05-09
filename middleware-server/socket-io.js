@@ -1,5 +1,11 @@
 module.exports = async (wsServer) => {
     console.log("middleware-server.socket-io.js");
+    if( !process.env.redis_host || !process.env.redis_port || !process.env.redis_password ){
+        throw Error(".env not in redis server config.")
+    }else{
+        console.log('process.env.redis_host : redis_port', process.env.redis_host, process.env.redis_port );
+    }
+    
     const io = require('socket.io')(wsServer, {
         cors: {
             origin: '*',
@@ -11,17 +17,20 @@ module.exports = async (wsServer) => {
     }); //setting cors 
     
     // add redis
+    const redis_host = process.env.redis_host;
+    const redis_port = process.env.redis_port;
+    const redis_password = process.env.redis_password;
     const redis = require('redis');
     const redisClient = redis.createClient({
-        host : '192.168.55.26'
-        , port : 6379
+        host : redis_host
+        , port : redis_port
+        , password : redis_password
     });
     redisClient.on("error", function(error) {
         console.error(error);
     });
 
-    const socketIO_redis = require('socket.io-redis');
-    const adapterRedis = socketIO_redis({ host: '192.168.55.26', port: 6379 });
+    const adapterRedis = require('socket.io-redis')({ host: redis_host, port: redis_port , password : redis_password });
     io.adapter(adapterRedis);
     // adapterRedis.pubClient.on('error', function(error){
     //     console.log("adapter pubClient error", error);
@@ -35,22 +44,33 @@ module.exports = async (wsServer) => {
     });
 
     io.on('connection',async (socket) => {
-        console.log('Connect from Client : ' + socket)
-        socket.on('chat',  async (data) => {
+        console.log('Connect from Client : ' + socket);
+        // last 100 chats client send.
+        const datas = redisClient.lrange("chats", -100 ,-1, (err, arrData) => {
+            //console.log("datas", arrData);
+            const arrObj = [];
+            if(arrData){
+                for(let i = 0; i < arrData.length;i++){
+                    arrObj.push(JSON.parse(arrData[i]));
+                }
+                socket.emit('chat', arrObj);
+            }
+        });
 
+        socket.on('chat',  async (data) => {
             try{
                 const sockets = await io.of('/').adapter.allRooms();
                 console.log('await suc', sockets);
             }catch(e){ console.log('await error ', e) }
-            console.log('message from Client: ' + data.message )
+            console.log(`message from Client(${socket.handshake.address}): ` + data.message )
             //var rtnMessage = { message: data.message }; // 클라이언트에게 메시지를 전송한다 
             socket.emit('chat', data);
             socket.broadcast.emit('chat', data);
 
             redisClient.rpush("chats", JSON.stringify(data));
             redisClient.ltrim('chats', -1000 , -1);
-        });
-    })
+        }); // end on chat.
+    }) // end io.on('connection')
 }
 
 

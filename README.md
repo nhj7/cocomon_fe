@@ -2,6 +2,11 @@
 
 ## Build Setup
 
+node LTS version add ppa. and install and link
+$ sudo curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+$ sudo apt-get install nodejs
+
+
 ```bash
 # install dependencies
 $ npm install
@@ -79,7 +84,12 @@ https://vuetifyjs.com/en/styles/colors/#material-colors
 
 ## github action runner
 
-github action service install
+1. github action service install
+
+https://github.com/nhj7/cocomon_fe/settings/actions/runners/new?arch=x64&os=linux
+
+
+2. github action service regist
 https://docs.github.com/en/actions/hosting-your-own-runners/configuring-the-self-hosted-runner-application-as-a-service
 
 
@@ -92,4 +102,21 @@ install dir
 
 <br />
 
-ffff
+## Https, SSL Certbot, LetsEncrypt install
+
+certbot -d cocomon.kr --manual --preferred-challenges dns certonly
+
+<br />
+
+## env
+
+  files(.env_main(prod), .env_dev(dev)) in the github action dir
+
+```
+appName=
+httpPort=
+sslPort=
+redis_host=ip
+redis_port=port
+redis_password=passwd
+```
