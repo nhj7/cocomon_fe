@@ -45,7 +45,8 @@ const config = {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    { src: '~/plugins/util.js' },
+    { src: '~/plugins/util.js' }
+    , '~/plugins/gtm'
     /*{ src: '~/plugins/client-only.js', mode: 'client' },
     { src: '~/plugins/server-only.js', mode: 'server' }*/
   ],
@@ -57,8 +58,14 @@ const config = {
   buildModules: [
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
+    //'@nuxtjs/google-analytics',
   ],
-
+  googleAnalytics: {
+    // Options
+    id: '271840333'
+    , dev : true
+    , debug : true
+  },
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
@@ -75,31 +82,11 @@ const config = {
     //, '~/modules/socket-io'
     , '@nuxtjs/gtm'
   ]
-  , gtm : {
+  , gtm: {
     id: 'G-V55KD88JVL'
-    /*
-    , enabled: undefined ,
-    debug: false,
- 
-    id: undefined,
-    layer: 'dataLayer',
-    variables: {},
- 
-    pageTracking: false,
-    pageViewEventName: 'nuxtRoute',
- 
-    autoInit: true,
-    respectDoNotTrack: true,
- 
-    scriptId: 'gtm-script',
-    scriptDefer: false,
-    scriptURL: 'https://www.googletagmanager.com/gtm.js',
-    crossOrigin: false,
- 
-    noscript: true,
-    noscriptId: 'gtm-noscript',
-    noscriptURL: 'https://www.googletagmanager.com/ns.html'
-    */
+    , debug : true
+    , enabled: true
+    , autoInit: true
   }
   , io: {
     // module options
@@ -158,10 +145,26 @@ const config = {
     parallel: true,
     cache: true,
     hardSource: true,
+    extend(config, { isClient }) {
+      // Extend only webpack config for client-bundle
+      if (isClient) {
+        config.devtool = 'source-map';
+        config.node = {
+          console: true,
+          fs: 'empty',
+          net:'empty',
+          tls:'empty',
+        }
+      }
+    },
   }, 
   publicRuntimeConfig: {
     baseURL: 'https://cocomon.kr'
     , appName: process.env.appName
+    , proxy_mode : process.env.proxy_mode || false
+    , gtm: {
+      id: 'G-V55KD88JVL'
+    }
     //, ip : Object.values(require('os').networkInterfaces()).reduce((r, list) => r.concat(list.reduce((rr, i) => rr.concat(i.family === 'IPv4' && !i.internal && i.address || []), [])), [])[0]
   }
   , privateRunTimeConfig: {

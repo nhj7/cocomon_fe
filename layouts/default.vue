@@ -223,11 +223,20 @@ export default {
       //console.log(ip[0]);
       return { host: ip[0] };
     }
-  },
-  created: async function() {
+  }
+  , watch : {
+    $route () {
+      console.log('route changed', this.$route);
+      //this.$ga.page(this.$router);
+    }
+  }
+  , created: async function() {
     console.log("default.vue created", this.$store.state.id.cid);
-
     
+    console.log('route init', this.$route)
+    this.$gtm.push({ 'varName': 'value' })
+
+    this.$gtm.init();
 
     const cookiesRes = this.$cookies.getAll();  
     console.log("cookiesRes", cookiesRes);
@@ -297,7 +306,7 @@ export default {
 
 
       console.log($nuxt);
-      debugger;
+      //debugger;
       return;
       // krwusd get
       // https://quotation-api-cdn.dunamu.com/v1/forex/recent?codes=FRX.KRWUSD

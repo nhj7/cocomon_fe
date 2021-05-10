@@ -127,3 +127,4 @@ redis_password=passwd
 
 https://raw.githubusercontent.com/MSOpenTech/redis/3.0/Windows%20Service%20Documentation.md
 
+https://github.com/nuxt-community/gtm-module
