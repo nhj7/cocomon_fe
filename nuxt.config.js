@@ -72,10 +72,36 @@ const config = {
     ['nuxt-vuex-localstorage', {
       mode: 'debug'
     }]
-    , '~/modules/socket-io'
-    , ['@nuxtjs/google-tag-manager', { id: 'G-V55KD88JVL' }],
-  ],
-  io: {
+    //, '~/modules/socket-io'
+    , '@nuxtjs/gtm'
+  ]
+  , gtm : {
+    id: 'G-V55KD88JVL'
+    /*
+    , enabled: undefined ,
+    debug: false,
+ 
+    id: undefined,
+    layer: 'dataLayer',
+    variables: {},
+ 
+    pageTracking: false,
+    pageViewEventName: 'nuxtRoute',
+ 
+    autoInit: true,
+    respectDoNotTrack: true,
+ 
+    scriptId: 'gtm-script',
+    scriptDefer: false,
+    scriptURL: 'https://www.googletagmanager.com/gtm.js',
+    crossOrigin: false,
+ 
+    noscript: true,
+    noscriptId: 'gtm-noscript',
+    noscriptURL: 'https://www.googletagmanager.com/ns.html'
+    */
+  }
+  , io: {
     // module options
     // sockets: [{
     //   name: 'main',
@@ -151,12 +177,17 @@ const config = {
   ]
 
 }
+
+/*
+
 if( process.env.NODE_ENV == "production"){
   config.server.https = {
     key: fs.readFileSync('/etc/letsencrypt/live/cocomon.kr/privkey.pem'),
     cert: fs.readFileSync('/etc/letsencrypt/live/cocomon.kr/fullchain.pem')
   }
 }
+
+*/
 
 /*
 import { format, transports } from 'winston'

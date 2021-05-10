@@ -157,6 +157,7 @@
 
 <script>
 import io from 'socket.io-client'
+import debug from '~/node_modules/redis/lib/debug';
 
 
 export default {
@@ -294,6 +295,10 @@ export default {
           }
         });
 
+
+      console.log($nuxt);
+      debugger;
+      return;
       // krwusd get
       // https://quotation-api-cdn.dunamu.com/v1/forex/recent?codes=FRX.KRWUSD
       // https://api.binance.com/api/v3/exchangeInfo
