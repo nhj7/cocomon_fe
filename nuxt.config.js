@@ -73,7 +73,7 @@ const config = {
       mode: 'debug'
     }]
     , '~/modules/socket-io'
-    //, 'socket.io-client'
+    , ['@nuxtjs/google-tag-manager', { id: 'G-V55KD88JVL' }],
   ],
   io: {
     // module options

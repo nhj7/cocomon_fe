@@ -120,3 +120,10 @@ redis_host=ip
 redis_port=port
 redis_password=passwd
 ```
+<br />
+<br />
+
+## redis window service install 
+
+https://raw.githubusercontent.com/MSOpenTech/redis/3.0/Windows%20Service%20Documentation.md
+
