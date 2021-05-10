@@ -6,6 +6,7 @@ const colors = _colors.default;
 //console.log(process.env);
 console.log("nuxt.config.js configuaration start.", process.env.NODE_ENV, process.env.httpPort, process.env.httpsPort);
 const title = '김치프리미엄, 김프, 가상자산, 코인, 암호화폐, 가상화폐 실시간 시세 확인';
+const description = `김프, 김치프리미엄, 역프, 가상자산, 코인, 암호화폐, 비트코인, 이더리움, 리플, 비트코인캐시 실시간 시세 확인. 김치프리미엄 김프 역프 확인 사이트 코코몬`;
 const config = {  
   ssr: true
   ,isDev: process.env.NODE_ENV !== 'production'
@@ -21,10 +22,13 @@ const config = {
   head: {
     titleTemplate: `%s - ${process.env.appName}`,
     title: title,
-    meta: [
+    script: [
+      { src: 'https://www.googletagmanager.com/gtag/js?id=G-V55KD88JVL', defer: true, async : true }
+    ]
+    , meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '김프, 김치프리미엄, 역프, 가상자산, 코인, 암호화폐, 비트코인, 이더리움, 리플, 비트코인캐시 실시간 시세 확인. 김치프리미엄 김프 역프 확인 사이트 코코몬' },
+      { hid: 'description', name: 'description', content: description },
       { name : 'keyword' , content : `"김치 프리미엄, 김프, 역프, 가상자산 시세, 가상화폐 시세, 암호화폐 시세, 코인 시세, 재정거래` }
       , { name : 'apple-mobile-web-app-title', content : 'cocomon'}
       , { name : 'og:type', type : 'og:type' , content : 'website'}
@@ -32,10 +36,13 @@ const config = {
       , { name : 'og:site_name', type : 'og:site_name', content : '코코몬'}
       , { name : 'og:image', type : 'og:image', content : '/icon.png'}
       , { name : 'og:url', type : 'og:url', content : 'http://cocomon.kr'}
+      , { name : 'og:description', type : 'og:description', content : description}
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
+    ,
+
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -80,13 +87,30 @@ const config = {
       mode: 'debug'
     }]
     //, '~/modules/socket-io'
-    , '@nuxtjs/gtm'
+    //, '@nuxtjs/gtm'
   ]
   , gtm: {
-    id: 'G-V55KD88JVL'
-    , debug : true
-    , enabled: true
-    , autoInit: true
+    id: 'G-V55KD88JVL',
+    enabled: true, /* see below */
+    debug: true, 
+    
+    layer: 'dataLayer',
+    variables: {},
+ 
+    pageTracking: true,
+    pageViewEventName: 'nuxtRoute',
+ 
+    autoInit: true,
+    respectDoNotTrack: true,
+ 
+    scriptId: 'gtm-script',
+    scriptDefer: false,
+    scriptURL: 'https://www.googletagmanager.com/gtm.js',
+    crossOrigin: true,
+ 
+    noscript: true,
+    noscriptId: 'gtm-noscript',
+    noscriptURL: 'https://www.googletagmanager.com/ns.html'
   }
   , io: {
     // module options
@@ -178,9 +202,7 @@ const config = {
     , { path: '/api', handler: '~/middleware-server/index.js' }
     
   ]
-
 }
-
 /*
 
 if( process.env.NODE_ENV == "production"){
