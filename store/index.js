@@ -51,6 +51,16 @@ export const state = () => ({
         favorCoinList : ["UBT-KRW-BTC"]
         , expandList : []
         , expandMap : {}
+        , userInfo : {
+            cid : ''
+            , sid : ''
+            , sh : ''
+            , nickName : '코린이1'
+            , icon : {
+                color : '#1976D2FF'
+                , name : 'emoticon-angry-outline'
+            }
+          }
     }, socketIO : {
         socket : {}
         , connected : false
@@ -120,7 +130,7 @@ export const getters = {
 };
 
 export const actions = {
-    async nuxtServerInit({ commit }, { req 
+    async nuxtServerInit({ commit , state}, { req 
         , $winstonLog
     }) {
         const v4 = uuid.v4();
@@ -129,12 +139,21 @@ export const actions = {
         this.$cookies.set("sid", v4);
 
         const cookiesRes = this.$cookies.getAll()
+        let cid = cookiesRes.cid;
         //$winstonLog.info(`cookiesRes ${cookiesRes}`);
         if( cookiesRes.cid == undefined ){
-            const cid = uuid.v4()
+            cid = uuid.v4()
             //$winstonLog.info(`create cid ${cid}` );
             this.$cookies.set("cid", cid);
             commit('setId', { cid : cid });
+        }
+        console.log("sh", state.localStorage.userInfo.sh);
+        if( !state.localStorage.userInfo.sh ){
+            const shortHash = require('short-hash');
+            const sh = shortHash(cid);
+            this.$cookies.set("sh", sh);
+            commit('setId', { sh : sh});
+            state.localStorage.userInfo.sh = sh;
         }
     }
 }

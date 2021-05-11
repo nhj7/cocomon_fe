@@ -168,7 +168,7 @@ const config = {
   build: {
     parallel: true,
     cache: true,
-    hardSource: true,
+    hardSource: false,
     extend(config, { isClient }) {
       // Extend only webpack config for client-bundle
       if (isClient) {
