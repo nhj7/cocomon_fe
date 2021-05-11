@@ -20,8 +20,8 @@ const config = {
     },
     env_production: {
       "NODE_ENV": "production",
-      "httpPort": 8080,
-      "httpsPort": 4443,
+      "httpPort": 7777,
+      //"httpsPort": 4443,
     }
   }, {
     name: 'cocomon_dev',
@@ -43,8 +43,8 @@ const config = {
     },
     env_production: {
       NODE_ENV: "production",
-      httpPort: 8081,
-      httpsPort: 8443,
+      httpPort: 9999,
+      //httpsPort: 8443,
     }
   }
   ]

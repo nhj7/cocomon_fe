@@ -128,3 +128,9 @@ redis_password=passwd
 https://raw.githubusercontent.com/MSOpenTech/redis/3.0/Windows%20Service%20Documentation.md
 
 https://github.com/nuxt-community/gtm-module
+
+<br /><br />
+
+## mod security ref
+
+https://www.nginx.com/blog/compiling-and-installing-modsecurity-for-open-source-nginx/
