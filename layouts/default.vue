@@ -157,6 +157,7 @@
 
 <script>
 import io from 'socket.io-client'
+import debug from '~/node_modules/redis/lib/debug';
 
 
 export default {
@@ -222,16 +223,38 @@ export default {
       //console.log(ip[0]);
       return { host: ip[0] };
     }
-  },
-  created: async function() {
+  }
+  , watch : {
+    $route () {
+      console.log('route changed', this.$route);
+      
+    }
+  }
+  , middleware (ctx) {
+    //ctx.$gtm.push({ event: 'ssr' })
+  }
+  , created: async function() {
     console.log("default.vue created", this.$store.state.id.cid);
-
-    
-
     const cookiesRes = this.$cookies.getAll();  
     console.log("cookiesRes", cookiesRes);
     this.$vuetify.theme.dark = cookiesRes.dark;
-    if (!process.server) {
+    //this.$gtm.init();
+    //this.$gtm.push({ 'varName': 'value' });
+    if (process.browser) {
+      
+      
+      window.dataLayer = window.dataLayer || [];      
+      this.gtag('js', new Date());
+      this.gtag('config', 'G-V55KD88JVL');
+      this.gtag({
+        event: 'pageview',
+        page: {
+          path: '/',
+          title: 'index'
+        }
+      });
+
+
       var curUrl = window.location.protocol + "//" + window.location.host;
       //console.log("curUrl : ", curUrl);
       $nuxt.$store.state.socketIO.socket = io(curUrl, { transports : ['websocket'] });
@@ -294,6 +317,11 @@ export default {
           }
         });
 
+
+      console.log("proxy_mode", $nuxt.$config.proxy_mode);
+      if( $nuxt.$config.proxy_mode ){
+        return;
+      }
       // krwusd get
       // https://quotation-api-cdn.dunamu.com/v1/forex/recent?codes=FRX.KRWUSD
       // https://api.binance.com/api/v3/exchangeInfo
@@ -521,6 +549,9 @@ export default {
   methods: {
     log: msg => {
       console.log(msg);
+    },
+    gtag(){
+      dataLayer.push(arguments);
     },
     setTickerColor() {
       localStorage.setItem(

@@ -17,9 +17,7 @@ async function start() {
     build(nuxt)
   }
   //console.log(config);
-
   let wsServer;
-
   if( config.server.https ){
     const https = require('https');
     const httpsServer = https.createServer(config.server.https, app).listen(httpsPort);
@@ -34,7 +32,6 @@ async function start() {
     redirectApp.use(redirectSSL);
     redirectApp.listen(httpPort, '0.0.0.0');
     console.log('Redirect Server listening on `localhost:' + httpPort + '`.')
-
     wsServer = httpsServer;
   }else{
     // Listen the server
@@ -45,8 +42,5 @@ async function start() {
     wsServer = server;
   }
   require("./middleware-server/socket-io")(wsServer); // socket-io regist.
-
-  
-  
 }
 start()

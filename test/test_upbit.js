@@ -6,7 +6,11 @@ const axios = require("axios");
 
 (async () => {
     console.log("async start");
-    const result = await axios.get("https://api.upbit.com/v1/market/all?isDetails=true");
+    // https://cors-nhj12311.herokuapp.com/
+
+    //const result = await axios.get("https://api.upbit.com/v1/market/all?isDetails=true");
+    //const result = await axios.get("https://m.naver.com");
+    const result = await axios.get("https://cors-nhj12311.herokuapp.com/https://api.upbit.com/v1/market/all?isDetails=true",  { headers : {origin : '*'}  } );
     console.log(result);
 
     const arrUpbitMarkets = result.data;
