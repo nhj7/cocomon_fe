@@ -51,10 +51,8 @@ export const state = () => ({
         favorCoinList : ["UBT-KRW-BTC"]
         , expandList : []
         , expandMap : {}
-        , userInfo : {
-            cid : ''
-            , sid : ''
-            , sh : ''
+        , userInfo : {            
+            sh : ''
             , nickName : '코린이1'
             , icon : {
                 color : '#1976D2FF'
@@ -118,6 +116,8 @@ export const mutations = {
         Object.assign(state.exchangeRate, obj);
     }, setId (state, obj){
         Object.assign(state.id, obj);
+    } , setUserInfo ( state, obj) {
+        Object.assign(state.localStorage.userInfo, obj);
     }
 }
 
@@ -138,22 +138,26 @@ export const actions = {
         commit('setId', { sid : v4 });
         this.$cookies.set("sid", v4);
 
+        //console.log("nuxtServerInit " , state.localStorage.userInfo);
+
         const cookiesRes = this.$cookies.getAll()
         let cid = cookiesRes.cid;
         //$winstonLog.info(`cookiesRes ${cookiesRes}`);
-        if( cookiesRes.cid == undefined ){
+        if( state.localStorage.userInfo.cid == undefined || state.localStorage.userInfo.cid == '' ){
             cid = uuid.v4()
             //$winstonLog.info(`create cid ${cid}` );
             this.$cookies.set("cid", cid);
-            commit('setId', { cid : cid });
-        }
-        console.log("sh", state.localStorage.userInfo.sh);
-        if( !state.localStorage.userInfo.sh ){
+            commit('setId', { cid : cid });            
+            //state.localStorage.userInfo.cid = cid;
+        }        
+        if( cookiesRes.sh == undefined || cookiesRes.sh == '' || state.localStorage.userInfo.sh == undefined || state.localStorage.userInfo.sh == '' ){
             const shortHash = require('short-hash');
             const sh = shortHash(cid);
             this.$cookies.set("sh", sh);
             commit('setId', { sh : sh});
-            state.localStorage.userInfo.sh = sh;
+            commit('setUserInfo', { sh : sh });            
+            console.log("sh created " , state.localStorage.userInfo);
+            //state.localStorage.userInfo.sh = sh;
         }
     }
 }

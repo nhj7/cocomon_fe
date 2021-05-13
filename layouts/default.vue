@@ -234,15 +234,12 @@ export default {
     //ctx.$gtm.push({ event: 'ssr' })
   }
   , created: async function() {
-    console.log("default.vue created", this.$store.state.id.cid);
-    const cookiesRes = this.$cookies.getAll();  
-    console.log("cookiesRes", cookiesRes);
+    const cookiesRes = $nuxt.$cookies.getAll();
     this.$vuetify.theme.dark = cookiesRes.dark;
     //this.$gtm.init();
     //this.$gtm.push({ 'varName': 'value' });
     if (process.browser) {
-      
-      
+
       window.dataLayer = window.dataLayer || [];      
       this.gtag('js', new Date());
       this.gtag('config', 'G-V55KD88JVL');
@@ -294,7 +291,9 @@ export default {
 
       //debugger;
 
-      const cookiesRes = $nuxt.$cookies.getAll();
+      
+      this.$store.state.localStorage.userInfo.sh = cookiesRes.sh;
+
       if (cookiesRes.dark != undefined) {
         console.log("cookie dark", cookiesRes.dark);
         $nuxt.$vuetify.theme.dark = cookiesRes.dark;

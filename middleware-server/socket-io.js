@@ -46,7 +46,7 @@ module.exports = async (wsServer) => {
     io.on('connection',async (socket) => {
         console.log('Connect from Client : ' + socket);
         // last 100 chats client send.
-        const datas = redisClient.lrange("chats", -100 ,-1, (err, arrData) => {
+        const datas = redisClient.lrange("chats", -200 ,-1, (err, arrData) => {
             //console.log("datas", arrData);
             const arrObj = [];
             if(arrData){

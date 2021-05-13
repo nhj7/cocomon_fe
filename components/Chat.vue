@@ -9,7 +9,7 @@
             <v-icon :color="item.userInfo.icon.color">{{'mdi-'+item.userInfo.icon.name}}</v-icon>
           </div>
           <div class="align-self-start">
-            <div class="grey--text caption ml-2 text-left">{{item.userInfo.nickName}}</div>
+            <div class="d-flex flex-row"><div class="grey--text caption ml-2 text-left">{{item.userInfo.nickName}}</div> <div class="grey--text caption ml-1 text-left">({{item.userInfo.sh}})</div></div>
             <div class="ml-2 text-left">
               <v-card class="caption pl-1 pr-1 " v-html="item.message" >  </v-card>
             </div>
