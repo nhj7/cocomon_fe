@@ -327,6 +327,9 @@ export default {
       // krwusd get
       // https://quotation-api-cdn.dunamu.com/v1/forex/recent?codes=FRX.KRWUSD
       // https://api.binance.com/api/v3/exchangeInfo
+
+      //$nuxt.$axios.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
+
       const responseArr = await Promise.all([
         $nuxt.$axios.$get(
           "https://quotation-api-cdn.dunamu.com/v1/forex/recent?codes=FRX.KRWUSD"

@@ -159,7 +159,7 @@ const config = {
       } // end theme
     },
     icons: {
-      iconfont: 'mdi', // default - only for display purposes
+      iconfont: 'fa', // default - only for display purposes
       values : {sort: 'mdi-arrow-down'}
     },
   },
