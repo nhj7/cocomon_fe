@@ -17,7 +17,7 @@
     "cheerio": "*",
     "console": "^0.7.2",
     "cookie-universal-nuxt": "^2.1.4",
-    "core-js": "^3.11.2",
+    "core-js": "^3.12.1",
     "express": "^4.17.1",
     "marked": "^2.0.3",
     "nuxt": "^2.15.4",
