@@ -53,7 +53,7 @@ export const state = () => ({
         , expandMap : {}
         , userInfo : {            
             sh : ''
-            , nickName : '코린이1'
+            , nickName : ''
             , icon : {
                 color : '#1976D2FF'
                 , name : 'emoticon-angry-outline'
@@ -142,23 +142,19 @@ export const actions = {
 
         const cookiesRes = this.$cookies.getAll()
         let cid = cookiesRes.cid;
+        let sh = cookiesRes.sh;
         //$winstonLog.info(`cookiesRes ${cookiesRes}`);
-        if( state.localStorage.userInfo.cid == undefined || state.localStorage.userInfo.cid == '' ){
+        if( cid == undefined || cid == '' ){
             cid = uuid.v4()
             //$winstonLog.info(`create cid ${cid}` );
             this.$cookies.set("cid", cid);
-            commit('setId', { cid : cid });            
-            //state.localStorage.userInfo.cid = cid;
-        }        
-        if( cookiesRes.sh == undefined || cookiesRes.sh == '' || state.localStorage.userInfo.sh == undefined || state.localStorage.userInfo.sh == '' ){
-            const shortHash = require('short-hash');
-            const sh = shortHash(cid);
-            this.$cookies.set("sh", sh);
-            commit('setId', { sh : sh});
-            commit('setUserInfo', { sh : sh });            
-            console.log("sh created " , state.localStorage.userInfo);
-            //state.localStorage.userInfo.sh = sh;
+            commit('setId', { cid : cid });
         }
+        const shortHash = require('short-hash');
+        const new_sh = shortHash(cid);
+        const ssh = shortHash(new_sh)
+        this.$cookies.set("sh", new_sh);        
+        commit('setId', { sh : new_sh });
     }
 }
 

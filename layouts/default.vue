@@ -234,7 +234,7 @@ export default {
     //ctx.$gtm.push({ event: 'ssr' })
   }
   , created: async function() {
-    const cookiesRes = $nuxt.$cookies.getAll();
+    const cookiesRes = this.$cookies.getAll();
     this.$vuetify.theme.dark = cookiesRes.dark;
     //this.$gtm.init();
     //this.$gtm.push({ 'varName': 'value' });
@@ -293,12 +293,15 @@ export default {
 
       
       this.$store.state.localStorage.userInfo.sh = cookiesRes.sh;
+      if( this.$store.state.localStorage.userInfo.nickName == ''  ){
+        this.$store.state.localStorage.userInfo.nickName = '코린이' + cookiesRes.sh
+      }
 
       if (cookiesRes.dark != undefined) {
         console.log("cookie dark", cookiesRes.dark);
         $nuxt.$vuetify.theme.dark = cookiesRes.dark;
       } else {
-        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)")
+        const prefersDark = window.matchMedia("(prefers-color-scheme:dark)")
           .matches;
         console.log("prefersDark", prefersDark);
         $nuxt.$cookies.set("dark", prefersDark);
