@@ -159,7 +159,7 @@ const config = {
       } // end theme
     },
     icons: {
-      iconfont: 'mdi', // default - only for display purposes
+      iconfont: 'fa', // default - only for display purposes
       values : {sort: 'mdi-arrow-down'}
     },
   },
@@ -168,7 +168,7 @@ const config = {
   build: {
     parallel: true,
     cache: true,
-    hardSource: true,
+    hardSource: false,
     extend(config, { isClient }) {
       // Extend only webpack config for client-bundle
       if (isClient) {

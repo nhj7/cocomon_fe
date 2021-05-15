@@ -234,15 +234,12 @@ export default {
     //ctx.$gtm.push({ event: 'ssr' })
   }
   , created: async function() {
-    console.log("default.vue created", this.$store.state.id.cid);
-    const cookiesRes = this.$cookies.getAll();  
-    console.log("cookiesRes", cookiesRes);
+    const cookiesRes = this.$cookies.getAll();
     this.$vuetify.theme.dark = cookiesRes.dark;
     //this.$gtm.init();
     //this.$gtm.push({ 'varName': 'value' });
     if (process.browser) {
-      
-      
+
       window.dataLayer = window.dataLayer || [];      
       this.gtag('js', new Date());
       this.gtag('config', 'G-V55KD88JVL');
@@ -294,12 +291,17 @@ export default {
 
       //debugger;
 
-      const cookiesRes = $nuxt.$cookies.getAll();
+      
+      this.$store.state.localStorage.userInfo.sh = cookiesRes.sh;
+      if( this.$store.state.localStorage.userInfo.nickName == ''  ){
+        this.$store.state.localStorage.userInfo.nickName = '코린이' + cookiesRes.sh
+      }
+
       if (cookiesRes.dark != undefined) {
         console.log("cookie dark", cookiesRes.dark);
         $nuxt.$vuetify.theme.dark = cookiesRes.dark;
       } else {
-        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)")
+        const prefersDark = window.matchMedia("(prefers-color-scheme:dark)")
           .matches;
         console.log("prefersDark", prefersDark);
         $nuxt.$cookies.set("dark", prefersDark);
@@ -325,6 +327,9 @@ export default {
       // krwusd get
       // https://quotation-api-cdn.dunamu.com/v1/forex/recent?codes=FRX.KRWUSD
       // https://api.binance.com/api/v3/exchangeInfo
+
+      //$nuxt.$axios.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
+
       const responseArr = await Promise.all([
         $nuxt.$axios.$get(
           "https://quotation-api-cdn.dunamu.com/v1/forex/recent?codes=FRX.KRWUSD"

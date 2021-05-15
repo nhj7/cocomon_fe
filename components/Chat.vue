@@ -2,16 +2,16 @@
 <div>
   <v-card class="d-flex pa-1 overflow-hidden" outlined tile  >
   <v-row>
-    <v-col id="chatsLayer" cols="12" md="12" sm="12" xs="12" class="pa-2 overflow-y-auto" :style="chatHeight">
+    <v-col id="chatsLayer" cols="12" md="12" sm="12" xs="12" class="pa-2 overflow-y-auto" :style="chatHeight" :class="$vuetify.theme.dark ? 'theme--dark' : '' ">
       <div v-for="item in $store.state.chat.chats" :key="item.CUID">
         <v-card class="d-flex flex-row pa-1 mb-1">
           <div>
             <v-icon :color="item.userInfo.icon.color">{{'mdi-'+item.userInfo.icon.name}}</v-icon>
           </div>
           <div class="align-self-start">
-            <div class="grey--text caption ml-2 text-left">{{item.userInfo.nickName}}</div>
+            <div class="d-flex flex-row"><div class="grey--text caption ml-2 text-left">{{item.userInfo.nickName}}</div> <div class="grey--text caption ml-1 text-left">({{item.userInfo.sh}})</div></div>
             <div class="ml-2 text-left">
-              <v-card class="caption pl-1 pr-1 " v-html="item.message" >  </v-card>
+              <v-card style="word-break:break-all;" class="caption pl-1 pr-1 mb-1 message" v-html="item.message" >  </v-card>
             </div>
           </div>
         </v-card>
@@ -19,7 +19,7 @@
     </v-col>
     <v-col cols="12" md="12" sm="12" xs="12" style class="pl-2 pr-2 pb-3">
       <div class="mt-3 d-flex flex-row">
-        <v-icon @click="popUserProfile"  :color="userInfo.icon.color" class="mr-2 ml-2">{{'mdi-'+userInfo.icon.name}}</v-icon>
+        <v-icon @click="isViewUserDialog = true"  :color="userInfo.icon.color" class="mr-2 ml-2">{{'mdi-'+userInfo.icon.name}}</v-icon>
         <v-text-field
           v-model="inp_chatMsg"
           append-icon="mdi-chat-processing"
@@ -37,6 +37,7 @@
           @focus="isInpChatFocus=true;"
           class="mr-2"
           :disabled="!$store.state.socketIO.connected"
+          :color="userInfo.icon.color"
         ></v-text-field>
 
         <!--{{  $store.state.socketIO.connected }}-->
@@ -46,121 +47,12 @@
   </v-card>
 
   <v-dialog
-      v-model="isViewUserDialog"
-      scrollable
-      max-width="300px"
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          color="primary"
-          dark
-          v-bind="attrs"
-          v-on="on"
-        >
-          Open Dialog
-        </v-btn>
-      </template>
-      <v-card>
-        <v-card-title>Select Country</v-card-title>
-        <v-divider></v-divider>
-        <v-card-text style="height: 300px;">
-          <v-radio-group
-            v-model="userInfo.icon.name"
-            column
-          >
-            <v-radio
-              label="Bahamas, The"
-              value="bahamas"
-            ></v-radio>
-            <v-radio
-              label="Bahrain"
-              value="bahrain"
-            ></v-radio>
-            <v-radio
-              label="Bangladesh"
-              value="bangladesh"
-            ></v-radio>
-            <v-radio
-              label="Barbados"
-              value="barbados"
-            ></v-radio>
-            <v-radio
-              label="Belarus"
-              value="belarus"
-            ></v-radio>
-            <v-radio
-              label="Belgium"
-              value="belgium"
-            ></v-radio>
-            <v-radio
-              label="Belize"
-              value="belize"
-            ></v-radio>
-            <v-radio
-              label="Benin"
-              value="benin"
-            ></v-radio>
-            <v-radio
-              label="Bhutan"
-              value="bhutan"
-            ></v-radio>
-            <v-radio
-              label="Bolivia"
-              value="bolivia"
-            ></v-radio>
-            <v-radio
-              label="Bosnia and Herzegovina"
-              value="bosnia"
-            ></v-radio>
-            <v-radio
-              label="Botswana"
-              value="botswana"
-            ></v-radio>
-            <v-radio
-              label="Brazil"
-              value="brazil"
-            ></v-radio>
-            <v-radio
-              label="Brunei"
-              value="brunei"
-            ></v-radio>
-            <v-radio
-              label="Bulgaria"
-              value="bulgaria"
-            ></v-radio>
-            <v-radio
-              label="Burkina Faso"
-              value="burkina"
-            ></v-radio>
-            <v-radio
-              label="Burma"
-              value="burma"
-            ></v-radio>
-            <v-radio
-              label="Burundi"
-              value="burundi"
-            ></v-radio>
-          </v-radio-group>
-        </v-card-text>
-        <v-divider></v-divider>
-        <v-card-actions>
-          <v-btn
-            color="blue darken-1"
-            text
-            @click="dialog = false"
-          >
-            Close
-          </v-btn>
-          <v-btn
-            color="blue darken-1"
-            text
-            @click="dialog = false"
-          >
-            Save
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    v-model="isViewUserDialog"
+    scrollable
+    max-width="300px"
+  >
+  <UserProfile :closeUserProfileDialog.sync="isViewUserDialog" />  
+  </v-dialog>
 </div>
 </template>
 
@@ -175,15 +67,13 @@ export default {
       isInpChatFocus : false,
       sendableMsgCnt : 0, 
       isViewUserDialog : false, 
+      color: '#1976D2FF',
+      mask: '!#XXXXXXXX',
       chats: [],
-      userInfo : {
-          cid : ''
-          , nickName : '코린이1'
-          , icon : {
-              color : 'primary'
-              , name : 'emoticon-angry-outline'
-          }
-        }
+      userInfo : this.$store.state.localStorage.userInfo
+      , colorList : ['primary', 'secondary', 'accent', 'error', 'info', 'success', 'warning']
+      
+      
     };
   }, // end data
   async asyncData({ req, res }) {
@@ -234,7 +124,10 @@ export default {
       setTimeout( () => { chatsLayer.scrollTop = chatsLayer.scrollHeight; } , 0 );
     }, popUserProfile() {
       console.log("popUserProfile");
+    }, toggleUserProfileDialog(){
+      this.isViewUserDialog = !this.isViewUserDialog;
     }
+    
   }  
   , watch : {
     '$store.state.chat.chats' : {
@@ -260,7 +153,13 @@ export default {
       };
       //console.log("dtHeight", maxHeightMap[this.$vuetify.breakpoint.name] );
       return `height:${maxHeightMap[this.$vuetify.breakpoint.name]};`;
-    }
+    } // end chatdHeight
+    
   }
 }; // end vue.js
 </script>
+<style>
+.message > p{
+  margin-bottom:1px !important;
+}
+</style>

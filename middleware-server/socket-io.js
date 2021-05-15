@@ -1,3 +1,6 @@
+
+const marked = require("marked");
+
 module.exports = async (wsServer) => {
     console.log("middleware-server.socket-io.js");
     if( !process.env.redis_host || !process.env.redis_port || !process.env.redis_password ){
@@ -46,7 +49,7 @@ module.exports = async (wsServer) => {
     io.on('connection',async (socket) => {
         console.log('Connect from Client : ' + socket);
         // last 100 chats client send.
-        const datas = redisClient.lrange("chats", -100 ,-1, (err, arrData) => {
+        const datas = redisClient.lrange("chats", -200 ,-1, (err, arrData) => {
             //console.log("datas", arrData);
             const arrObj = [];
             if(arrData){
@@ -62,7 +65,14 @@ module.exports = async (wsServer) => {
                 const sockets = await io.of('/').adapter.allRooms();
                 console.log('await suc', sockets);
             }catch(e){ console.log('await error ', e) }
+
+
             console.log(`message from Client(${socket.handshake.address}): ` + data.message )
+
+            data.message = marked(data.message);
+            if( data.message.indexOf("<a") > -1 ){
+                data.message = data.message.replace("<a","<a target='_blank' ")
+            }
             //var rtnMessage = { message: data.message }; // 클라이언트에게 메시지를 전송한다 
             socket.emit('chat', data);
             socket.broadcast.emit('chat', data);
