@@ -6,10 +6,10 @@ on:
       - dev
 
 jobs:
-  ci_cd:
+  test_ci:
     runs-on: self-hosted
     steps:
     - name: Run test 🧪
         run:  |
-            ll
+            ll -al
             cd cocomon_dev
