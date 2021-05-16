@@ -9,5 +9,7 @@ jobs:
   test_ci:
     runs-on: self-hosted
     steps:
-    - name: Run test 🧪
-        run: ll -al
+      - name: test 🛎
+        run: |
+            pwd
+            ll
