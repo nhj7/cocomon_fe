@@ -1,4 +1,4 @@
-name: dev ci & cd
+name: test ci.
 
 on:
   push:
