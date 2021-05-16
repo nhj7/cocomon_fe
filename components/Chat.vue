@@ -9,7 +9,10 @@
             <v-icon :color="item.userInfo.icon.color">{{'mdi-'+item.userInfo.icon.name}}</v-icon>
           </div>
           <div class="align-self-start">
-            <div class="d-flex flex-row"><div class="grey--text caption ml-2 text-left">{{item.userInfo.nickName}}</div> <div class="grey--text caption ml-1 text-left">({{item.userInfo.sh}})</div></div>
+            <div class="d-flex flex-row">
+              <div class="grey--text caption ml-2 text-left">{{item.userInfo.nickName}} ({{item.userInfo.sh}}) - {{$moment(item.date).format('h:mm a') }} </div> 
+              
+            </div>
             <div class="ml-2 text-left">
               <v-card style="word-break:break-all;" class="caption pl-1 pr-1 mb-1 message" v-html="item.message" >  </v-card>
             </div>
@@ -32,6 +35,8 @@
           dense
           @click:append="sendChatMsg"
           @keyup.enter="sendChatMsg"
+          @keyup.arrow-up="cacheMsg"
+          @keyup.arrow-down="cacheMsg"
           ref="inpChat"
           @blur="isInpChatFocus=false;"
           @focus="isInpChatFocus=true;"
@@ -64,6 +69,8 @@ export default {
     return {
       pageName: false,
       inp_chatMsg: "",
+      arrMsg : [],
+      arrMsgIdx : 0,
       isInpChatFocus : false,
       sendableMsgCnt : 0, 
       isViewUserDialog : false, 
@@ -117,6 +124,11 @@ export default {
         /* Handle response, if any */
         console.log('resp', resp);
       })
+
+      if(this.arrMsg.length > 100 ){
+        this.arrMsg.splice(0, 1);
+      }
+      this.arrMsg.push(this.inp_chatMsg)
       this.inp_chatMsg = "";
       this.sendableMsgCnt = 3;
     },doScrollDownChats() {
@@ -126,6 +138,18 @@ export default {
       console.log("popUserProfile");
     }, toggleUserProfileDialog(){
       this.isViewUserDialog = !this.isViewUserDialog;
+    }, cacheMsg(e){
+      console.log("cacheMsg", this.arrMsgIdx,e );
+      if( this.arrMsg.length == 0  ) return;
+      if(e.key == 'ArrowUp' ){
+        this.arrMsgIdx++
+      }else{
+        this.arrMsgIdx--
+      }
+      if( this.arrMsgIdx < 0 || this.arrMsgIdx > this.arrMsg.length ){
+        this.arrMsgIdx = this.arrMsg.length;
+      }
+      this.inp_chatMsg = this.arrMsg[this.arrMsgIdx];
     }
     
   }  
