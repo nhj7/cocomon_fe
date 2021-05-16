@@ -65,9 +65,14 @@ const config = {
   buildModules: [
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
+    '@nuxtjs/moment',
     //'@nuxtjs/google-analytics',
-  ],
-  googleAnalytics: {
+  ]
+  , moment: {
+    defaultLocale: 'ko',
+    locales: ['ko']
+  }
+  , googleAnalytics: {
     // Options
     id: '271840333'
     , dev : true
