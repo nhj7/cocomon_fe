@@ -55,7 +55,7 @@ jobs:
 
       - name: Run start
         run:  |
-            cp .env_main ./cocomon_main/.env
+            cp /app/cocomon_env/.env_main ./cocomon_main/.env
             cd cocomon_main
             pwd
             node -v
