@@ -1,0 +1,15 @@
+name: test ci.
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  test_ci:
+    runs-on: self-hosted
+    steps:
+      - name: test 🛎
+        run: |
+            pwd
+            ll

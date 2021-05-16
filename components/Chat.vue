@@ -186,4 +186,7 @@ export default {
 .message > p{
   margin-bottom:1px !important;
 }
+.message img{
+  width:100%;
+}
 </style>

@@ -18,7 +18,7 @@ jobs:
       - name: Setup node env 🏗
         uses: actions/setup-node@v2.1.5
         with:
-          node-version: ${{ matrix.node }}
+          node-version: 14
           check-latest: true
 
       - name: Cache node_modules 📦
@@ -55,7 +55,7 @@ jobs:
 
       - name: Run start
         run:  |
-            cp .env_dev ./cocomon_dev/.env
+            cp /app/cocomon_env/.env_dev ./cocomon_dev/.env
             cd cocomon_dev
             pwd
             node -v
