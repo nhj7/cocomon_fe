@@ -67,7 +67,13 @@ icons: {
 ## PM2 npm start
 
 <pre>
+
+npm run build
+
 pm2 start npm --name "cocomon" -- start
+pm2 reload echosystem.config.js --env production
+pm2 reload echosystem.config.js --env production --only cocomon_dev
+pm2 reload echosystem.config.js --env production --only cocomon
 </pre>
 
 pm2 logrotate use.
