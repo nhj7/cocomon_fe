@@ -28,7 +28,7 @@
         </v-col>
         <v-col cols="12" sm="12" md="12" xs="12">
           <v-card class="d-flex pa-2" outlined tile>
-            <News />
+            <!--News /-->
           </v-card>
         </v-col>
       </v-row>
