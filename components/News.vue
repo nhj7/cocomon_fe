@@ -17,7 +17,7 @@ export default {
     }
   },
   created: async function() {
-    console.log("template.vue created");
+    console.log("News.vue comp created");
   }, // end created
   methods: {
     log: msg => {
@@ -29,7 +29,7 @@ export default {
     
   },
   mounted: async function() {
-    console.log("template.vue mounted");
+    console.log("News.vue comp mounted");
   }
 }; // end vue.js
 </script>

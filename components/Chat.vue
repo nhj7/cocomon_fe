@@ -23,10 +23,10 @@
     <v-col cols="12" md="12" sm="12" xs="12" style class="pl-2 pr-2 pb-3">
       <div class="mt-3 d-flex flex-row">
         <v-icon @click="isViewUserDialog = true"  :color="userInfo.icon.color" class="mr-2 ml-2">{{'mdi-'+userInfo.icon.name}}</v-icon>
+        <!-- :label=" $store.state.socketIO.connected ? 'CoCo Talk ' + (sendableMsgCnt==0?'':sendableMsgCnt) :'CoCo Talk Connecting...' " --> 
+        <!-- :append-icon="calcAppendIcon" -->
         <v-text-field
-          v-model="inp_chatMsg"
-          append-icon="mdi-chat-processing"
-          :label=" $store.state.socketIO.connected ? 'CoCo Talk ' + (sendableMsgCnt==0?'':sendableMsgCnt) :'CoCo Talk Connecting...' "
+          :label=" $store.state.socketIO.connected ? 'CoCo Talk ' :'CoCo Talk Connecting...' "
           placeholder
           outlined
           hide-details="auto"
@@ -37,14 +37,15 @@
           @keyup.enter="sendChatMsg"
           @keyup.arrow-up="cacheMsg"
           @keyup.arrow-down="cacheMsg"
+          @focus="isInpChatFocus=true"
+          @blur="isInpChatFocus=false"
           ref="inpChat"
-          @blur="isInpChatFocus=false;"
-          @focus="isInpChatFocus=true;"
-          class="mr-2"
+          autocomplete="off"
+          class="mr-2 body-1"
           :disabled="!$store.state.socketIO.connected"
           :color="userInfo.icon.color"
         ></v-text-field>
-
+        <v-icon class="mr-1" :color="isInpChatFocus?userInfo.icon.color:''">{{calcAppendIcon}}</v-icon>
         <!--{{  $store.state.socketIO.connected }}-->
       </div>
     </v-col>
@@ -69,7 +70,7 @@ export default {
     return {
       pageName: false,
       inp_chatMsg: "",
-      arrMsg : [],
+      arrMsg : [""],
       arrMsgIdx : 0,
       isInpChatFocus : false,
       sendableMsgCnt : 0, 
@@ -79,8 +80,8 @@ export default {
       chats: [],
       userInfo : this.$store.state.localStorage.userInfo
       , colorList : ['primary', 'secondary', 'accent', 'error', 'info', 'success', 'warning']
-      
-      
+      , input_chatObj : null // this.$refs.inpChat.$el
+      , isMounted : false
     };
   }, // end data
   async asyncData({ req, res }) {
@@ -106,6 +107,9 @@ export default {
   , mounted: async function() {
     console.log("mounted chat.vue");
     this.doScrollDownChats();
+
+    this.input_chatObj = this.$refs.inpChat.$el.querySelector('input');
+    this.isMounted = true;
   } // mounted
   , methods: {
     log: msg => {
@@ -115,22 +119,30 @@ export default {
       console.log("setChatIcon");
     },
     sendChatMsg() {
-      if( this.inp_chatMsg == "" || this.sendableMsgCnt > 0 )
+      const inputObj = this.$refs.inpChat.$el.querySelector('input');
+      const chatMsg = inputObj.value;
+      //console.log(chatMsg);
+      if( chatMsg == "" || this.sendableMsgCnt > 0 )
         return;
       //console.log("sendChatMsg", this.inp_chatMsg, this.$store.state.socketIO.socket.connected);
       this.$store.state.socketIO.socket.emit('chat', {
-        userInfo : this.userInfo, message: this.inp_chatMsg
+        userInfo : this.userInfo, message: chatMsg
       }, (resp) => {
         /* Handle response, if any */
         console.log('resp', resp);
       })
-
-      if(this.arrMsg.length > 100 ){
-        this.arrMsg.splice(0, 1);
+      try {
+        if(this.arrMsg.length > 10 ){
+          this.arrMsg.splice(0, 1);
+        }
+        this.arrMsg.push(chatMsg)
+        this.$refs.inpChat.$el.querySelector('input').value = "";
+        setTimeout( () => {this.sendableMsgCnt = 3;}, 50 );
+        //this.$refs.inpChat.value = "";
+      } catch (error) {
+        
       }
-      this.arrMsg.push(this.inp_chatMsg)
-      this.inp_chatMsg = "";
-      this.sendableMsgCnt = 3;
+      
     },doScrollDownChats() {
       const chatsLayer = document.getElementById("chatsLayer")
       setTimeout( () => { chatsLayer.scrollTop = chatsLayer.scrollHeight; } , 0 );
@@ -139,17 +151,23 @@ export default {
     }, toggleUserProfileDialog(){
       this.isViewUserDialog = !this.isViewUserDialog;
     }, cacheMsg(e){
-      console.log("cacheMsg", this.arrMsgIdx,e );
+      
       if( this.arrMsg.length == 0  ) return;
       if(e.key == 'ArrowUp' ){
         this.arrMsgIdx++
       }else{
         this.arrMsgIdx--
       }
-      if( this.arrMsgIdx < 0 || this.arrMsgIdx > this.arrMsg.length ){
-        this.arrMsgIdx = this.arrMsg.length;
+      if( this.arrMsgIdx < 0  ){
+        this.arrMsgIdx = this.arrMsg.length - 1 ;
       }
-      this.inp_chatMsg = this.arrMsg[this.arrMsgIdx];
+      if( this.arrMsgIdx > this.arrMsg.length -1 ){
+        this.arrMsgIdx = 0;
+      }
+
+      console.log("cacheMsg", this.arrMsgIdx, this.arrMsg);
+
+      this.$refs.inpChat.$el.querySelector('input').value = this.arrMsg[this.arrMsgIdx];
     }
     
   }  
@@ -162,6 +180,8 @@ export default {
     }, sendableMsgCnt(){
       //console.log("sendableMsgCnt", this.sendableMsgCnt);
       if( this.sendableMsgCnt == 0 ) return;
+
+      //this.$refs.inpChat.$el.querySelector('input').value = "";
       setTimeout( () => { this.sendableMsgCnt-- } , 1000 );
     }
   }, computed : {
@@ -178,6 +198,29 @@ export default {
       //console.log("dtHeight", maxHeightMap[this.$vuetify.breakpoint.name] );
       return `height:${maxHeightMap[this.$vuetify.breakpoint.name]};`;
     } // end chatdHeight
+    , calcAppendIcon(){
+      switch (this.sendableMsgCnt) {
+        case 0:
+          return 'mdi-chat-processing';
+          break;
+        case 1:
+          return 'mdi-numeric-1-circle-outline';
+        case 2:
+          return 'mdi-numeric-2-circle-outline';
+        case 3:
+          return 'mdi-numeric-3-circle-outline';
+        default:
+          return 'mdi-chat-processing';
+          
+      }
+    }, calcChatIconColor(){
+
+      if( !this.isMounted ) return ''
+
+      
+      //console.log("this.$refs.inpChat.$el.querySelector('input').value", this.input_chatObj.value);
+      return this.userInfo.icon.color;
+    }
     
   }
 }; // end vue.js

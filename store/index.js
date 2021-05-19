@@ -55,8 +55,8 @@ export const state = () => ({
             sh : ''
             , nickName : ''
             , icon : {
-                color : '#1976D2FF'
-                , name : 'emoticon-angry-outline'
+                color : '#D2AA19FF'
+                , name : 'currency-btc'
             }
           }
     }, socketIO : {
