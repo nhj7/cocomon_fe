@@ -45,7 +45,7 @@
           :disabled="!$store.state.socketIO.connected"
           :color="userInfo.icon.color"
         ></v-text-field>
-        <v-icon class="mr-1" :color="isInpChatFocus?userInfo.icon.color:''">{{calcAppendIcon}}</v-icon>
+        <v-icon @click="sendChatMsg" class="mr-1" :color="isInpChatFocus?userInfo.icon.color:''">{{calcAppendIcon}}</v-icon>
         <!--{{  $store.state.socketIO.connected }}-->
       </div>
     </v-col>
@@ -137,10 +137,11 @@ export default {
         }
         this.arrMsg.push(chatMsg)
         this.$refs.inpChat.$el.querySelector('input').value = "";
-        setTimeout( () => {this.sendableMsgCnt = 3;}, 50 );
+        this.sendableMsgCnt = 3;
+        setTimeout( () => { this.$refs.inpChat.$el.querySelector('input').value = ""; }, 50 );
         //this.$refs.inpChat.value = "";
       } catch (error) {
-        
+        console.error("sendChatMsg", error)
       }
       
     },doScrollDownChats() {
