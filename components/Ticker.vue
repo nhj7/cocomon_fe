@@ -27,15 +27,10 @@
           ></v-text-field>
         </v-flex>
         <v-flex xs2 justify-center text-center>
-          <v-btn
-            @click="
-                    Object.assign($store.state.message, {
+          <v-btn @click="Object.assign($store.state.message, {
                       isSnackbar: true,
                       text: '서비스 준비중입니다.',
-                    })
-                  "
-            icon
-          >
+                    })" icon >
             <v-icon>mdi-dots-vertical</v-icon>
           </v-btn>
         </v-flex>
@@ -73,15 +68,13 @@
       <template v-slot:item="{ item }">
         <tr @click="toggleExpand(item)" class="row1">
           <td class="text-left" v-ripple>{{ item.korean_name }}</td>
-          <td
-            v-ripple
+          <td v-ripple
             :class="[
                     $store.state.config.isTickerColor
                       ? 0 > item.signed_change_price
                         ? 'fall--text'
                         : 'rise--text'
                       : '',
-
                     $store.state.config.isTickerColor ? ( item.ch==0?'':(item.ch > 0 ? 'row1-ch-rise' : 'row1-ch-fall' )) : ''
                   ]"
           >
@@ -90,8 +83,7 @@
               ( $store.state.ticker.mode == 'BTC' ? item.trade_price : $p_comma(item.trade_price, true)) : "" }}
             </span>
           </td>
-          <td
-            v-ripple
+          <td v-ripple
             :class="[
                     $store.state.config.isTickerColor
                       ? 0 > item.signed_change_price
@@ -107,12 +99,8 @@
             )
             }}
           </td>
-          <td
-            v-ripple
-            :class="[
-                    
-                  ]"
-          >{{ (item.kp>0?'+':(item.kp==0?'':'-')) + item.kp }}</td>
+          <td v-ripple :class="[]" >{{  $store.state.ticker.binance.mapTicker[item["market"].split("-")[1] + "USDT"] ?
+            (item.kp>0?'+':(item.kp==0?'':'-')) + item.kp : '' }}</td>
           <td v-ripple>
             {{
             Math.floor(item.acc_trade_price_24h / 100000000)
