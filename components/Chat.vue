@@ -26,7 +26,7 @@
         <!-- :label=" $store.state.socketIO.connected ? 'CoCo Talk ' + (sendableMsgCnt==0?'':sendableMsgCnt) :'CoCo Talk Connecting...' " --> 
         <!-- :append-icon="calcAppendIcon" -->
         <v-text-field
-          :label=" $store.state.socketIO.connected ? 'CoCo Talk ' :'CoCo Talk Connecting...' "
+          
           placeholder
           outlined
           hide-details="auto"
@@ -38,11 +38,13 @@
           @keyup.arrow-up="cacheMsg"
           @keyup.arrow-down="cacheMsg"
           @focus="isInpChatFocus=true"
-          @blur="isInpChatFocus=false"
+          @blur.native="isInpChatFocus=false"
+          @change="changeChatMsg"
           ref="inpChat"
           autocomplete="off"
           class="mr-2 body-1"
           :disabled="!$store.state.socketIO.connected"
+          :label=" $store.state.socketIO.connected ? 'CoCo Talk ' :'CoCo Talk Connecting...' "
           :color="userInfo.icon.color"
         ></v-text-field>
         <v-icon @click="sendChatMsg" class="mr-1" :color="isInpChatFocus?userInfo.icon.color:''">{{calcAppendIcon}}</v-icon>
@@ -117,10 +119,14 @@ export default {
     },
     setChatIcon() {
       console.log("setChatIcon");
-    },
-    sendChatMsg() {
+    }
+    , changeChatMsg(obj, obj2){
+      console.log("changeChatMsg", obj, obj2);
+    }
+    , sendChatMsg() {
       const inputObj = this.$refs.inpChat.$el.querySelector('input');
       const chatMsg = inputObj.value;
+      
       //console.log(chatMsg);
       if( chatMsg == "" || this.sendableMsgCnt > 0 )
         return;
@@ -137,8 +143,9 @@ export default {
         }
         this.arrMsg.push(chatMsg)
         this.$refs.inpChat.$el.querySelector('input').value = "";
+        this.$refs.inpChat.lazyValue = "";
         this.sendableMsgCnt = 3;
-        setTimeout( () => { this.$refs.inpChat.$el.querySelector('input').value = ""; }, 50 );
+        //setTimeout( () => { this.$refs.inpChat.$el.querySelector('input').value = ""; }, 50 );
         //this.$refs.inpChat.value = "";
       } catch (error) {
         console.error("sendChatMsg", error)
