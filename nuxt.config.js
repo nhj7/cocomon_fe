@@ -5,8 +5,8 @@ const colors = _colors.default;
 
 //console.log(process.env);
 console.log("nuxt.config.js configuaration start.", process.env.NODE_ENV, process.env.httpPort, process.env.httpsPort);
-const title = '김치프리미엄, 김프, 가상자산, 코인, 암호화폐 시세 확인';
-const description = `김프, 김치프리미엄, 역프, 가상자산, 코인, 암호화폐, 비트코인, 이더리움, 리플 실시간 시세 확인 사이트 코코몬`;
+const title = '김치프리미엄, 김프, 가상자산, 코인 시세 확인';
+const description = `김프, 김치프리미엄, 역프, 가상자산, 코인, 비트코인, 이더리움, 리플 실시간 시세 확인 사이트 코코몬`;
 const config = {  
   ssr: true
   ,isDev: process.env.NODE_ENV !== 'production'

@@ -202,6 +202,7 @@ export default {
       ticker : { mapUpbitTicker : {} }
       , refUpbitSetInterval : 0
       , refBinanceSetInterval : 0
+      , linkCanonicalObj : null
     };
   }, // end data
   async asyncData({ req, res }) {
@@ -226,8 +227,8 @@ export default {
   }
   , watch : {
     $route () {
-      console.log('route changed', this.$route);
-      
+      console.log('route changed', this.$route, );
+      this.linkCanonicalObj.href = "https://cocomon.kr" + "" + window.location.pathname + window.location.search;
     }
   }
   , middleware (ctx) {
@@ -590,6 +591,17 @@ export default {
   },
   mounted: function() {
     console.log("default.vue mounted");
+
+    const htmlCol = document.head.getElementsByTagName("link")
+    for(let i = 0; i < htmlCol.length;i++){
+      //console.log("htmlCol", htmlCol[i]);
+      const rel = htmlCol[i].rel;
+      if( rel == "canonical"){
+        this.linkCanonicalObj = htmlCol[i];
+        htmlCol[i].href = "https://cocomon.kr" + "" + window.location.pathname + window.location.search;
+      }
+    }
+
     return;
 
     // $nuxt.socket.emit('ticker',JSON.stringify([

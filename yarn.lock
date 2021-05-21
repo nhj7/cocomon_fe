@@ -8170,7 +8170,7 @@
     "query-string" "^4.1.0"
     "sort-keys" "^1.0.0"
 
-"notepack.io@~2.2.0":
+"notepack.io@^2.2.0", "notepack.io@~2.2.0":
   "integrity" "sha512-9b5w3t5VSH6ZPosoYnyDONnUTF8o0UkBw7JLA6eBlYJWyGT1Q3vQa8Hmuj1/X6RYvHjjygBDgw6fJhe0JEojfw=="
   "resolved" "https://registry.npmjs.org/notepack.io/-/notepack.io-2.2.0.tgz"
   "version" "2.2.0"
