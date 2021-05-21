@@ -5,15 +5,9 @@ const main = async () => {
     const arrNews = [];
     try {
         const result = await axios.get("https://www.blockmedia.co.kr/feed");
-        
-        //console.log(result);
-
         const cheerio = require("cheerio")
-
         const $ = cheerio.load(result.data);
-
         const arrItems = $("item");
-
         for(let i = 0; i < arrItems.length; i++){
             //debugger;
             try {
@@ -46,4 +40,6 @@ const main = async () => {
     return arrNews;
 }
 
-main();
+//main();
+
+module.exports = main;
