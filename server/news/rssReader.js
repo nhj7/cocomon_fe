@@ -4,36 +4,19 @@ const moment = require("moment");
 moment.locale("ko");
 (async () => {
     const feed_blockmedia = await parser.parseURL('https://www.blockmedia.co.kr/feed');
-  //console.log(feed.title);
-
-//   feed_blockmedia.items.forEach(item => {
-//     console.log(item)
-//   });
-
-
     const feed_tokenpost = await parser.parseURL('https://www.tokenpost.kr/rss');
-  //console.log(feed.title);
-
-//   feed_tokenpost.items.forEach(item => {
-//     console.log(item)
-//   });
-
     const feed_coindesk = await parser.parseURL('http://www.coindeskkorea.com/rss/allArticle.xml');
-    //console.log(feed.title);
-
-    //   feed_coindesk.items.forEach(item => {
-    //     console.log(item)
-    //   });
-
+    feed_coindesk.items.forEach(item => {
+        item.pubDate = item.pubDate.replace("KST","(KST)")
+        //console.log(item)
+    });
     const feed_coinpress = await parser.parseURL('https://www.coinpress.co.kr/feed/');
-
     // https://kr.coinness.com/newsflash.rss
-
     const feed_coinness = await parser.parseURL('https://kr.coinness.com/newsflash.rss');
 
+    // array merge spread operator.
     const feed_all = [ ...feed_blockmedia.items, ...feed_tokenpost.items, ...feed_coindesk.items, ...feed_coinpress.items, ...feed_coinness.items]
-
-    console.log(feed_all);
+    //console.log(feed_all);
   
     // feed_all.forEach(item => {
     //     console.log(item)
@@ -46,21 +29,27 @@ moment.locale("ko");
     const feed_today = feed_all.filter( item => {
         let pubDate = null;
         try {
-            pubDate = moment(item.pubDate).format("YYYYMMDD");
+            pubDate = moment(new Date(item.pubDate)).format("YYYYMMDD");
             console.log("pubDate", pubDate);
             if( pubDate == "Invalid date"){
                 console.log("Invalid item", item);
             }
+
+            item.pubDateFormat = moment(new Date(item.pubDate)).format("YYYY년 MM월 DD일 h:m A");
         } catch (error) {
             console.error("pubDate parse error" , item, error);
         }
         return today == pubDate;
     })
 
-    feed_today.forEach(item => {
+    
+
+    feed_all.sort( (a, b) => { return new Date(b.pubDate) - new Date(a.pubDate) })
+    feed_today.sort( (a, b) => { return new Date(b.pubDate) - new Date(a.pubDate) })
+
+    feed_all.forEach(item => {
         console.log(item)
     });
-
 
     debugger;
 
