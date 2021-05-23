@@ -2,7 +2,7 @@ const Parser = require('rss-parser');
 const parser = new Parser();
 const moment = require("moment");
 moment.locale("ko");
-(async () => {
+const main = async () => {
     const feed_blockmedia = await parser.parseURL('https://www.blockmedia.co.kr/feed');
     const feed_tokenpost = await parser.parseURL('https://www.tokenpost.kr/rss');
     const feed_coindesk = await parser.parseURL('http://www.coindeskkorea.com/rss/allArticle.xml');
@@ -55,4 +55,6 @@ moment.locale("ko");
 
   // http://www.coindeskkorea.com/rss/allArticle.xml
 
-})();
+};
+
+module.exports = main;
