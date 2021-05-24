@@ -1,49 +1,15 @@
-const axios = require("axios");
-const moment = require("moment");
-moment.locale("ko")
-const main = async () => {
-    const arrNews = [];
-    try {
-        const result = await axios.get("https://www.blockmedia.co.kr/feed");
-        
-        //console.log(result);
 
-        const cheerio = require("cheerio")
 
-        const $ = cheerio.load(result.data);
+const cron = require('node-cron');
 
-        const arrItems = $("item");
+// every 5 min news rss refresh
+cron.schedule('* */5 * * * *'
+, async () => {
+    console.log("every 5 min....");
 
-        for(let i = 0; i < arrItems.length; i++){
-            //debugger;
-            try {
-                const title = arrItems[i].children[1].children[0].data.replace("\\t","").trim();
-                const link = arrItems[i].children[4].data.replace("\\t","").trim();
-                const pubdate = arrItems[i].children[7].children[0].data.replace("\\t","").trim();
-                let pubDateFormat = null;
-                try {
-                    pubDateFormat = moment(pubdate).format("YYYY년 MM월 DD일 h:mm A");                    
-                } catch (error) {
-                    console.error(error);
-                    pubDateFormat = pubdate;
-                }
-                console.log( title, link, pubdate, pubDateFormat);
+    const news = require("./news/newsReader")();
 
-                arrNews.push({
-                    title : title
-                    , link : link
-                    , pubdate : pubdate
-                    , pubDateFormat : pubDateFormat
-                });
-            } catch (error) {
-                console.error("blockmedia crawling error", error);
-            }           
-        }
-
-    } catch (error) {
-        console.error("blockmedia crawling error",error);
-    }    
-    return arrNews;
-}
-
-main();
+    console.log(news);
+} 
+,{ timezone: "Asia/Seoul" }
+);
