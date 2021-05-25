@@ -24,13 +24,13 @@ const main = async () => {
 
     const today = moment(new Date()).format("YYYYMMDD")
 
-    console.log("today", today);
+    //console.log("today", today);
 
     const feed_today = feed_all.filter( item => {
         let pubDate = null;
         try {
             pubDate = moment(new Date(item.pubDate)).format("YYYYMMDD");
-            console.log("pubDate", pubDate);
+            //console.log("pubDate", pubDate);
             if( pubDate == "Invalid date"){
                 console.log("Invalid item", item);
             }
@@ -48,10 +48,12 @@ const main = async () => {
     feed_today.sort( (a, b) => { return new Date(b.pubDate) - new Date(a.pubDate) })
 
     feed_all.forEach(item => {
-        console.log(item)
+        //console.log(item)
     });
 
-    debugger;
+    return feed_all;
+
+    //debugger;
 
   // http://www.coindeskkorea.com/rss/allArticle.xml
 
@@ -59,4 +61,4 @@ const main = async () => {
 
 module.exports = main;
 
-main();
+//main();
