@@ -22,12 +22,25 @@ const ltrim = (key, start, stop ) => {
     redisClient.ltrim(key, start , stop);
 }
 
+const set = (key, value) => {
+    redisClient.set(key, value);
+}
+
 const end = () => {
     redisClient.end(true);
 }
 
+const quit = () => {
+    redisClient.quit();
+}
 module.exports = {
     rpush : rpush
     , ltrim : ltrim
     , end : end
+    , set : set
+    , quit : quit
 }
+
+//set("tmp","value11");
+
+//quit();

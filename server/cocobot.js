@@ -1,8 +1,10 @@
 
 const newsReader = require("./news/newsReader");
+const redis = require("./util/redis");
 
 const getFeed = async () => {
     const feed = await newsReader();
+    redis.set("feed", JSON.stringify(feed) );
     console.log("feed", feed);
 }
 
@@ -25,6 +27,7 @@ cron.schedule('*/1 * * * *'
 , async () => {
     console.log("every 1 min news reader.");
     const feed = await newsReader();
+    redis.set("feed", JSON.stringify(feed) );
     console.log("feed", feed);
 } 
 ,{ timezone: "Asia/Seoul" }

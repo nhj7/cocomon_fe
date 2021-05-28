@@ -36,6 +36,44 @@ const config = {
       httpPort: 9999,
       //httpsPort: 8443,
     }
+  }, {
+    name: 'cocobot',
+    script: './server/cocobot.js',
+    // script: './node_modules/nuxt/bin/nuxt.js',
+    // args: 'start',
+    // script: 'nuxt',
+    // args : 'start',
+    //instances: 'max',
+    instances: 1,
+    //exec_mode: 'cluster',
+    exec_mode: 'fork',
+    //wait_ready: true,
+    //listen_timeout: 3000,
+    env_production: {
+      NODE_ENV: "production",
+      cocomode : "prod", 
+      httpPort: 9999,
+      //httpsPort: 8443,
+    }
+  }, , {
+    name: 'cocobot_dev',
+    script: './server/cocobot.js',
+    // script: './node_modules/nuxt/bin/nuxt.js',
+    // args: 'start',
+    // script: 'nuxt',
+    // args : 'start',
+    //instances: 'max',
+    instances: 1,
+    //exec_mode: 'cluster',
+    exec_mode: 'fork',
+    //wait_ready: true,
+    //listen_timeout: 3000,
+    env_production: {
+      NODE_ENV: "production",
+      cocomode : "dev",
+      httpPort: 9999,
+      //httpsPort: 8443,
+    }
   }
   ]
 }
