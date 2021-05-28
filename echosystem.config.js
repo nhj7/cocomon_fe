@@ -55,7 +55,7 @@ const config = {
       httpPort: 9999,
       //httpsPort: 8443,
     }
-  }, , {
+  }, {
     name: 'cocobot_dev',
     script: './server/cocobot.js',
     // script: './node_modules/nuxt/bin/nuxt.js',
