@@ -1,5 +1,7 @@
 <template>
     <div>
+        <h2 class="mt-2 mb-2" @click="methodTmp">CoCo News</h2>
+        
         <News />
     </div>
 </template>
