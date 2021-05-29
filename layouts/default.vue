@@ -241,8 +241,9 @@ export default {
   , created: async function() {
     const cookiesRes = this.$cookies.getAll();
     this.$vuetify.theme.dark = cookiesRes.dark;
-    //this.$gtm.init();
-    //this.$gtm.push({ 'varName': 'value' });
+
+    console.log( "baseURL", this.$axios.baseURL );
+    
     if (process.browser) {
 
       window.dataLayer = window.dataLayer || [];      
@@ -258,6 +259,8 @@ export default {
 
 
       var curUrl = window.location.protocol + "//" + window.location.host;
+
+      this.$axios.baseURL = curUrl;
       //console.log("curUrl : ", curUrl);
       $nuxt.$store.state.socketIO.socket = io(curUrl, { transports : ['websocket'] });
       const socket = $nuxt.$store.state.socketIO.socket;
