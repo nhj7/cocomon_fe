@@ -1,8 +1,6 @@
 <template>
   <div>
-    <h2 @click="methodTmp">CoCo News</h2>
-    <br />
-
+    <h2 class="mt-2 mb-2" @click="methodTmp">CoCo News</h2>
     <v-card v-for="news in feed" :key="news.link" class="mb-3 pa-2" >
       
       <a @click="detailView(news)">{{ news.title }} - {{ news.creator }} - {{ news.pubDateFormat}} <v-icon v-bind:class="[ news.isView ? '': '' ]">mdi-arrow-{{news.isView?"up":"down"}}-bold-box-outline</v-icon> </a>
@@ -31,7 +29,8 @@ export default {
   //   }
   // }
   async fetch() {
-    const data = await $nuxt.$axios.$get("/api/news");
+    console.log("News.vue comp fetch");
+    const data = await this.$axios.$get("/api/news");
     data.feed.forEach(news => {
         news.isView = false
     });
