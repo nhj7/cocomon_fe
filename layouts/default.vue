@@ -256,11 +256,9 @@ export default {
           title: 'index'
         }
       });
-
-
       var curUrl = window.location.protocol + "//" + window.location.host;
 
-      this.$axios.baseURL = curUrl;
+      this.$axios.defaults.baseURL = curUrl;
       //console.log("curUrl : ", curUrl);
       $nuxt.$store.state.socketIO.socket = io(curUrl, { transports : ['websocket'] });
       const socket = $nuxt.$store.state.socketIO.socket;
