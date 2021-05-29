@@ -180,7 +180,11 @@ export default {
           title: "Chat",
           to: "/Chat"
         }
-        
+        , {
+          icon: "mdi-newspaper-variant",
+          title: "News",
+          to: "/news"
+        }
         
         , {
           icon: "mdi-dev-to",

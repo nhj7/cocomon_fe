@@ -26,6 +26,10 @@ const set = (key, value) => {
     redisClient.set(key, value);
 }
 
+const {promisify} = require('util');
+const getAsync = promisify(redisClient.get).bind(redisClient);
+
+
 const end = () => {
     redisClient.end(true);
 }
@@ -38,6 +42,7 @@ module.exports = {
     , ltrim : ltrim
     , end : end
     , set : set
+    , getAsync : getAsync
     , quit : quit
 }
 
