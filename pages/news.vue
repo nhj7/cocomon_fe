@@ -1,5 +1,7 @@
 <template>
-  <Chat />
+    <div>
+        <News />
+    </div>
 </template>
 
 <script>
@@ -11,7 +13,7 @@ export default {
   }, // end data
   async asyncData({ req, res }) {
     if (process.server) {
-      return { asyncData : 'tmp' };
+      return { asyncData : 'news page' };
     }
   },
   created: async function() {

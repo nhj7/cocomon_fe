@@ -43,7 +43,9 @@ module.exports = async (wsServer) => {
     // });
 
     io.of('/').adapter.on('error', function(error){
-        console.log("io.of('/').adapter.on('error'", error );
+        console.log("io.of('/').adapter.on('error' retry", error );
+        //const adapterRedisRetry = require('socket.io-redis')({ host: redis_host, port: redis_port , password : redis_password });
+        //io.adapter(adapterRedisRetry);
     });
 
     io.on('connection',async (socket) => {

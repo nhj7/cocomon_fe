@@ -180,7 +180,11 @@ export default {
           title: "Chat",
           to: "/Chat"
         }
-        
+        , {
+          icon: "mdi-newspaper-variant",
+          title: "News",
+          to: "/news"
+        }
         
         , {
           icon: "mdi-dev-to",
@@ -202,6 +206,7 @@ export default {
       ticker : { mapUpbitTicker : {} }
       , refUpbitSetInterval : 0
       , refBinanceSetInterval : 0
+      , linkCanonicalObj : null
     };
   }, // end data
   async asyncData({ req, res }) {
@@ -226,8 +231,8 @@ export default {
   }
   , watch : {
     $route () {
-      console.log('route changed', this.$route);
-      
+      console.log('route changed', this.$route, );
+      this.linkCanonicalObj.href = "https://cocomon.kr" + "" + window.location.pathname + window.location.search;
     }
   }
   , middleware (ctx) {
@@ -236,8 +241,9 @@ export default {
   , created: async function() {
     const cookiesRes = this.$cookies.getAll();
     this.$vuetify.theme.dark = cookiesRes.dark;
-    //this.$gtm.init();
-    //this.$gtm.push({ 'varName': 'value' });
+
+    console.log( "baseURL", this.$axios.baseURL );
+    
     if (process.browser) {
 
       window.dataLayer = window.dataLayer || [];      
@@ -250,9 +256,9 @@ export default {
           title: 'index'
         }
       });
-
-
       var curUrl = window.location.protocol + "//" + window.location.host;
+
+      this.$axios.defaults.baseURL = curUrl;
       //console.log("curUrl : ", curUrl);
       $nuxt.$store.state.socketIO.socket = io(curUrl, { transports : ['websocket'] });
       const socket = $nuxt.$store.state.socketIO.socket;
@@ -590,6 +596,17 @@ export default {
   },
   mounted: function() {
     console.log("default.vue mounted");
+
+    const htmlCol = document.head.getElementsByTagName("link")
+    for(let i = 0; i < htmlCol.length;i++){
+      //console.log("htmlCol", htmlCol[i]);
+      const rel = htmlCol[i].rel;
+      if( rel == "canonical"){
+        this.linkCanonicalObj = htmlCol[i];
+        htmlCol[i].href = "https://cocomon.kr" + "" + window.location.pathname + window.location.search;
+      }
+    }
+
     return;
 
     // $nuxt.socket.emit('ticker',JSON.stringify([
