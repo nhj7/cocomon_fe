@@ -1,5 +1,15 @@
 <template>
-  <div>
+  <div >
+    
+    <v-progress-circular
+      class="text-center"
+      :width="5"
+      :size="50"
+      color="green"
+      indeterminate
+      v-if="feed.length==0"
+    ></v-progress-circular>
+
     <v-card v-for="news in feed" :key="news.link" class="mb-3 pa-2" >
       
       <a @click="detailView(news)">{{ news.title }} - {{ news.creator }} - {{ news.pubDateFormat}} <v-icon v-bind:class="[ news.isView ? '': '' ]">mdi-arrow-{{news.isView?"up":"down"}}-bold-box-outline</v-icon> </a>
