@@ -17,13 +17,13 @@ const main = async () => {
         item.creator = "코인데스크코리아"
     });
     const feed_coinpress = await parser.parseURL('https://www.coinpress.co.kr/feed/');
-    feed_coindesk.items.forEach(item => {
+    feed_coinpress.items.forEach(item => {
         item.creator = "코인프레스"
     });
     // https://kr.coinness.com/newsflash.rss
     const feed_coinness = await parser.parseURL('https://kr.coinness.com/newsflash.rss');
-    feed_coindesk.items.forEach(item => {
-        item.creator = "coinness"
+    feed_coinness.items.forEach(item => {
+        item.creator = "CoinNess"
     });
     // array merge spread operator.
     const feed_all = [ ...feed_blockmedia.items, ...feed_tokenpost.items, ...feed_coindesk.items, ...feed_coinpress.items, ...feed_coinness.items]
@@ -35,7 +35,21 @@ const main = async () => {
 
     const today = moment(new Date()).format("YYYYMMDD")
 
-    //console.log("today", today);
+    feed_all.sort( (a, b) => { return new Date(b.pubDate) - new Date(a.pubDate) })
+    //feed_today.sort( (a, b) => { return new Date(b.pubDate) - new Date(a.pubDate) })
+
+    const dupCheck = {};
+    feed_all.forEach((item, index, object ) => {
+        if( dupCheck[item.title] != undefined ){
+            console.log("dupCheck ", item.title ,dupCheck[item.title],  item.link );
+            object.splice(index, 1);
+        }else{
+            dupCheck[item.title] = item.link;
+            if(item.title.indexOf("5분간") > -1 ){
+                object.splice(index, 1);
+            }
+        }
+    });
 
     const feed_today = feed_all.filter( item => {
         let pubDate = null;
@@ -52,24 +66,9 @@ const main = async () => {
         }
         return today == pubDate;
     })
-
-    
-
-    feed_all.sort( (a, b) => { return new Date(b.pubDate) - new Date(a.pubDate) })
-    feed_today.sort( (a, b) => { return new Date(b.pubDate) - new Date(a.pubDate) })
-
-    feed_all.forEach(item => {
-        //console.log(item)
-    });
-
     return feed_all;
-
     //debugger;
-
   // http://www.coindeskkorea.com/rss/allArticle.xml
-
 };
-
 module.exports = main;
-
 //main();
