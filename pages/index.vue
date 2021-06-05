@@ -57,6 +57,8 @@
 
       <br />
 
+      <News maxRow="5"/>
+
       <br />
       <br />
       <br />
