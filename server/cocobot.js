@@ -6,6 +6,7 @@ const getFeed = async () => {
     const feed = await newsReader();
     redis.set("feed", JSON.stringify(feed) );
     console.log("feed", feed);
+    //debugger;
 }
 
 getFeed();
