@@ -41,7 +41,7 @@ const main = async () => {
     const dupCheck = {};
     feed_all.forEach((item, index, object ) => {
         if( dupCheck[item.title] != undefined ){
-            console.log("dupCheck ", item.title ,dupCheck[item.title],  item.link );
+            //console.log("dupCheck ", item.title ,dupCheck[item.title],  item.link );
             object.splice(index, 1);
         }else{
             dupCheck[item.title] = item.link;
