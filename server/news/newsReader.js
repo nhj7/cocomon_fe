@@ -38,18 +38,24 @@ const main = async () => {
     feed_all.sort( (a, b) => { return new Date(b.pubDate) - new Date(a.pubDate) })
     //feed_today.sort( (a, b) => { return new Date(b.pubDate) - new Date(a.pubDate) })
 
-    const dupCheck = {};
-    feed_all.forEach((item, index, object ) => {
-        if( dupCheck[item.title] != undefined ){
-            //console.log("dupCheck ", item.title ,dupCheck[item.title],  item.link );
-            object.splice(index, 1);
+    const dupCheck = [];
+    //console.log("feed_all.length", feed_all.length);
+
+    for (let index = 0; index < feed_all.length; index++) {
+        const item = feed_all[index];
+        if( dupCheck.indexOf(item.title) > -1  ){
+            //console.log("dupCheck ", item.title ,item.link );
+            feed_all.splice(index--, 1);
         }else{
-            dupCheck[item.title] = item.link;
+            dupCheck.push(item.title);
             if(item.title.indexOf("5분간") > -1 ){
-                object.splice(index, 1);
+                //console.log("5분간 삭제.");
+                feed_all.splice(index--, 1);
             }
         }
-    });
+    }
+    
+    //console.log("feed_all.length after", feed_all.length);
 
     const feed_today = feed_all.filter( item => {
         let pubDate = null;
