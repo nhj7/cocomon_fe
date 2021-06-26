@@ -27,7 +27,7 @@ const subClient = redis.createClient({
 });
 
 subClient.subscribe("socket.io#/#", (err, msg) => {
-    console.log(err, msg);
+    console.log('subscribe.socket.io#/#', err, msg);
 } )
 
 subClient.on("subscribe", function(channel, count) {
@@ -56,7 +56,7 @@ subClient.on("messageBuffer", function(channel, message) {
 
     const chatMsg = packet.data[1]
 
-    console.log(chatMsg);
+    console.log(JSON.stringify(chatMsg));
     //publisher.publish("a channel", "a message");
     //publisher.publish("a channel", "another message");
 });
@@ -68,4 +68,4 @@ const pubClient = redis.createClient({
     , password : process.env.redis_password
 });
 
-pubClient.publish('Goorm Channel', '발행자 첫번째 메시지');
+pubClient.publish('socket.io#/#', `{"userInfo":{"sh":"248d139c","nickName":"코린이6259c739","icon":{"color":"#19D250FF","name":"android-debug-bridge"}},"message":"<p>아니라고?</p>","date":"2021-06-26T16:00:35.745Z"}`);
