@@ -5,7 +5,6 @@ const redis = require("./util/redis");
 const io = require("socket.io-client")
 const socket = io("http://localhost:7777/", { transports: ['websocket'] } )
 
-
 socket.on("connect", () => {
     console.log("cocobot","socket.io connect", socket.connected); // true
 });
@@ -13,15 +12,13 @@ socket.on("disconnect", (reason) => {
     console.log("cocobot","socket.io disconnect",socket.connected, reason); // true
 });
 
-
 const getFeed = async () => {
     const feed = await newsReader();
-
     const oldFeed = await redis.getAsync("feed");
 
     if( oldFeed != null && oldFeed.length > 0 && feed != null && feed.length > 0 ){
         if( oldFeed[0].title != feed[0].title ){
-            console.log("new ", feed[0].title);
+            console.log("new ", oldFeed[0].title, feed[0].title);
 
             const chatMsg = {
                 date : new Date()
