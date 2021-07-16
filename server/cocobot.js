@@ -14,7 +14,7 @@ socket.on("disconnect", (reason) => {
 
 const getFeed = async () => {
     const feed = await newsReader();
-    const oldFeed = await redis.getAsync("feed");
+    const oldFeed = JSON.parse(await redis.getAsync("feed"));
 
     if( oldFeed != null && oldFeed.length > 0 && feed != null && feed.length > 0 ){
         if( oldFeed[0].title != feed[0].title ){
@@ -22,7 +22,7 @@ const getFeed = async () => {
 
             const chatMsg = {
                 date : new Date()
-                , message : feed[0].title
+                , message : `[${feed[0].title}](${feed[0].url})` 
                 , userInfo : {
                     sh : "SYSTEM"
                     , nickName : "CoCoBot"
