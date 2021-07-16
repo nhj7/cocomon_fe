@@ -22,7 +22,7 @@ const getFeed = async () => {
 
             const chatMsg = {
                 date : new Date()
-                , message : `[${feed[0].title}](${feed[0].url})` 
+                , message : `[${feed[0].title}](${feed[0].link})` 
                 , userInfo : {
                     sh : "SYSTEM"
                     , nickName : "CoCoBot"
