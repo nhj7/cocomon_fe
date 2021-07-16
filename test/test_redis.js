@@ -66,6 +66,8 @@ const pubClient = redis.createClient({
     host: process.env.redis_host
     , port: process.env.redis_port
     , password : process.env.redis_password
+    , detect_buffers: true
+    , return_buffers: true
 });
 
 pubClient.publish('socket.io#/#', `{"userInfo":{"sh":"248d139c","nickName":"코린이6259c739","icon":{"color":"#19D250FF","name":"android-debug-bridge"}},"message":"<p>아니라고?</p>","date":"2021-06-26T16:00:35.745Z"}`);
