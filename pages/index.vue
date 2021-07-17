@@ -57,7 +57,13 @@
 
       <br />
 
-      <News maxRow="5"/>
+      <!--News maxRow="5"/-->
+
+      <!--br />
+      <br />
+      <br />
+      <br />
+      <br />
 
       <br />
       <br />
@@ -68,13 +74,7 @@
       <br />
       <br />
       <br />
-      <br />
-      <br />
-
-      <br />
-      <br />
-      <br />
-      <br />
+      <br /-->
     </v-main>
     <v-footer app>
       <!-- -->
