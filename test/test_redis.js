@@ -12,9 +12,24 @@ const redisClient = redis.createClient({
 const {promisify} = require('util');
 const getAsync = promisify(redisClient.get).bind(redisClient);
 
+const cheerio = require("cheerio");
+
 (async () => {
-    const feed = await getAsync("feed")
-    console.log(JSON.parse(feed).length);
+    const _feed = await getAsync("feed")
+    const feed = JSON.parse(_feed)
+
+    for (let index = 0; index < feed.length; index++) {
+        const element = feed[index];
+        const $ = cheerio.load(element.content);
+        const img = $("img");
+        if( img.length > 0 ){
+            
+            console.log( `[![${element.title}](${img[0].attribs.src})](${element.link})` );
+            debugger;
+        }
+        
+    }
+    console.log();
 
     debugger;
 

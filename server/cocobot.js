@@ -12,6 +12,8 @@ socket.on("disconnect", (reason) => {
     console.log("cocobot","socket.io disconnect",socket.connected, reason); // true
 });
 
+const cheerio = require("cheerio");
+
 const getFeed = async () => {
     const feed = await newsReader();
     const oldFeed = JSON.parse(await redis.getAsync("feed"));
@@ -20,9 +22,11 @@ const getFeed = async () => {
         if( oldFeed[0].title != feed[0].title ){
             console.log("new ", oldFeed[0].title, feed[0].title);
 
+            const img = cheerio.load(feed[0].content)("img");
+            
             const chatMsg = {
                 date : new Date()
-                , message : `[${feed[0].title}](${feed[0].link})` 
+                , message : ( img.length > 0 ? `[![${feed[0].title}](${img[0].attribs.src})](${feed[0].link})` : `` ) + `[${feed[0].title}](${feed[0].link})` 
                 , userInfo : {
                     sh : "SYSTEM"
                     , nickName : "CoCoBot"
