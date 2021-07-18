@@ -183,7 +183,9 @@ export default {
     '$store.state.chat.chats' : {
       handler(){
         //console.log("watch chats update.");
-        this.doScrollDownChats();
+        this.$nextTick(() => {
+          this.doScrollDownChats();
+        })
       }, deep : true
     }, sendableMsgCnt(){
       //console.log("sendableMsgCnt", this.sendableMsgCnt);
