@@ -141,4 +141,3 @@ https://github.com/nuxt-community/gtm-module
 
 https://www.nginx.com/blog/compiling-and-installing-modsecurity-for-open-source-nginx/
 
-update...
