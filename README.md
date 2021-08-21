@@ -101,6 +101,12 @@ https://docs.github.com/en/actions/hosting-your-own-runners/configuring-the-self
 
 <pre>
 nohup ./run.sh &
+
+sudo ./svc.sh install
+sudo ./svc.sh start
+sudo ./svc.sh status
+sudo ./svc.sh stop
+sudo ./svc.sh uninstall
 </pre>
 
 install dir 
@@ -141,4 +147,4 @@ https://github.com/nuxt-community/gtm-module
 
 https://www.nginx.com/blog/compiling-and-installing-modsecurity-for-open-source-nginx/
 
-update...
+
