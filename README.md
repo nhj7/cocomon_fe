@@ -1,5 +1,7 @@
 # cocomon_fe
 
+## Project Stack
+nodejs 14+, nginx, nuxtjs, vuetify, pm2, github action, WAF(modsecurity)
 ## Build Setup
 
 node LTS version add ppa. and install and link
