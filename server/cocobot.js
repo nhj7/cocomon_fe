@@ -26,7 +26,7 @@ const getFeed = async () => {
             
             const chatMsg = {
                 date : new Date()
-                , message : ( img.length > 0 ? `[![${feed[0].title}](${img[0].attribs.src})](${feed[0].link}) ` : `` ) + ` <h2> [${ feed[0].title }](${feed[0].link}) </h2> ` 
+                , message : ( img.length > 0 ? `[![img](${img[0].attribs.src})](${feed[0].link}) <h3> ` : ` ### ` ) + ` [${ feed[0].title }](${feed[0].link}) ` 
                 , userInfo : {
                     sh : "SYSTEM"
                     , nickName : "CoCoBot"
