@@ -82,9 +82,6 @@ export default {
 }; // end vue.js
 </script>
 <style>
-img {
-  width : 100% !important;
-}
 
 .rotate180 {
   transform: rotate(-180deg);
