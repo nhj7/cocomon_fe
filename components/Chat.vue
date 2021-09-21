@@ -240,7 +240,7 @@ export default {
   margin-bottom:1px !important;
 }
 .message img{
-  width:90%;
+  width:80%;
   display:block;
 }
 </style>
