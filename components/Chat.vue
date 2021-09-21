@@ -241,5 +241,6 @@ export default {
 }
 .message img{
   width:75%;
+  display:block;
 }
 </style>
