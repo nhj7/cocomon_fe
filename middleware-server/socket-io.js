@@ -71,7 +71,7 @@ module.exports = async (wsServer) => {
 
             data.message = marked(data.message);
             if( data.message.indexOf("<a") > -1 ){
-                data.message = data.message.replace("<a","<a target='_blank' ")
+                data.message = data.message.replace(/<a/gi,"<a target='_blank' ")
             }
             //var rtnMessage = { message: data.message }; // 클라이언트에게 메시지를 전송한다 
             data.date = new Date();

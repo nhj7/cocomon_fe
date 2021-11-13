@@ -21,12 +21,12 @@ const getFeed = async () => {
     if( oldFeed != null && oldFeed.length > 0 && feed != null && feed.length > 0 ){
         if( oldFeed[0].title != feed[0].title ){
             console.log("new ", oldFeed[0].title, feed[0].title);
-
+            
             const img = cheerio.load(feed[0].content)("img");
             
             const chatMsg = {
                 date : new Date()
-                , message : ( img.length > 0 ? `[![${feed[0].title}](${img[0].attribs.src})](${feed[0].link})    ` : `` ) + ` ### [${feed[0].title}](${feed[0].link})` 
+                , message : `### ` + ( img.length > 0 ? `[![img](${img[0].attribs.src})](${feed[0].link}) ` : `` ) + ` [${ feed[0].title }](${feed[0].link}) ` 
                 , userInfo : {
                     sh : "SYSTEM"
                     , nickName : "CoCoBot"
@@ -50,6 +50,7 @@ const getFeed = async () => {
 }
 
 (async () => {
+    
     await getFeed();
 })();
 
