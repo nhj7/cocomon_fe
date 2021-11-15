@@ -20,7 +20,7 @@
     "cookie-universal-nuxt": "^2.1.4",
     "core-js": "^3.11.2",
     "express": "^4.17.1",
-    "marked": "^2.0.3",
+    "marked": "^4.0.3",
     "node-cron": "^3.0.0",
     "notepack.io": "^2.2.0",
     "nuxt": "^2.15.4",
