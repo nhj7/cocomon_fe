@@ -21,10 +21,14 @@ const main = async () => {
         item.creator = "코인프레스"
     });
     // https://kr.coinness.com/newsflash.rss
+    
+    /*
     const feed_coinness = await parser.parseURL('https://kr.coinness.com/newsflash.rss');
     feed_coinness.items.forEach(item => {
         item.creator = "CoinNess"
     });
+    */
+
     // array merge spread operator.
     const feed_all = [ ...feed_blockmedia.items, ...feed_tokenpost.items, ...feed_coindesk.items, ...feed_coinpress.items, ...feed_coinness.items]
     //console.log(feed_all);
