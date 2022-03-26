@@ -32,6 +32,13 @@ $ npm run generate
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
 
 <br /><br />
+
+## krwusd api 
+
+https://quotation-api-cdn.dunamu.com/v1/forex/recent?codes=FRX.KRWUSD
+
+<br /><br />
+
 ## upbit api 
 
 https://api.upbit.com/v1/market/all
