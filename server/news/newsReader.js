@@ -30,7 +30,7 @@ const main = async () => {
     */
 
     // array merge spread operator.
-    const feed_all = [ ...feed_blockmedia.items, ...feed_tokenpost.items, ...feed_coindesk.items, ...feed_coinpress.items, ...feed_coinness.items]
+    const feed_all = [ ...feed_blockmedia.items, ...feed_tokenpost.items, ...feed_coindesk.items, ...feed_coinpress.items]
     //console.log(feed_all);
   
     // feed_all.forEach(item => {
