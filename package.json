@@ -32,7 +32,7 @@
     "socket.io": "^4.0.1",
     "socket.io-client": "^2.4.0",
     "socket.io-redis": "^6.1.0",
-    "vue-uuid": "^2.0.2"
+    "vue-uuid": "^3.0.0"
   },
   "devDependencies": {
     "@nuxtjs/google-analytics": "^2.4.0",
