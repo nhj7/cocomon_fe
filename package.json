@@ -17,7 +17,7 @@
     "@nuxtjs/pwa": "^3.3.5",
     "cheerio": "*",
     "console": "^0.7.2",
-    "cookie-universal-nuxt": "^2.1.4",
+    "cookie-universal-nuxt": "^2.2.1",
     "core-js": "^3.11.2",
     "express": "^4.17.1",
     "marked": "^2.0.3",
