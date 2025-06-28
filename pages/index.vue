@@ -37,7 +37,7 @@
         <v-col>
           <br />
           <v-card class="d-flex pa-2" outlined tile>
-            USD/KRW {{ $p_comma($store.state.exchangeRate.basePrice) }}원 (
+            USD/KRW {{ $p_comma($store.state.exchangeRate.value) }}원 (
             {{
               (0 > $store.state.exchangeRate.signedChangeRate ? "" : "+") +
               Math.floor($store.state.exchangeRate.signedChangeRate * 10000) /
@@ -47,7 +47,7 @@
               <template v-slot:activator="{ on, attrs }">
                 <v-icon v-bind="attrs" v-on="on">mdi-chat-question-outline</v-icon>
               </template>
-              <span>현찰 살 때 {{ $p_comma($store.state.exchangeRate.cashBuyingPrice) }}원, 매매기준율 : {{ $p_comma($store.state.exchangeRate.basePrice) }}원</span>
+              <!--span>현찰 살 때 {{ $p_comma($store.state.exchangeRate.cashBuyingPrice) }}원, 매매기준율 : {{ $p_comma($store.state.exchangeRate.basePrice) }}원</span-->
             </v-tooltip>
             <br />
             <span>{{ this.$vuetify.breakpoint.name }}</span>
