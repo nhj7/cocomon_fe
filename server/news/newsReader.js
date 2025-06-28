@@ -11,11 +11,7 @@ const main = async () => {
     feed_tokenpost.items.forEach(item => {
         item.creator = "토큰포스트"
     });
-    const feed_coindesk = await parser.parseURL('http://www.coindeskkorea.com/rss/');
-    feed_coindesk.items.forEach(item => {
-        item.pubDate = item.pubDate.replace("KST","(KST)")
-        item.creator = "코인데스크코리아"
-    });    
+      
     // https://kr.coinness.com/newsflash.rss
     
     /*
@@ -26,7 +22,7 @@ const main = async () => {
     */
 
     // array merge spread operator.
-    const feed_all = [ ...feed_blockmedia.items, ...feed_tokenpost.items, ...feed_coindesk.items]
+    const feed_all = [ ...feed_blockmedia.items, ...feed_tokenpost.items]
     //console.log(feed_all);
   
     // feed_all.forEach(item => {
