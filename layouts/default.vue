@@ -338,7 +338,7 @@ export default {
 
       const responseArr = await Promise.all([
         $nuxt.$axios.$get(
-          "https://quotation-api-cdn.dunamu.com/v1/forex/recent?codes=FRX.KRWUSD"
+          "https://m.search.naver.com/p/csearch/content/qapirender.nhn?key=calculator&pkid=141&q=%ED%99%98%EC%9C%A8&where=m&u1=keb&u6=standardUnit&u7=0&u3=USD&u4=KRW&u8=down&u2=1"
         ),
         $nuxt.$axios.$get("https://api.upbit.com/v1/market/all"),
         $nuxt.$axios.$get("https://api.binance.com/api/v3/exchangeInfo"),
@@ -348,7 +348,7 @@ export default {
       ]);
       console.log("responseArr", responseArr);
       //console.log("setExchangeRate", responseArr[0][0]);
-      $nuxt.$store.commit("setExchangeRate", responseArr[0][0]);
+      $nuxt.$store.commit("setExchangeRate", responseArr[0].country[1]);
 
       //let parser = new DOMParser();
       
