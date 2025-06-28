@@ -378,7 +378,7 @@ export default {
               let krwPrice =
                 Math.round(
                   // cashBuyingPrice
-                  obj.price * $nuxt.$store.state.exchangeRate.basePrice * 100
+                  obj.price * $nuxt.$store.state.exchangeRate.value * 100
                   //obj.price * $nuxt.$store.state.exchangeRate.cashBuyingPrice * 100
 
                 ) / 100;
@@ -606,7 +606,6 @@ export default {
         htmlCol[i].href = "https://cocomon.kr" + "" + window.location.pathname + window.location.search;
       }
     }
-
     return;
 
     // $nuxt.socket.emit('ticker',JSON.stringify([
